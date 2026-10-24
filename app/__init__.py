@@ -20,6 +20,7 @@ from . import (
     jarlik,
     security,
     spr,
+    static_pages,
     telefon,
     users,
     video,
@@ -48,6 +49,7 @@ def create_app(config_object=Config) -> Flask:
     app.register_blueprint(cisco.bp)
     app.register_blueprint(jarlik.bp)
     app.register_blueprint(spr.bp)
+    app.register_blueprint(static_pages.bp)
 
     @app.route("/")
     def index():

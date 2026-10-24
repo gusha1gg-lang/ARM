@@ -80,7 +80,9 @@
 (Рабочие места → ТЭСК ТБД / ТЭСЦ 5 / АБК / Все цеха; Все ярлыки; Настройки; CISCO;
 Телефоны; Web Navigator; Видеонаблюдение). Названия разделов и вложенность не изменены.
 
-Разделы, ещё не перенесённые, отдают страницу 404 с пояснением «Этот раздел ещё не перенесён».
+Все разделы меню перенесены (партии 1–10). Отладочные страницы оригинала
+(`temp.aspx`, `temp1.aspx`, `test.html`, `NastoikaEBS_test.aspx`, `iisstart.htm`)
+не переносились и отдают `404`.
 
 ### Отклонения от оригинала (все — осознанные)
 
@@ -596,22 +598,6 @@
 
 ---
 
-## Итог партий 1–7
-
-| Партия | Раздел | Модуль | Тест |
-|---|---|---|---|
-| 1 | ТЭСК ТБД | `app/ipaddr4.py` | 38/38 |
-| 2 | ТЭСЦ 5 | `app/ipaddr5.py` | 36/36 |
-| 3 | АБК | `app/ipaddr_uch.py` | 46/46 |
-| 4 | Все цеха | `app/ipaddr_all.py` | 49/49 |
-| 5 | Видеонаблюдение | `app/video.py` | 51/51 |
-| 6 | Телефоны | `app/telefon.py` | 32/32 |
-| 7 | CISCO | `app/cisco.py` | 14/14 |
-
-Суммарно — **266 проверок**, `tools/verify_db.py`: Access=3880, SQLite=3880, внешние ключи и кириллица — OK.
-
----
-
 ## Партия 8 — Раздел «Ярлыки» (2026-10-24)
 
 | Старый URL | Новый маршрут | Шаблон | Модуль |
@@ -754,15 +740,103 @@
 
 **Данные не изменялись:** после теста `SPR_CISCO` — **93**, `SPR_CAMERA` — **21**, `NameShop` — **12**.
 
-### Что ещё не перенесено (остаток Этапа 4)
+---
 
-Партии 1–7 не покрывают весь сайт: в карте страниц `docs/01_PLAN.md` остались пункты 4.4, 4.6 и 4.9.
-На эти адреса сейчас отдаётся `404` с пояснением «Этот раздел ещё не перенесён».
+## Партия 10 — Статические страницы и `.htm` (2026-10-24)
 
-| Старый URL | Пункт плана | Что это | Таблицы | Статус |
-|---|---|---|---|---|
-| `/Webnav.aspx`, `/Nastroyki.aspx`, `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/Calendar.aspx` | 4.9 | статические страницы | — | ❌ не перенесено |
-| `/NastroykaOPT.htm`, `/birka_akp5.htm`, `/tururushka.htm`, `/Инструкция по перезапуску WinCC.htm` | 4.9 | статические `.htm` | — | ❌ не перенесено |
+| Старый URL | Новый маршрут | Шаблон | Модуль |
+|---|---|---|---|
+| `/Webnav.aspx` | `/Webnav.aspx` | `app/templates/webnav.html` | `app/static_pages.py` |
+| `/Nastroyki.aspx` | `/Nastroyki.aspx` | `app/templates/nastroyki.html` | `app/static_pages.py` |
+| `/NastoikaT5.aspx` | `/NastoikaT5.aspx` | `app/templates/nastoika_t5.html` | `app/static_pages.py` |
+| `/NastoikaEBS.aspx` | `/NastoikaEBS.aspx` | `app/templates/nastoika_ebs.html` | `app/static_pages.py` |
+| `/Calendar.aspx` | `/Calendar.aspx` | `app/templates/calendar.html` | `app/static_pages.py` |
+| `NastroykaOPT.htm` | `/NastroykaOPT.htm` | файл отдаётся как есть | `app/static_pages.py` |
+| `birka_akp5.htm` | `/birka_akp5.htm` | файл отдаётся как есть | `app/static_pages.py` |
+| `tururushka.htm` | `/tururushka.htm` | файл отдаётся как есть | `app/static_pages.py` |
+| `Инструкция по перезапуску WinCC.htm` | `/Инструкция по перезапуску WinCC.htm` | файл отдаётся как есть | `app/static_pages.py` |
+| `*.files/image00N.*`, `filelist.xml` | `/<имя>.files/<файл>` | файлы отдаются как есть | `app/static_pages.py` |
 
-Ссылки `/Webnav.aspx`, `/NastoikaEBS.aspx`, `/NastoikaT5.aspx` уже присутствуют в меню
-`base.html` (навигация перенесена 1-в-1), но ведут на `404`, пока эти разделы не реализованы.
+Исходники: `Webnav.aspx(.cs)`, `Nastroyki.aspx(.cs)`, `NastoikaT5.aspx(.cs)`,
+`NastoikaEBS.aspx(.cs)`, `Calendar.aspx(.cs)`. У всех `Page_Load` пуст — серверной
+логики и обращений к БД нет, данные не используются; CRUD не добавлялся.
+
+### Как перенесено
+
+* Шаблоны сгенерированы скриптом `tools/gen_static_pages.py` из блоков `asp:Content`
+  (`head` → `{% block head %}`, тело → `{% block content %}`) без изменения разметки.
+* Единственное преобразование — замена серверных контролов на обычный HTML, без ASP.NET
+  они не работают: `asp:HyperLink NavigateUrl="~/X"` → `<a href="/X">` (5 ссылок
+  на `Nastroyki.aspx`), `asp:Label Text="X"` → `<span>X</span>`.
+* Сверка 1-в-1: `tools/check_static_pages.py` — все 5 шаблонов совпадают с legacy
+  (`Webnav` 3 475, `Nastroyki` 1 753, `NastoikaT5` 419, `NastoikaEBS` 10 808,
+  `Calendar` 113 910 символов).
+* Готовые `.htm` не пересобираются: отдаются байт-в-байт из корня проекта по белому списку
+  (`HTM_FILES`), кодировка берётся из их `<meta charset>` и ставится в заголовок
+  (`windows-1251`; у `tururushka.htm` — `windows-1252`, как в оригинале).
+* Ресурсы `.htm` — из папок `*.files` по белому списку (`HTM_ASSET_DIRS`); картинки
+  `NastoikaT5.aspx` (`images/T51…T54.jpg`) и `tururushka.htm` (`images/Symbolfoto/*`)
+  отдаются существующим маршрутом `/images/…`.
+* `.htm` и ресурсы доступны только после входа (`@login_required`), как и было за
+  авторизацией сайта.
+
+### Отклонения от оригинала (осознанные)
+
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | Содержимое вставлено в общий макет `base.html` (шапка, меню, подвал) | Сохранение структуры Master Page |
+| 2 | Обёртка `<div class="legacy-static">` с горизонтальной прокруткой | Большая таблица календаря не ломает макет |
+| 3 | `asp:HyperLink` / `asp:Label` → `<a>` / `<span>` | Без ASP.NET серверные контролы не рендерятся |
+| 4 | Кодировка `.htm` явно указывается в `Content-Type` | Файлы в windows-1251/1252, иначе кракозябры |
+| 5 | `iisstart.htm`, `temp.aspx`, `temp1.aspx`, `test.html`, `NastoikaEBS_test.aspx` → `404` | Отладочные файлы, в навигации отсутствуют |
+| 6 | Ссылка «Настройка ODBC» ведёт на `/Настройка ODBC.htm` → `404` | Файла нет и в оригинале — поведение сохранено |
+
+Примечания по оригиналу (не изменения, а факты legacy):
+
+* `Webnav.aspx` содержит логины/пароли стендов — сохранены 1-в-1 как содержимое страницы.
+* В `.htm` встречается ссылка на `editdata.mso`, которого нет на диске и в оригинале.
+* `NastroykaOPT.htm` озаглавлен «Настройка печати бирок в ДМАП ТЭКСК ТБД»,
+  хотя ссылка в меню называет её «Инструкция по печати этикеток на ОПТ(Zebra)» —
+  текст оригинала сохранён.
+
+### Самопроверка (`tools/test_pages_static.py`, 39/39)
+
+| Проверка | Результат |
+|---|---|
+| Аноним: `/Webnav.aspx`, `/NastroykaOPT.htm` → редирект на вход | ✅ |
+| `viewer` и `admin`: все 5 страниц → 200, ключевой текст на месте | ✅ |
+| `/Nastroyki.aspx`: ссылки на инструкции (`/NastroykaOPT.htm`, `/birka_akp5.htm`, `/tururushka.htm`) | ✅ |
+| `/NastoikaT5.aspx`: ссылки на `images/T51…T54.jpg` | ✅ |
+| Всё 4 `.htm` → 200, кодировка в заголовке, текст читается без кракозябр | ✅ |
+| `/images/T51.jpg`, `/images/Symbolfoto/1-1.jpg` → 200 (JPEG) | ✅ |
+| `/NastroykaOPT.files/image001.png`, `…/image002.jpg`, `filelist.xml` → 200 | ✅ |
+| `Инструкция … WinCC.files/image001.png` (пробелы в имени) → 200 | ✅ |
+| Посторонние `.htm` и папки `*.files` → `404`; выход из папки (`..`) → `404` | ✅ |
+| Отладочный `iisstart.htm` → `404`; «Настройка ODBC.htm» → `404` (как в оригинале) | ✅ |
+
+**Данные не изменялись:** страницы не работают с БД; общая сверка Access↔SQLite — **3880 = 3880**.
+
+---
+
+## Итог Этапа 4
+
+| Партия | Раздел | Модуль | Тест |
+|---|---|---|---|
+| 1 | ТЭСК ТБД | `app/ipaddr4.py` | 38/38 |
+| 2 | ТЭСЦ 5 | `app/ipaddr5.py` | 36/36 |
+| 3 | АБК | `app/ipaddr_uch.py` | 46/46 |
+| 4 | Все цеха | `app/ipaddr_all.py` | 49/49 |
+| 5 | Видеонаблюдение | `app/video.py` | 51/51 |
+| 6 | Телефоны | `app/telefon.py` | 32/32 |
+| 7 | CISCO | `app/cisco.py` | 14/14 |
+| 8 | Ярлыки | `app/jarlik.py` | 33/33 |
+| 9 | Справочники CISCO/камер/цехов | `app/spr.py` | 48/48 |
+| 10 | Статические страницы и `.htm` | `app/static_pages.py` | 39/39 |
+
+Все рабочие страницы оригинального сайта перенесены: **386 проверок** в 10 наборах
+(+ `test_auth.py` 23/23 по ролям Этапа 3). Дым-тест `tools/smoke_pages.py` —
+**36/36** реализованных страниц отвечают `200`. Не переносились только отладочные
+`temp.aspx`, `temp1.aspx`, `test.html`, `NastoikaEBS_test.aspx`, `iisstart.htm` (их нет в навигации).
+
+Навигация, URL и названия разделов сохранены; `tools/verify_db.py`:
+Access=**3880**, SQLite=**3880**, контрольные суммы, внешние ключи и кириллица — OK.

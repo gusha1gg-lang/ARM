@@ -14,7 +14,7 @@ import urllib.request
 BASE = "http://127.0.0.1:5000"
 CSRF_RE = re.compile(r'name="_csrf" value="([^"]+)"')
 
-# Реализованные страницы (партии 1–7 Этапа 4 + Этап 3).
+# Реализованные страницы (Этап 3 + партии 1–10 Этапа 4).
 PAGES = [
     "/main.aspx",
     "/Addipt4.aspx",
@@ -36,11 +36,6 @@ PAGES = [
     "/telefon.aspx?sort=fio&dir=asc",
     "/CISCO.aspx",
     "/CISCO2.aspx",
-    "/admin/users/",
-]
-
-# Ещё не перенесённые разделы (пункты 4.4, 4.6, 4.9 плана) — ожидается 404.
-PENDING = [
     "/JR.aspx",
     "/AddJR.aspx",
     "/EditJR.aspx?id=1",
@@ -52,6 +47,20 @@ PENDING = [
     "/NastoikaT5.aspx",
     "/NastoikaEBS.aspx",
     "/Calendar.aspx",
+    "/NastroykaOPT.htm",
+    "/birka_akp5.htm",
+    "/tururushka.htm",
+    "/Инструкция по перезапуску WinCC.htm",
+    "/admin/users/",
+]
+
+# Отладочные файлы оригинала, которые осознанно не переносились — ожидается 404.
+NOT_PORTED = [
+    "/temp.aspx",
+    "/temp1.aspx",
+    "/test.html",
+    "/NastoikaEBS_test.aspx",
+    "/iisstart.htm",
 ]
 
 
@@ -68,7 +77,9 @@ def opener():
 
 def fetch(op, path, data=None):
     body = urllib.parse.urlencode(data).encode() if data is not None else None
-    req = urllib.request.Request(BASE + path, data=body)
+    # Кириллица и пробелы в адресах .htm кодируются.
+    url = BASE + urllib.parse.quote(path, safe="/?&=%:")
+    req = urllib.request.Request(url, data=body)
     try:
         with op.open(req) as resp:
             return resp.status, resp.read().decode("utf-8", "replace")
@@ -96,8 +107,8 @@ def main() -> int:
         print(f"{'OK  ' if ok else 'FAIL'} {status} {path} ({len(html)} символов)")
 
     print()
-    print("Ожидаемо не перенесено (404):")
-    for path in PENDING:
+    print("Отладочные файлы оригинала (не переносятся):")
+    for path in NOT_PORTED:
         status, _ = fetch(op, path)
         print(f"     {status} {path}")
 

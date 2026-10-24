@@ -504,18 +504,8 @@ CSRF, добавление, изменение, удаление, некорре
 
 Навигация, URL, названия разделов и данные сохранены; итоговая сверка БД — **3880 = 3880**.
 
-**Этап 4 не завершён.** Партии 1–7 покрывают 15 страниц из 22 по карте `docs/01_PLAN.md`.
-Остались пункты 4.4, 4.6, 4.9 — им соответствует `404`:
-
-| Старый URL | Пункт | Таблицы |
-|---|---|---|
-| `/JR.aspx`, `/AddJR.aspx`, `/EditJR.aspx?id=N` | 4.4 | `Jarlik` (27) |
-| `/SPR_CISCO.aspx?SPRType=1`, `?SPRType=2`, `/spr_shop.aspx` | 4.6 | `SPR_CISCO` (93), `SPR_CAMERA` (21), `NameShop` (12), `NameProlet` (33), `NameUchastok` (29) |
-| `/Webnav.aspx`, `/Nastroyki.aspx`, `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/Calendar.aspx`, `*.htm` | 4.9 | — |
-
-Ссылки на `/JR.aspx`, `/Webnav.aspx`, `/NastoikaEBS.aspx`, `/NastoikaT5.aspx` в меню `base.html`
-уже есть (навигация 1-в-1), но ведут на `404`. Пользователь подтвердил перенос остатка
-(партии 8–10), после чего — Этап 5.
+Партии 8–10 (остаток Этапа 4) выполнены 2026-10-24 по подтверждению пользователя.
+Итог Этапа 4 — в конце файла.
 
 ---
 
@@ -617,3 +607,97 @@ CSRF, валидация пролёта/оси (нечисло, одно пол�
 
 Артефакты: `app/spr.py`, `app/templates/spr_cisco.html`, `app/templates/spr_shop.html`,
 `app/static/css/style.css`, `app/__init__.py`, `tools/test_pages_spr.py`, `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — Перенос страниц, партия 10: статические страницы и `.htm` (2026-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Данные |
+|---|---|---|---|
+| `/Webnav.aspx` | `/Webnav.aspx` | `Webnav.aspx(.cs)` | статический HTML |
+| `/Nastroyki.aspx` | `/Nastroyki.aspx` | `Nastroyki.aspx(.cs)` | список ссылок |
+| `/NastoikaT5.aspx` | `/NastoikaT5.aspx` | `NastoikaT5.aspx(.cs)` | 4 картинки `images/T5*.jpg` |
+| `/NastoikaEBS.aspx` | `/NastoikaEBS.aspx` | `NastoikaEBS.aspx(.cs)` | статический HTML |
+| `/Calendar.aspx` | `/Calendar.aspx` | `Calendar.aspx(.cs)` | Excel-таблица календаря |
+| `/NastroykaOPT.htm` | `/NastroykaOPT.htm` | готовый `.htm` | Word-экспорт + `*.files` |
+| `/birka_akp5.htm` | `/birka_akp5.htm` | готовый `.htm` | Word-экспорт + `*.files` |
+| `/tururushka.htm` | `/tururushka.htm` | готовый `.htm` | картинки `images/Symbolfoto/*` |
+| `/Инструкция по перезапуску WinCC.htm` | тот же | готовый `.htm` | Word-экспорт + `*.files` |
+| `/<имя>.files/<файл>` | `/<имя>.files/<файл>` | папки ресурсов | только 3 разрешённые папки |
+
+Модуль: `app/static_pages.py`. Шаблоны: `app/templates/webnav.html`, `nastroyki.html`,
+`nastoika_t5.html`, `nastoika_ebs.html`, `calendar.html`.
+Генератор: `tools/gen_static_pages.py`. Сверка: `tools/check_static_pages.py`.
+Стили: `app/static/css/style.css` (`.legacy-static`).
+
+### Сохранено 1-в-1
+- Разметка всех пяти aspx-страниц перенесена из блоков `asp:Content` без изменения содержимого;
+  собственные `<style>` страниц (`Webnav`, `Calendar`) — в `{% block head %}`.
+- Серверной логики в оригиналах нет (`Page_Load` пуст, обращений к БД нет) — CRUD не добавлялся.
+- `.htm`-файлы отдаются байт-в-байт (10 642 / 9 753 / 19 012 / 7 605 байт), кодировка берётся
+  из их `<meta charset>`: `windows-1251`, у `tururushka.htm` — `windows-1252`.
+- Ресурсы Word-экспорта — из `NastroykaOPT.files`, `birka_akp5.files`,
+  `Инструкция по перезапуску WinCC.files` (пробелы в имени URL-кодируются).
+- Картинки `images/T51…T54.jpg` и `images/Symbolfoto/*` — существующим маршрутом `/images/…`.
+- Доступ к `.htm` и ресурсам — только после входа, всем ролям.
+
+Проверка идентичности: `tools/check_static_pages.py` — все 5 шаблонов совпадают с legacy
+(`Webnav` 3 475, `Nastroyki` 1 753, `NastoikaT5` 419, `NastoikaEBS` 10 808,
+`Calendar` 113 910 символов) и все 4 `.htm` на месте.
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | Содержимое вставлено в общий макет `base.html` | Сохранение структуры Master Page |
+| 2 | Обёртка `<div class="legacy-static">` | Большая таблица календаря не ломает вёрстку |
+| 3 | `asp:HyperLink` / `asp:Label` → `<a>` / `<span>` | Без ASP.NET серверные контролы не работают |
+| 4 | Кодировка `.htm` в `Content-Type` | Файлы в windows-1251/1252 — иначе кракозябры |
+| 5 | Отладочные `temp.aspx`, `temp1.aspx`, `test.html`, `NastoikaEBS_test.aspx`, `iisstart.htm` → `404` | В навигации отсутствуют, не переносятся по плану |
+| 6 | Ссылка «Настройка ODBC» → `404` | Файла `Настройка ODBC.htm` нет и в оригинале |
+
+Факты legacy, сохранённые без изменений: `Webnav.aspx` содержит логины/пароли стендов;
+`.htm` ссылаются на отсутствующий `editdata.mso`; заголовок `NastroykaOPT.htm`
+(«Настройка печати бирок в ДМАП ТЭКСК ТБД») отличается от подписи ссылки в меню.
+
+### Самопроверка
+`tools/test_pages_static.py` — **39/39**: редирект анонима, доступ под `viewer` и `admin`
+ко всем пяти страницам, содержимое и ссылки, 4 `.htm` с верной кодировкой и читаемым текстом,
+картинки `/images/T5*.jpg`, `/images/Symbolfoto/*`, ресурсы `*.files` (включая имя с пробелами),
+`404` на посторонние `.htm`/`*.files`, выход из папки (`..`), отладочный `iisstart.htm`
+и отсутствующую «Настройка ODBC.htm».
+Дым-тест `tools/smoke_pages.py` — **36/36** реализованных страниц отвечают `200`
+(отладочные файлы — ожидаемо `404`).
+Регрессия: 38/38, 36/36, 46/46, 49/49, 51/51, 32/32, 14/14, 33/33, 48/48, 23/23.
+`tools/verify_db.py`: Access=3880, SQLite=3880, внешние ключи и кириллица — OK.
+
+Артефакты: `app/static_pages.py`, `app/templates/webnav.html`, `nastroyki.html`,
+`nastoika_t5.html`, `nastoika_ebs.html`, `calendar.html`, `app/__init__.py`,
+`tools/gen_static_pages.py`, `tools/check_static_pages.py`, `tools/test_pages_static.py`,
+`tools/smoke_pages.py`, `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — итог (партии 1–10)
+
+| Партия | Раздел | Модуль | Тест |
+|---|---|---|---|
+| 1 | ТЭСК ТБД | `app/ipaddr4.py` | 38/38 |
+| 2 | ТЭСЦ 5 | `app/ipaddr5.py` | 36/36 |
+| 3 | АБК | `app/ipaddr_uch.py` | 46/46 |
+| 4 | Все цеха | `app/ipaddr_all.py` | 49/49 |
+| 5 | Видеонаблюдение | `app/video.py` | 51/51 |
+| 6 | Телефоны | `app/telefon.py` | 32/32 |
+| 7 | CISCO | `app/cisco.py` | 14/14 |
+| 8 | Ярлыки | `app/jarlik.py` | 33/33 |
+| 9 | Справочники CISCO/камер/цехов | `app/spr.py` | 48/48 |
+| 10 | Статические страницы и `.htm` | `app/static_pages.py` | 39/39 |
+
+Все рабочие страницы оригинального сайта перенесены: **386 проверок** в 10 наборах
+(+ `test_auth.py` 23/23), дым-тест — **36/36** страниц отвечают `200`.
+Навигация, URL, названия разделов и данные сохранены; итоговая сверка БД — **3880 = 3880**,
+внешние ключи и кириллица — OK. Не переносились только отладочные
+`temp.aspx`, `temp1.aspx`, `test.html`, `NastoikaEBS_test.aspx`, `iisstart.htm`.
+
+Этап 5 (финальная проверка под всеми ролями, `README.md`, итоговая сводка) не начат —
+ожидается подтверждение пользователя.
