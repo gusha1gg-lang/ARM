@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Список ярлыков — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">Список ярлыков</h4>
+
+    {% if can_edit %}
+    <p class="toolbar">
+        <a class="btn btn--small" href="{{ url_for('jarlik.add') }}">Добавить</a>
+    </p>
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="table table--jarlik">
+            <thead>
+            <tr>
+                <th class="table--jarlik__head" colspan="{{ 3 if can_edit else 2 }}">Ярлыки</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+            <tr>
+                <td class="table--jarlik__name">{{ row['NameJarlik'] or '' }}</td>
+                <td class="table--jarlik__action">
+                    <a title="Скачать"
+                       href="{{ url_for('jarlik.download', filename=row['LnkNameJarlik'] or '') }}">
+                        <img border="0" src="/img/load.png" alt="Скачать">
+                    </a>
+                </td>
+                {% if can_edit %}
+                <td class="table--jarlik__action">
+                    <a title="Редактировать" target="_self"
+                       href="{{ url_for('jarlik.edit', id=row['IDJarlik']) }}">
+                        <img border="0" src="/img/buttonedit.png" alt="Редактировать">
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="{{ 3 if can_edit else 2 }}" class="muted">Список ярлыков пуст.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего ярлыков: {{ total }}</p>
+</div>
+{% endblock %}

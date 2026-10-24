@@ -614,6 +614,25 @@ a { color: var(--blue-dark); }
 .grid--phone tbody tr.row-even td { background: #ffffff; }
 .grid--phone tbody tr.row-edit td { background: #008a8c; color: #ffffff; }
 
+/* ---------- Ярлыки (JR.aspx) ---------- */
+
+/* Оригинал: asp:Table CellPadding=2 CellSpacing=0, шапка #507CD1 с чёрной
+   рамкой, у ячейки названия рамка 1px Solid Black, строки белые. */
+.table--jarlik { border-collapse: collapse; }
+.table--jarlik thead th { border: 0; padding: 0; background: transparent; }
+.table--jarlik th.table--jarlik__head {
+    padding: 2px;
+    background: #507cd1;
+    border: 1px solid #000;
+    color: var(--text);
+    font-weight: normal;
+    text-align: left;
+}
+.table--jarlik td { border: 0; padding: 2px; background: #ffffff; }
+.table--jarlik td.table--jarlik__name { border: 1px solid #000; }
+.table--jarlik td.table--jarlik__action { text-align: center; width: 28px; }
+.table--jarlik td.table--jarlik__action img { vertical-align: middle; }
+
 /* ---------- Статические страницы CISCO (Excel-экспорт) ---------- */
 
 .legacy-static { overflow-x: auto; }

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% set is_edit = mode == 'edit' %}
+{% block title %}{{ 'Редактирование или удаление ярлыка' if is_edit else 'Добавление ярлыка' }} — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h2 class="page__title">{{ 'Редактирование или удаление ярлыка' if is_edit else 'Добавление ярлыка' }}</h2>
+
+    <form class="form-card" method="post"
+          action="{{ url_for('jarlik.edit', id=row_id) if is_edit else url_for('jarlik.add') }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        {% if is_edit %}<input type="hidden" name="action" value="update">{% endif %}
+
+        <table class="form-table">
+            <tr>
+                <td class="form-table__label">Название ярлыка в таблице</td>
+                <td>
+                    <input class="field__input" type="text" name="NameJarlik" id="NameJarlik"
+                           value="{{ row['NameJarlik'] or '' if row else '' }}"
+                           {% if not is_edit %}autofocus{% endif %}>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-table__label">Название файла ярлыка (.lnk)</td>
+                <td>
+                    <input class="field__input" type="text" name="LnkNameJarlik"
+                           value="{{ row['LnkNameJarlik'] or '' if row else '' }}">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="form-table__actions">
+                    <button class="btn btn--small" type="submit">Сохранить</button>
+                    <a class="btn btn--small" href="{{ url_for('jarlik.main') }}">Отмена</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% if is_edit %}
+    <form class="form-card" method="post" action="{{ url_for('jarlik.edit', id=row_id) }}"
+          onsubmit="return confirm('Удалить ярлык?');">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="delete">
+        <button class="btn btn--small btn--danger" type="submit">Удалить епт</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
