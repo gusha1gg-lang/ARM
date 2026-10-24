@@ -1,0 +1,140 @@
+TABLE IPaddress4
+  AgeregatName | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ConfigLogin | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  IDPC | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  IPaddress | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  KE | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  MAC | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Modem | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Monitor | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Oc | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Opisanie | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  Printer | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Prolet | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Shluz | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Telephon | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Uchastok | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  UPS | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE IPaddress5
+  CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ConfigLogin | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  IDPC | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  IPaddress | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  KE | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  MAC | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Modem | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Monitor | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Oc | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Opisanie | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  Printer | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Telephon | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Uchastok | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  UPS | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE IPaddressAll
+  AgeregatName | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ConfigLogin | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  IDPC | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  IPaddress | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  KE | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  MAC | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Modem | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Monitor | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Oc | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Opisanie | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  Printer | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Prolet | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Shluz | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ShopID | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Telephon | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Uchastok | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  UPS | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE IPAddressUch
+  CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ConfigLogin | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  IDPC | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  IDUchastok | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  IPaddress | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Kabinet | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  KE | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Level | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  MAC | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Modem | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Monitor | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Opisanie | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  Printer | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Telephon | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  UPS | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE Jarlik
+  IDJarlik | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  LnkNameJarlik | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  NameJarlik | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE NameProlet
+  Prolet | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Prolet_name | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ProletID | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  ShopID | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+
+TABLE NameShop
+  ShopID | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  ShopName | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Поле1 | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE NameUchastok
+  IDUchastok | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  Nameuchastka | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Поле1 | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE SPR_CAMERA
+  Camera_Name | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Camera_Type | type=202 (TEXT(255)) | size=None | required=0 | nullable=False | autoincrement=False
+  IDCAM_NAME | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+
+TABLE SPR_CISCO
+  ID_CISCO | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  IP_CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Location_CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Oc_CISCO | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Opisanie_CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Prolet_CISCO | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+
+TABLE telefon
+  fio | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  id | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  telnumber | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+
+TABLE temp
+  idt | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  t | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+
+TABLE UserPass
+  Login | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Pass | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  UserID | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+
+TABLE Video_Camera_all
+  Camera_number | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Camera_Type | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  ID_CISCO | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  ID_VID_CAM | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=True
+  IDCAM_NAME | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  IP_CAMERA_STREAM | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  IP_Server_PC | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  IPaddress | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Login_password | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Monitor | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Oc | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Opisanie | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  Port_CISCO | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  Prolet | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  ShopID | type=3 (INTEGER(Long Integer)) | size=None | required=1 | nullable=True | autoincrement=False
+  Uchastok | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False
+  upload_img | type=203 (MEMO(Long Text)) | size=None | required=0 | nullable=True | autoincrement=False
+  Video_out_lacation_PC | type=202 (TEXT(255)) | size=None | required=0 | nullable=True | autoincrement=False

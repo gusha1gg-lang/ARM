@@ -1,0 +1,75 @@
+TABLE IPaddress4
+  KEY PrimaryKey type=1 cols=['IDPC']
+  IDX PrimaryKey unique=True pk=True cols=['IDPC']
+TABLE IPaddress5
+  KEY PrimaryKey type=1 cols=['IDPC']
+  IDX PrimaryKey unique=True pk=True cols=['IDPC']
+TABLE IPaddressAll
+  KEY PrimaryKey type=1 cols=['IDPC']
+  IDX PrimaryKey unique=True pk=True cols=['IDPC']
+  IDX ShopID unique=False pk=False cols=['ShopID']
+TABLE IPAddressUch
+  KEY IDPC type=3 cols=['IDPC']
+  KEY NameUchastokIPAddressUch type=2 cols=['IDUchastok']
+  KEY PrimaryKey type=1 cols=['IDPC']
+  IDX IDPC unique=True pk=False cols=['IDPC']
+  IDX PrimaryKey unique=True pk=True cols=['IDPC']
+  IDX IPAddressUchIDUchastok unique=False pk=False cols=['IDUchastok']
+TABLE Jarlik
+  KEY PrimaryKey type=1 cols=['IDJarlik']
+  IDX PrimaryKey unique=True pk=True cols=['IDJarlik']
+TABLE MSysAccessObjects
+  KEY AOIndex type=1 cols=['ID']
+  IDX AOIndex unique=True pk=True cols=['ID']
+TABLE MSysAccessXML
+  KEY Id type=1 cols=['Id']
+  KEY ObjectGuidProperty type=3 cols=['ObjectGuid', 'Property']
+  KEY ObjectNameProperty type=3 cols=['ObjectName', 'Property']
+  IDX Id unique=True pk=True cols=['Id']
+  IDX ObjectGuidProperty unique=True pk=False cols=['ObjectGuid', 'Property']
+  IDX ObjectNameProperty unique=True pk=False cols=['ObjectName', 'Property']
+TABLE MSysIMEXColumns
+  KEY PrimaryKey type=1 cols=['SpecID', 'FieldName']
+  IDX PrimaryKey unique=True pk=True cols=['SpecID', 'FieldName']
+  IDX Index1 unique=False pk=False cols=['SpecID', 'Start']
+TABLE MSysIMEXSpecs
+  KEY PrimaryKey type=1 cols=['SpecName']
+  IDX PrimaryKey unique=True pk=True cols=['SpecName']
+TABLE MSysNameMap
+TABLE MSysNavPaneGroupCategories
+TABLE MSysNavPaneGroups
+  KEY MSysNavPaneGroupCategoriesMSysNavPaneGroups type=2 cols=['GroupCategoryID']
+TABLE MSysNavPaneGroupToObjects
+  KEY MSysNavPaneGroupsMSysNavPaneGroupToObjects type=2 cols=['GroupID']
+TABLE MSysNavPaneObjectIDs
+TABLE NameProlet
+  KEY PrimaryKey type=1 cols=['ProletID']
+  KEY ProletID type=3 cols=['ProletID']
+  IDX PrimaryKey unique=True pk=True cols=['ProletID']
+  IDX ProletID unique=True pk=False cols=['ProletID']
+TABLE NameShop
+  KEY PrimaryKey type=1 cols=['ShopID']
+  IDX PrimaryKey unique=True pk=True cols=['ShopID']
+TABLE NameUchastok
+  KEY PrimaryKey type=1 cols=['IDUchastok']
+  IDX PrimaryKey unique=True pk=True cols=['IDUchastok']
+TABLE SPR_CAMERA
+  KEY PrimaryKey type=1 cols=['IDCAM_NAME']
+  IDX PrimaryKey unique=True pk=True cols=['IDCAM_NAME']
+  IDX IDCAM unique=False pk=False cols=['IDCAM_NAME']
+TABLE SPR_CISCO
+  KEY ID_CISCO type=1 cols=['ID_CISCO']
+  IDX ID_CISCO unique=True pk=True cols=['ID_CISCO']
+TABLE telefon
+  KEY PrimaryKey type=1 cols=['id']
+  IDX PrimaryKey unique=True pk=True cols=['id']
+TABLE temp
+  KEY PrimaryKey type=1 cols=['idt']
+  IDX PrimaryKey unique=True pk=True cols=['idt']
+TABLE UserPass
+  KEY PrimaryKey type=1 cols=['UserID']
+  IDX PrimaryKey unique=True pk=True cols=['UserID']
+TABLE Video_Camera_all
+  KEY PrimaryKey type=1 cols=['ID_VID_CAM']
+  IDX PrimaryKey unique=True pk=True cols=['ID_VID_CAM']
+  IDX ShopID unique=False pk=False cols=['ShopID']

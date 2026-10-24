@@ -1,0 +1,756 @@
+{
+  "IPAddressUch": {
+    "columns": [
+      {
+        "name": "IDPC",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "IDUchastok",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Kabinet",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Level",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "ConfigLogin",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IPaddress",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "MAC",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "KE",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Telephon",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Opisanie",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Monitor",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Printer",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "UPS",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Modem",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "CISCO",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 1733,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "IDPC",
+        "non_unique": 0,
+        "column": "IDPC",
+        "ordinal": 1
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDPC",
+        "ordinal": 1
+      },
+      {
+        "index": "IPAddressUchIDUchastok",
+        "non_unique": 1,
+        "column": "IDUchastok",
+        "ordinal": 1
+      }
+    ]
+  },
+  "IPaddress4": {
+    "columns": [
+      {
+        "name": "IDPC",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Prolet",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Oc",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Uchastok",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "AgeregatName",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "ConfigLogin",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IPaddress",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Shluz",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "MAC",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "KE",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Telephon",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Opisanie",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Monitor",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Printer",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "UPS",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Modem",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "CISCO",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 842,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDPC",
+        "ordinal": 1
+      }
+    ]
+  },
+  "IPaddress5": {
+    "columns": [
+      {
+        "name": "IDPC",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Oc",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Uchastok",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "ConfigLogin",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IPaddress",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "MAC",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "KE",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Telephon",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Opisanie",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Monitor",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Printer",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "UPS",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Modem",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "CISCO",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 384,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDPC",
+        "ordinal": 1
+      }
+    ]
+  },
+  "IPaddressAll": {
+    "columns": [
+      {
+        "name": "IDPC",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "ShopID",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Prolet",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Oc",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Uchastok",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "AgeregatName",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "ConfigLogin",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IPaddress",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Shluz",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "MAC",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "KE",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Telephon",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Opisanie",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Monitor",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Printer",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "UPS",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Modem",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "CISCO",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 542,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDPC",
+        "ordinal": 1
+      },
+      {
+        "index": "ShopID",
+        "non_unique": 1,
+        "column": "ShopID",
+        "ordinal": 1
+      }
+    ]
+  },
+  "Jarlik": {
+    "columns": [
+      {
+        "name": "IDJarlik",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "LnkNameJarlik",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "NameJarlik",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 27,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDJarlik",
+        "ordinal": 1
+      }
+    ]
+  },
+  "NameProlet": {
+    "columns": [
+      {
+        "name": "ProletID",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "ShopID",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Prolet",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Prolet_name",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 33,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "ProletID",
+        "ordinal": 1
+      },
+      {
+        "index": "ProletID",
+        "non_unique": 0,
+        "column": "ProletID",
+        "ordinal": 1
+      }
+    ]
+  },
+  "NameShop": {
+    "columns": [
+      {
+        "name": "ShopID",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "ShopName",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Поле1",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 12,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "ShopID",
+        "ordinal": 1
+      }
+    ]
+  },
+  "NameUchastok": {
+    "columns": [
+      {
+        "name": "IDUchastok",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Nameuchastka",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Поле1",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 29,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDUchastok",
+        "ordinal": 1
+      }
+    ]
+  },
+  "SPR_CAMERA": {
+    "columns": [
+      {
+        "name": "IDCAM_NAME",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Camera_Type",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Camera_Name",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 21,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "IDCAM_NAME",
+        "ordinal": 1
+      },
+      {
+        "index": "IDCAM",
+        "non_unique": 1,
+        "column": "IDCAM_NAME",
+        "ordinal": 1
+      }
+    ]
+  },
+  "SPR_CISCO": {
+    "columns": [
+      {
+        "name": "ID_CISCO",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "IP_CISCO",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Prolet_CISCO",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Oc_CISCO",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Location_CISCO",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Opisanie_CISCO",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 93,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "ID_CISCO",
+        "non_unique": 0,
+        "column": "ID_CISCO",
+        "ordinal": 1
+      }
+    ]
+  },
+  "UserPass": {
+    "columns": [
+      {
+        "name": "UserID",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Login",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Pass",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 1,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "UserID",
+        "ordinal": 1
+      }
+    ]
+  },
+  "Video_Camera_all": {
+    "columns": [
+      {
+        "name": "ID_VID_CAM",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "IDCAM_NAME",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "ID_CISCO",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Camera_Type",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "ShopID",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Prolet",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Oc",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "Uchastok",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Camera_number",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IPaddress",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Login_password",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IP_Server_PC",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "upload_img",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Opisanie",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Monitor",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Video_out_lacation_PC",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "CISCO",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "Port_CISCO",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "IP_CAMERA_STREAM",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 117,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "ID_VID_CAM",
+        "ordinal": 1
+      },
+      {
+        "index": "ShopID",
+        "non_unique": 1,
+        "column": "ShopID",
+        "ordinal": 1
+      }
+    ]
+  },
+  "telefon": {
+    "columns": [
+      {
+        "name": "id",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "fio",
+        "type_code": "<class 'str'>"
+      },
+      {
+        "name": "telnumber",
+        "type_code": "<class 'str'>"
+      }
+    ],
+    "count": 44,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "id",
+        "ordinal": 1
+      }
+    ]
+  },
+  "temp": {
+    "columns": [
+      {
+        "name": "idt",
+        "type_code": "<class 'int'>"
+      },
+      {
+        "name": "t",
+        "type_code": "<class 'int'>"
+      }
+    ],
+    "count": 2,
+    "stats": [
+      {
+        "index": null,
+        "non_unique": null,
+        "column": null,
+        "ordinal": null
+      },
+      {
+        "index": "PrimaryKey",
+        "non_unique": 0,
+        "column": "idt",
+        "ordinal": 1
+      }
+    ]
+  }
+}

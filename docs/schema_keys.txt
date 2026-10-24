@@ -1,0 +1,30 @@
+TABLE IPAddressUch
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE IPaddress4
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE IPaddress5
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE IPaddressAll
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE Jarlik
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE NameProlet
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE NameShop
+  NONASCII_COLUMN: 'Поле1' = Поле1
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE NameUchastok
+  NONASCII_COLUMN: 'Поле1' = Поле1
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE SPR_CAMERA
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE SPR_CISCO
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE UserPass
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE Video_Camera_all
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE telefon
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
+TABLE temp
+  PK_ERROR: ('IM001', '[IM001] [Microsoft][Диспетчер драйверов ODBC] Драйвер не поддерживает данную функцию (0) (SQLPrimaryKeys)')
