@@ -340,3 +340,65 @@ CSRF, валидация, добавление без перезагрузки, 
 
 Артефакты: `app/ipaddr_all.py`, `app/templates/ipaddr_all.html`, `app/__init__.py`,
 `tools/test_pages_all.py`, `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — Перенос страниц, партия 5: раздел «Видеонаблюдение» (2026-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Таблицы |
+|---|---|---|---|
+| `/VideoIP.aspx?VideoType=IP` | `/VideoIP.aspx?VideoType=IP` | `VideoIP.aspx(.cs)` | `Video_Camera_all`, `SPR_CAMERA`, `SPR_CISCO`, `NameShop`, `NameProlet` |
+| `/VideoIP.aspx?VideoType=Analog` | `/VideoIP.aspx?VideoType=Analog` | `VideoIP.aspx(.cs)` | те же (`Camera_Type='Analog'`) |
+| `/VideoAnalog.aspx` | `/VideoAnalog.aspx` | `VideoAnalog.aspx` | — (картинка `images/upsi.jpg`) |
+| загрузка изображения | `POST /VideoIP/upload` | `btnUploadIP_Click` / `btnUploadAnalog_Click` | файлы в `uploads/` |
+
+Модуль: `app/video.py`. Шаблоны: `app/templates/video.html`, `video_analog.html`.
+Стили: `app/static/css/style.css` (`.grid--video`, `.select--cell`, `.field__input--cell`).
+
+### Сохранено 1-в-1
+- Две «таблицы» на одной странице: `VideoType=IP` и `VideoType=Analog` с разными наборами колонок
+  (в IP — IP адрес, Сервер/РС, Вывод изображения; в Analog — Видеорегистратор (расположение)).
+- Фильтры «Цех» (`NameShop ORDER BY ShopName`) и «Пролет» (`NameProlet WHERE ShopID=? ORDER BY Prolet`,
+  подпись `Prolet_name`), второй пункт выбран по умолчанию.
+- Запрос через INNER JOIN `Video_Camera_all` + `SPR_CAMERA` + `SPR_CISCO` + `NameShop`
+  по `ShopID`, `Prolet`, `Camera_Type`; без сортировки (как в `GetAllVideoCamera`).
+- Чекбокс «Добавление данных», строка добавления в футере таблицы, список пролётов футера
+  без фильтра по цеху и без `Prolet=-100`.
+- Inline-редактирование, удаление с `confirm('Уверен, что хочешь удалить?')`,
+  подсказка CISCO «Пролет N Ось N - Location - Opisanie», пустой текст
+  «Данные по выбранному пролету отсутствуют», цвета GridView.
+- Загрузка изображений: `.png/.jpeg/.jpg/.gif`, ≤4 МБ, файл в `uploads/`,
+  в БД — `uploads/<имя>`; все сообщения оригинальные.
+- Валидация оси −1000…1000 (`RangeValidator` + `TryParse`).
+- Особенность оригинала: `UpdateVideoCamera` всегда сбрасывает колонку `CISCO` в `""` —
+  поведение сохранено (отображается `IP_CISCO` из `SPR_CISCO`).
+- Значения `upload_img` из БД отдаются по `/uploads/…`, включая кириллицу и старые
+  обратные слэши (`uploads\Cam02.jpg`).
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | Правка/добавление/удаление/загрузка — `editor` и `admin` | Требование ролей Этапа 3 (в оригинале только admin) |
+| 2 | Параметризованный SQL, CSRF | Безопасность |
+| 3 | Цех по умолчанию — ЛПК, а не `ShopID=8` | `SelectedValue="8"` в оригинале падал: цеха 8 нет в `NameShop` (проверено в Access и SQLite) |
+| 4 | Нечисловая/внедиапазонная ось → сообщение «Введите число» | В оригинале `TryParse` молча игнорировал ввод |
+| 5 | POST → redirect (PRG) | Единый стиль страниц |
+| 6 | Поля IP адрес/Сервер/РС в Analog передаются скрыто | В оригинале `Visible=False` приводил к потере значений при правке и падению вставки |
+| 7 | Загрузка через AJAX | Не теряются введённые данные строки добавления; результат тот же |
+| 8 | Пустое изображение — текст «Фото нет» | Вместо битой картинки |
+| 9 | Серверная проверка расширения/размера, CSRF на загрузку | Безопасность |
+
+### Самопроверка
+`tools/test_pages_video.py` — **51/51**: права ролей, значения по умолчанию, фильтры,
+разные наборы колонок, пустой список, `/VideoAnalog.aspx`, отдача изображений, CSRF,
+валидация оси, добавление, правка (включая сброс `CISCO`), удаление, загрузка файла,
+недопустимое расширение, файл >4 МБ (`413`), несуществующий `edit`.
+Регрессия: `test_pages.py` 38/38, `test_pages5.py` 36/36, `test_pages_uch.py` 46/46,
+`test_pages_all.py` 49/49, `test_auth.py` 23/23.
+`tools/verify_db.py`: Access=3880, SQLite=3880, внешние ключи и кириллица — OK;
+`Video_Camera_all` — **117** строк (как после миграции).
+
+Артефакты: `app/video.py`, `app/templates/video.html`, `app/templates/video_analog.html`,
+`app/static/css/style.css`, `app/__init__.py`, `tools/test_pages_video.py`,
+`docs/04_PAGES.md`.

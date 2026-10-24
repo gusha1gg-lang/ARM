@@ -9,7 +9,7 @@ import sqlite3
 
 from flask import Flask, g, jsonify, redirect, render_template, request, send_from_directory, url_for
 
-from . import auth, db, ipaddr4, ipaddr5, ipaddr_all, ipaddr_uch, security, users
+from . import auth, db, ipaddr4, ipaddr5, ipaddr_all, ipaddr_uch, security, users, video
 from .config import BASE_DIR, Config
 
 
@@ -29,6 +29,7 @@ def create_app(config_object=Config) -> Flask:
     app.register_blueprint(ipaddr5.bp)
     app.register_blueprint(ipaddr_uch.bp)
     app.register_blueprint(ipaddr_all.bp)
+    app.register_blueprint(video.bp)
 
     @app.route("/")
     def index():
@@ -45,6 +46,10 @@ def create_app(config_object=Config) -> Flask:
     @app.route("/css/<path:filename>")
     def legacy_css(filename):
         return send_from_directory(BASE_DIR / "css", filename)
+
+    @app.route("/images/<path:filename>")
+    def legacy_images(filename):
+        return send_from_directory(BASE_DIR / "images", filename)
 
     @app.route("/health")
     def health():

@@ -563,6 +563,43 @@ a { color: var(--blue-dark); }
     font-size: 13px;
 }
 
+/* ---------- Видеонаблюдение (VideoIP.aspx) ---------- */
+
+/* GridView: RowStyle #F7F6F3, AlternatingRowStyle White, EditRow #999999,
+   FooterStyle #5D7B9D. */
+.grid--video tbody tr.row-odd td { background: #f7f6f3; }
+.grid--video tbody tr.row-even td { background: #ffffff; }
+.grid--video tbody tr.row-edit td { background: #999999; }
+.grid--video tbody tr.row-insert td { background: #5d7b9d; color: #ffffff; }
+.grid--video td { vertical-align: top; }
+
+.cell-camera__img { display: block; height: 100px; width: 100px; object-fit: cover; }
+
+.select--cell { min-width: 90px; max-width: 160px; padding: 2px 4px; font-size: 12px; }
+
+.field__input--cell {
+    width: 110px;
+    min-width: 0;
+    padding: 2px 4px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.inner-table { border-collapse: collapse; font-size: 12px; }
+.inner-table td { border: 0; padding: 0 2px 2px 0; text-align: left; }
+
+.link-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.check { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+
+.field-ok { color: var(--ok); font-size: 12px; }
+
 /* ---------- Адаптивность ---------- */
 
 @media (max-width: 640px) {

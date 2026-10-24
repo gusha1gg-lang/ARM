@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+{% block title %}{{ title or 'Видеонаблюдение' }} — Справочник ТЭСК ТБД{% endblock %}
+
+{% macro camera_image(row) -%}
+    {% if row['upload_img'] %}
+    <a href="{{ row['IP_CAMERA_STREAM'] or '' }}" target="_blank">
+        <img class="cell-camera__img" src="/{{ row['upload_img'].replace('\\', '/').lstrip('/') }}"
+             alt="Фото нет" width="100" height="100">
+    </a>
+    {% else %}
+    <span class="muted">Фото нет</span>
+    {% endif %}
+{%- endmacro %}
+
+{% macro cisco_cell(row) -%}
+    {{ row['IP_CISCO'] or '' }}
+    <a class="tooltip" href="#"><img border="0" src="/img/square-question_16.png" alt="?"><span>Пролет
+        {{ row['Prolet_CISCO'] if row['Prolet_CISCO'] is not none else 0 }}
+        Ось {{ row['Oc_CISCO'] if row['Oc_CISCO'] is not none else 0 }}
+        - {{ row['Location_CISCO'] or '' }} - {{ row['Opisanie_CISCO'] or '' }} <small></small></span></a>
+{%- endmacro %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">{{ title }}</h4>
+
+    <form class="toolbar" method="get" action="{{ url_for('video.main') }}">
+        {% if video_type %}<input type="hidden" name="VideoType" value="{{ video_type }}">{% endif %}
+        <label class="toolbar__label" for="shop">Цех</label>
+        <select id="shop" name="shop" class="select" onchange="this.form.submit()">
+            {% for value, name in shops %}
+            <option value="{{ value }}" {{ 'selected' if value == selected_shop else '' }}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="toolbar__label" for="prolet">Пролет</label>
+        <select id="prolet" name="prolet" class="select" onchange="this.form.submit()">
+            {% for value, name in prolets %}
+            <option value="{{ value }}" {{ 'selected' if value == selected_prolet else '' }}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if can_edit %}
+    <div class="toolbar">
+        <label class="check">
+            <input type="checkbox" id="cb-edit"
+                   onchange="document.getElementById('insert-row').hidden = !this.checked;">
+            Добавление данных
+        </label>
+    </div>
+    {% endif %}
+
+    {% if not video_type %}
+    {# Как в оригинале: без параметра VideoType обе таблицы скрыты. #}
+    <p class="muted">Выберите вид видеонаблюдения в меню.</p>
+    {% else %}
+
+    {% if can_edit %}
+    <form id="insert-form" method="post"
+          action="{{ url_for('video.main', VideoType=video_type, shop=selected_shop, prolet=selected_prolet) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="insert">
+        {% if video_type == 'Analog' %}
+        <input type="hidden" name="IPaddress" value="">
+        <input type="hidden" name="IP_Server_PC" value="">
+        {% endif %}
+    </form>
+    {% for row in rows %}
+    <form id="del-{{ row['ID_VID_CAM'] }}" method="post"
+          action="{{ url_for('video.main', VideoType=video_type, shop=selected_shop, prolet=selected_prolet) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="id" value="{{ row['ID_VID_CAM'] }}">
+    </form>
+    {% endfor %}
+    {% endif %}
+
+    {% if can_edit and edit_row %}
+    <form id="edit-form" method="post"
+          action="{{ url_for('video.main', VideoType=video_type, shop=selected_shop, prolet=selected_prolet) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id" value="{{ edit_row['ID_VID_CAM'] }}">
+        {% if video_type == 'Analog' %}
+        <input type="hidden" name="IPaddress" value="{{ edit_row['IPaddress'] or '' }}">
+        <input type="hidden" name="IP_Server_PC" value="{{ edit_row['IP_Server_PC'] or '' }}">
+        {% endif %}
+    </form>
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="grid grid--video">
+            <thead>
+            <tr>
+                {% if can_edit %}<th></th>{% endif %}
+                <th>Цех</th>
+                <th>Пролет</th>
+                <th>Участок</th>
+                <th>Ось</th>
+                {% if video_type == 'Analog' %}
+                <th>Видеорегистратор (расположение)</th>
+                {% else %}
+                <th>IP адрес</th>
+                {% endif %}
+                <th>Имя, № камеры</th>
+                <th>Марка камеры</th>
+                {% if video_type == 'IP' %}<th>Сервер/РС</th>{% endif %}
+                <th>Изоб-е камеры</th>
+                <th>Логин/пароль</th>
+                {% if video_type == 'Analog' %}<th>Монитор</th>{% endif %}
+                <th>CISCO</th>
+                <th>Порт CISCO</th>
+                {% if video_type == 'IP' %}
+                <th>Вывод изображения расположение/РС</th>
+                <th>Монитор</th>
+                {% endif %}
+                <th>Примечание</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                {% if can_edit and edit_row and edit_row['ID_VID_CAM'] == row['ID_VID_CAM'] %}
+                <tr class="row-edit {{ 'row-odd' if loop.index0 % 2 == 0 else 'row-even' }}">
+                    <td class="cell-action">
+                        <button class="btn btn--small" type="submit" form="edit-form" title="Обновить">Сохранить</button>
+                        <a class="btn btn--small" title="Отмена"
+                           href="{{ url_for('video.main', VideoType=video_type, shop=selected_shop, prolet=selected_prolet) }}">Отмена</a>
+                    </td>
+                    <td>
+                        <select class="select select--cell" name="ShopID" form="edit-form">
+                            {% for value, name in shops %}
+                            <option value="{{ value }}" {{ 'selected' if value|string == edit_row['ShopID']|string else '' }}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="select select--cell" name="Prolet" form="edit-form">
+                            {% for value, name in all_prolets %}
+                            <option value="{{ value }}" {{ 'selected' if value|string == edit_row['Prolet']|string else '' }}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="field__input field__input--cell" type="text" name="Uchastok" form="edit-form" value="{{ edit_row['Uchastok'] or '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="Oc" form="edit-form" value="{{ edit_row['Oc'] if edit_row['Oc'] is not none else '' }}"></td>
+                    {% if video_type == 'Analog' %}
+                    <td><input class="field__input field__input--cell" type="text" name="Video_out_lacation_PC" form="edit-form" value="{{ edit_row['Video_out_lacation_PC'] or '' }}"></td>
+                    {% else %}
+                    <td><input class="field__input field__input--cell" type="text" name="IPaddress" form="edit-form" value="{{ edit_row['IPaddress'] or '' }}"></td>
+                    {% endif %}
+                    <td><input class="field__input field__input--cell" type="text" name="Camera_number" form="edit-form" value="{{ edit_row['Camera_number'] or '' }}"></td>
+                    <td>
+                        <select class="select select--cell" name="IDCAM_NAME" form="edit-form">
+                            {% for value, name in cameras %}
+                            <option value="{{ value }}" {{ 'selected' if value|string == edit_row['IDCAM_NAME']|string else '' }}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    {% if video_type == 'IP' %}
+                    <td><input class="field__input field__input--cell" type="text" name="IP_Server_PC" form="edit-form" value="{{ edit_row['IP_Server_PC'] or '' }}"></td>
+                    {% endif %}
+                    <td>
+                        <table class="inner-table">
+                            <tr><td>Файл</td><td><input class="field__input field__input--cell" type="text" name="upload_img" form="edit-form" value="{{ edit_row['upload_img'] or '' }}"></td></tr>
+                            <tr><td>Ссылка</td><td><input class="field__input field__input--cell" type="text" name="IP_CAMERA_STREAM" form="edit-form" value="{{ edit_row['IP_CAMERA_STREAM'] or '' }}"></td></tr>
+                        </table>
+                    </td>
+                    <td><input class="field__input field__input--cell" type="text" name="Login_password" form="edit-form" value="{{ edit_row['Login_password'] or '' }}"></td>
+                    {% if video_type == 'Analog' %}
+                    <td><input class="field__input field__input--cell" type="text" name="Monitor" form="edit-form" value="{{ edit_row['Monitor'] or '' }}"></td>
+                    {% endif %}
+                    <td>
+                        <select class="select select--cell" name="ID_CISCO" form="edit-form">
+                            {% for value, name in ciscos %}
+                            <option value="{{ value }}" {{ 'selected' if value|string == edit_row['ID_CISCO']|string else '' }}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="field__input field__input--cell" type="text" name="Port_CISCO" form="edit-form" value="{{ edit_row['Port_CISCO'] or '' }}"></td>
+                    {% if video_type == 'IP' %}
+                    <td><input class="field__input field__input--cell" type="text" name="Video_out_lacation_PC" form="edit-form" value="{{ edit_row['Video_out_lacation_PC'] or '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="Monitor" form="edit-form" value="{{ edit_row['Monitor'] or '' }}"></td>
+                    {% endif %}
+                    <td><input class="field__input field__input--cell" type="text" name="Opisanie" form="edit-form" value="{{ edit_row['Opisanie'] or '' }}"></td>
+                </tr>
+                {% else %}
+                <tr class="{{ 'row-odd' if loop.index0 % 2 == 0 else 'row-even' }}">
+                    {% if can_edit %}
+                    <td class="cell-action">
+                        <a class="edit-link" title="Редактировать"
+                           href="{{ url_for('video.main', VideoType=video_type, shop=selected_shop, prolet=selected_prolet, edit=row['ID_VID_CAM']) }}"><img src="/img/buttonedit.png" alt="Редактировать" border="0"></a>
+                        <button class="link-button" type="submit" form="del-{{ row['ID_VID_CAM'] }}"
+                                title="Удалить" onclick="return confirm('Уверен, что хочешь удалить?');"><img src="/img/cross.png" alt="Удалить" border="0"></button>
+                    </td>
+                    {% endif %}
+                    <td>{{ row['ShopName'] or '' }}</td>
+                    <td>{{ row['Prolet'] if row['Prolet'] is not none else '' }}</td>
+                    <td>{{ row['Uchastok'] or '' }}</td>
+                    <td>{{ row['Oc'] if row['Oc'] is not none else '' }}</td>
+                    {% if video_type == 'Analog' %}
+                    <td>{{ row['Video_out_lacation_PC'] or '' }}</td>
+                    {% else %}
+                    <td>{{ row['IPaddress'] or '' }}</td>
+                    {% endif %}
+                    <td>{{ row['Camera_number'] or '' }}</td>
+                    <td>{{ row['Camera_Name'] or '' }}</td>
+                    {% if video_type == 'IP' %}<td>{{ row['IP_Server_PC'] or '' }}</td>{% endif %}
+                    <td>{{ camera_image(row) }}</td>
+                    <td>{{ row['Login_password'] or '' }}</td>
+                    {% if video_type == 'Analog' %}<td>{{ row['Monitor'] or '' }}</td>{% endif %}
+                    <td class="nowrap">{{ cisco_cell(row) }}</td>
+                    <td>{{ row['Port_CISCO'] or '' }}</td>
+                    {% if video_type == 'IP' %}
+                    <td>{{ row['Video_out_lacation_PC'] or '' }}</td>
+                    <td>{{ row['Monitor'] or '' }}</td>
+                    {% endif %}
+                    <td>{{ row['Opisanie'] or '' }}</td>
+                </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ 16 if video_type == 'IP' and can_edit else (14 if video_type == 'Analog' and can_edit else (15 if video_type == 'IP' else 13)) }}">
+                        {{ empty_text }}
+                    </td>
+                </tr>
+            {% endfor %}
+
+            {% if can_edit %}
+            <tr id="insert-row" class="row-insert" hidden>
+                <td class="cell-action">
+                    <button class="link-button" type="submit" form="insert-form" title="Добавить"><img src="/img/cross_edit_add32.png" alt="Добавить" border="0"></button>
+                </td>
+                <td>
+                    <select class="select select--cell" name="ShopID" form="insert-form">
+                        {% for value, name in shops %}<option value="{{ value }}">{{ name }}</option>{% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <select class="select select--cell" name="Prolet" form="insert-form">
+                        {% for value, name in footer_prolets %}<option value="{{ value }}">{{ name }}</option>{% endfor %}
+                    </select>
+                </td>
+                <td><input class="field__input field__input--cell" type="text" name="Uchastok" form="insert-form" value=""></td>
+                <td><input class="field__input field__input--cell" type="text" name="Oc" form="insert-form" value=""></td>
+                {% if video_type == 'Analog' %}
+                <td><input class="field__input field__input--cell" type="text" name="Video_out_lacation_PC" form="insert-form" value=""></td>
+                {% else %}
+                <td><input class="field__input field__input--cell" type="text" name="IPaddress" form="insert-form" value=""></td>
+                {% endif %}
+                <td><input class="field__input field__input--cell" type="text" name="Camera_number" form="insert-form" value=""></td>
+                <td>
+                    <select class="select select--cell" name="IDCAM_NAME" form="insert-form">
+                        {% for value, name in cameras %}<option value="{{ value }}">{{ name }}</option>{% endfor %}
+                    </select>
+                </td>
+                {% if video_type == 'IP' %}
+                <td><input class="field__input field__input--cell" type="text" name="IP_Server_PC" form="insert-form" value=""></td>
+                {% endif %}
+                <td>
+                    <table class="inner-table">
+                        <tr><td>Файл</td><td><input class="field__input field__input--cell" type="text" id="insert-upload-img" name="upload_img" form="insert-form" value="" readonly></td></tr>
+                        <tr><td>Ссылка</td><td><input class="field__input field__input--cell" type="text" name="IP_CAMERA_STREAM" form="insert-form" value=""></td></tr>
+                    </table>
+                    <input type="file" id="insert-file" form="insert-form" accept=".png,.jpeg,.jpg,.gif">
+                    <button class="btn btn--small" type="button"
+                            onclick="uploadImage('insert-file', 'insert-upload-img', 'insert-upload-msg');">Загрузить</button>
+                    <span id="insert-upload-msg"></span>
+                </td>
+                <td><input class="field__input field__input--cell" type="text" name="Login_password" form="insert-form" value=""></td>
+                {% if video_type == 'Analog' %}
+                <td><input class="field__input field__input--cell" type="text" name="Monitor" form="insert-form" value=""></td>
+                {% endif %}
+                <td>
+                    <select class="select select--cell" name="ID_CISCO" form="insert-form">
+                        {% for value, name in ciscos %}<option value="{{ value }}">{{ name }}</option>{% endfor %}
+                    </select>
+                </td>
+                <td><input class="field__input field__input--cell" type="text" name="Port_CISCO" form="insert-form" value=""></td>
+                {% if video_type == 'IP' %}
+                <td><input class="field__input field__input--cell" type="text" name="Video_out_lacation_PC" form="insert-form" value=""></td>
+                <td><input class="field__input field__input--cell" type="text" name="Monitor" form="insert-form" value=""></td>
+                {% endif %}
+                <td><input class="field__input field__input--cell" type="text" name="Opisanie" form="insert-form" value=""></td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего записей: {{ rows|length }}</p>
+
+    <script>
+    function uploadImage(fileId, targetId, messageId) {
+        var input = document.getElementById(fileId);
+        var message = document.getElementById(messageId);
+        if (!input.files.length) {
+            message.textContent = 'Выбери файл для загрузки';
+            message.className = 'field-warning';
+            return;
+        }
+        var data = new FormData();
+        data.append('file', input.files[0]);
+        data.append('_csrf', document.querySelector('#insert-form [name="_csrf"]').value);
+        fetch('{{ url_for("video.upload") }}', {method: 'POST', body: data})
+            .then(function (response) {
+                return response.json().then(function (json) {
+                    return {ok: response.ok, json: json};
+                });
+            })
+            .then(function (result) {
+                message.textContent = result.json.message;
+                message.className = result.ok ? 'field-ok' : 'field-warning';
+                if (result.ok) {
+                    document.getElementById(targetId).value = result.json.path;
+                }
+            })
+            .catch(function () {
+                message.textContent = 'Ошибка загрузки файла';
+                message.className = 'field-warning';
+            });
+    }
+    </script>
+    {% endif %}
+</div>
+{% endblock %}
