@@ -115,7 +115,7 @@ def main() -> int:
                                {"_csrf": token, "Login": "admin", "Pass": "11111111"})
     check("Вход admin/11111111 → редирект", status in (301, 302), f"status={status}")
 
-    status, html, _ = fetch(op, "/")
+    status, html, _ = fetch(op, "/main.aspx")
     check("Главная после входа → 200, показан пользователь",
           status == 200 and "admin" in html)
 
@@ -156,7 +156,7 @@ def main() -> int:
                          {"_csrf": token, "Login": "test_viewer", "Pass": "viewer123"})
     check("Вход test_viewer → редирект", status in (301, 302), f"status={status}")
 
-    status, html, _ = fetch(vop, "/")
+    status, html, _ = fetch(vop, "/main.aspx")
     check("viewer видит главную", status == 200 and "test_viewer" in html)
 
     status, _, _ = fetch(vop, "/admin/users/")
@@ -167,7 +167,7 @@ def main() -> int:
     check("viewer не может создать пользователя (403)", status == 403, f"status={status}")
 
     # --- 9. Выход
-    status, html, _ = fetch(vop, "/")
+    status, html, _ = fetch(vop, "/main.aspx")
     token = token_from(html)
     status, _, headers = fetch(vop, "/logout", {"_csrf": token})
     check("Выход → редирект на login", status in (301, 302), f"status={status}")
@@ -221,7 +221,8 @@ def main() -> int:
     else:
         check("Определение ID admin", False, "не найден")
 
-    # --- 13. Очистка тестового пользователя (деактивируем, не удаляем по правилам)
+    # --- 13. Очистка тестовых учёток
+    cleanup_test_users()
     print()
     failed = [r for r in results if not r[1]]
     print(f"ИТОГО: {len(results) - len(failed)}/{len(results)} проверок пройдено")

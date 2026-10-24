@@ -4,28 +4,76 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Справочник ТЭСК ТБД{% endblock %}</title>
+    <link rel="SHORTCUT ICON" href="/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<header class="topbar">
-    <div class="topbar__inner">
-        <a class="brand" href="{{ url_for('index') }}">Справочник ТЭСК ТБД</a>
+<header class="site-header">
+    <div class="banner">
+        <a href="{{ url_for('index') }}">
+            <img src="/img/KPK.jpg" alt="Справочник ТЭСК ТБД">
+        </a>
+    </div>
+
+    <nav class="topmenu">
+        <ul class="topmenu__list">
+            <li class="topmenu__item">
+                <a href="#">Рабочие места</a>
+                <ul class="topmenu__sub">
+                    <li><a href="{{ url_for('ipaddr4.main') }}">ТЭСК ТБД</a></li>
+                    <li><a href="/IpaddrT5.aspx">ТЭСЦ 5</a></li>
+                    <li><a href="/IPaddrUch.aspx">АБК</a></li>
+                    <li><a href="/IPaddrALL.aspx">Все цеха</a></li>
+                </ul>
+            </li>
+            <li class="topmenu__item"><a href="/JR.aspx">Все ярлыки</a></li>
+            <li class="topmenu__item">
+                <a href="#">Настройки</a>
+                <ul class="topmenu__sub">
+                    <li><a href="/NastroykaOPT.htm">Инструкция по печати этикеток на ОПТ(Zebra)</a></li>
+                    <li><a href="/NastoikaT5.aspx">Настройка Zebra в ТЭСЦ 5</a></li>
+                    <li><a href="/NastoikaEBS.aspx">Настройка маркировщика EBS-250</a></li>
+                    <li><a href="/birka_akp5.htm">Настройка печати бирок на АКП5 в ДМАП ТЭСК ТБД</a></li>
+                    <li><a href="/Инструкция по перезапуску WinCC.htm">Инструкция по перезапуску WinCC</a></li>
+                    <li><a href="/tururushka.htm">Настройка ручных сканеров Symbol</a></li>
+                    <li><a href="http://portal.vsw.ru/dit/uis/DocLib1/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D0%B8%D0%BD%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D0%BE%D0%B2%20%D1%81%D0%BB%D1%83%D0%B6%D0%B1%D1%8B%20%D0%BF%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B8/VPN%20Android.jpg">Настройки VPN Android</a></li>
+                </ul>
+            </li>
+            <li class="topmenu__item">
+                <a href="#">CISCO</a>
+                <ul class="topmenu__sub">
+                    <li><a href="/CISCO.aspx">Шкафы</a></li>
+                    <li><a href="/CISCO2.aspx">Узлы ВМЗ</a></li>
+                    <li><a href="http://nms.vsw.ru/nagvis/frontend/nagvis-js/">CISCO nagvis</a></li>
+                </ul>
+            </li>
+            <li class="topmenu__item"><a href="/telefon.aspx">Телефоны</a></li>
+            <li class="topmenu__item"><a href="/Webnav.aspx">Web Navigator</a></li>
+            <li class="topmenu__item">
+                <a href="#">Видеонаблюдение</a>
+                <ul class="topmenu__sub">
+                    <li><a href="/VideoIP.aspx?VideoType=IP">IP видеонаблюдение</a></li>
+                    <li><a href="/VideoIP.aspx?VideoType=Analog">Аналоговое видеонаблюдение</a></li>
+                </ul>
+            </li>
+        </ul>
+
         {% if g.user %}
-        <div class="topbar__user">
+        <div class="topmenu__user">
             <span class="user-badge">
                 {{ g.user['username'] }}
                 <span class="role-tag role-{{ g.user['role'] }}">{{ g.user['role'] }}</span>
             </span>
             {% if g.user['role'] == 'admin' %}
-            <a class="link" href="{{ url_for('users.index') }}">Пользователи</a>
+            <a class="topmenu__user-link" href="{{ url_for('users.index') }}">Пользователи</a>
             {% endif %}
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
                 <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn--ghost">Выйти</button>
+                <button type="submit" class="btn btn--ghost btn--small">Выйти</button>
             </form>
         </div>
         {% endif %}
-    </div>
+    </nav>
 </header>
 
 <main class="container">

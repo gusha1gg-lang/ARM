@@ -99,4 +99,83 @@
 
 Артефакты: `scripts/schema.sql`, `scripts/migrate_access_to_sqlite.py`, `tools/gen_schema.py`, `tools/verify_db.py`, `docs/02_DB.md`, `docs/null_diagnostic.txt`.
 
-**Ожидает подтверждения пользователя для перехода к Этапу 3.**
+## Этап 3 — Аутентификация, пользователи, роли (2025-10-24)
+
+### Реализовано
+- `app/security.py` — загрузка пользователя в `g.user`, декораторы `login_required`, `roles_required`, `min_role`, CSRF.
+- `app/auth.py` — `GET/POST /Login.aspx` (URL сохранён), `POST /logout`. Сообщение об ошибке дословно из оригинала. Защита от open redirect.
+- `app/users.py` — `/admin/users/` управление пользователями/ролями (только `admin`).
+- `scripts/migrate_legacy_admin.py` — перенос `UserPass` → `users` (роль `admin`), хеш PBKDF2-SHA256, идемпотентен.
+- Шаблоны и CSS: `login.html`, `base.html`, `index.html`, `users.html`, `error.html`, `app/static/css/style.css`.
+
+### Роли
+| Действие | viewer | editor | admin |
+|---|---|---|---|
+| Просмотр | ✅ | ✅ | ✅ |
+| Редактирование/добавление/удаление (Этап 4) | ❌ | ✅ | ✅ |
+| Управление пользователями (`/admin/users`) | ❌ | ❌ | ✅ |
+
+### Миграция легаси-пользователя
+`admin` / `11111111` из `UserPass` перенесён в `users` с ролью `admin` (пароль прежний). Рекомендуется сменить пароль.
+
+### Самопроверка
+`tools/test_auth.py` — **23/23** пройдено:
+- редирект/403, CSRF 400, неверный пароль — оригинальное сообщение без утечек;
+- вход/выход, блокировка, смена ролей, запрет самоблокировки и снятия прав у последнего админа;
+- защита от дубликатов и слабых паролей.
+
+**Отклонений нет.** `UserPass` не изменён. Новая логика изолирована в `users`.
+
+Артефакты: `app/security.py`, `app/auth.py`, `app/users.py`, `scripts/migrate_legacy_admin.py`, `app/templates/*`, `app/static/css/style.css`, `tools/test_auth.py`, `docs/03_AUTH.md`.
+
+**Этап 3 завершён, подтверждение получено.**
+
+---
+
+## Этап 4 — Перенос страниц, партия 1: раздел «ТЭСК ТБД» (2025-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Таблицы |
+|---|---|---|---|
+| `/main.aspx` | `/main.aspx` | `main.aspx.cs` | `IPaddress4` |
+| `/Addipt4.aspx` | `/Addipt4.aspx` | `Addipt4.aspx.cs` | `IPaddress4` (INSERT) |
+| `/Edit.aspx?id=N` | `/Edit.aspx?id=N` | `Edit.aspx.cs` | `IPaddress4` (UPDATE/DELETE) |
+| `/ReportExist.aspx?KE=…` | `/ReportExist.aspx?KE=…` | `ReportExist.aspx.cs` | `IPaddress4`, `IPAddressUch`, `IPaddress5`, `NameUchastok` |
+
+Модуль: `app/ipaddr4.py`. Шаблоны: `main.html`, `ipaddr4_form.html`, `report.html`.
+
+### Сохранено 1-в-1
+- Список пролётов (9 значений) и их подписи; сортировка `Prolet, Oc, Uchastok, AgeregatName`.
+- Групповые строки «Пролет №: N» (`#20B2AA`) и участка (`#C1CDC1`); чередование строк `#e6e6fa`/`#e0ffff`.
+- 13 колонок таблицы, порядок и подсказки; всплывающая подсказка CISCO с `Opisanie`.
+- Все 16 полей формы, их подписи и порядок; многострочное «Описание».
+- Валидаторы Prolet/Oc и предупреждения о дубликатах `KE`/`Monitor`/`Printer` с текстом оригинала.
+- Кнопка «Все равно сохранить» при срабатывании проверок.
+- URL и переходы: после сохранения/удаления — `/main.aspx`, поиск — `/ReportExist.aspx?KE=…`.
+
+### Восстановлена навигация
+`MainMasterPage.master` → `app/templates/base.html`: баннер `img/KPK.jpg` и меню
+(Рабочие места, Все ярлыки, Настройки, CISCO, Телефоны, Web Navigator, Видеонаблюдение)
+с теми же названиями, вложенностью и порядком. Оригинальные `img/` и `css/` отдаются как есть
+(маршруты `/img/...`, `/css/...`), файлы не копировались и не изменялись.
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | «Добавить» и редактирование доступны `editor` и `admin` (в оригинале — только админ) | Требование ролей Этапа 3 |
+| 2 | Параметризованный SQL вместо конкатенации | Безопасность |
+| 3 | CSRF-токены в формах | Безопасность |
+| 4 | Подтверждение удаления (`confirm`) | Защита от случайного удаления |
+| 5 | При «Все равно сохранить» нечисловые Prolet/Oc отклоняются | В оригинале — ошибка ODBC |
+| 6 | CSS-классы вместо inline-стилей ASP.NET, меню на CSS | Адаптивность; цвета и структура сохранены |
+
+### Самопроверка
+`tools/test_pages.py` — **38/38**: права viewer/editor/admin, CSRF, валидация, добавление,
+фильтр по пролёту, редактирование, дубликаты, принудительное сохранение, поиск КЕ, удаление, 404.
+Количество строк `IPaddress4` после тестов — **842** (совпадает с миграцией).
+
+Артефакты: `app/ipaddr4.py`, `app/templates/main.html`, `app/templates/ipaddr4_form.html`,
+`app/templates/report.html`, `app/templates/base.html`, `app/static/css/style.css`,
+`tools/test_pages.py`, `docs/04_PAGES.md`.
+
+**Ожидает подтверждения пользователя перед следующей партией страниц.**

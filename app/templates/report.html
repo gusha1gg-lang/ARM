@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Поиск КЕ — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <form class="toolbar" method="get" action="{{ url_for('ipaddr4.report_exist') }}">
+        <button class="btn btn--small" type="submit">Найти...</button>
+        <input class="field__input field__input--inline" type="text" name="KE" value="{{ ke }}" placeholder="Номер КЕ">
+    </form>
+
+    {% if not ke %}
+    <p class="muted">Введите номер КЕ для поиска.</p>
+    {% elif not blocks %}
+    <div class="flash flash--error">По запросу «{{ ke }}» ничего не найдено.</div>
+    {% endif %}
+
+    {% for block in blocks %}
+    <div class="table-wrap report-block" title="{{ block.title }}">
+        <table class="grid grid--report">
+            <thead>
+            <tr>
+                {% for column in block.columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in block.rows %}
+            <tr class="{{ 'row-odd' if loop.index is odd else 'row-even' }}">
+                {% for value in row %}
+                <td>{{ value if value is not none else '' }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

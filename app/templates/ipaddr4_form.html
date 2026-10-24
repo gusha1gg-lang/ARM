@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Добавление данных' if mode == 'add' else 'Редактирование данных' }} — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h2 class="page__title">{{ 'Добавление данных' if mode == 'add' else 'Редактирование данных' }}</h2>
+
+    {% if error %}
+    <div class="flash flash--error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" class="form-card" action="{{ url_for('ipaddr4.add') if mode == 'add' else url_for('ipaddr4.edit', id=row_id) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <table class="form-table">
+            {% for field in labels %}
+            <tr>
+                <td class="form-table__label">{{ labels[field] }}</td>
+                <td>
+                    {% if field in multiline %}
+                    <textarea class="field__input" name="{{ field }}" rows="3">{{ data[field] }}</textarea>
+                    {% else %}
+                    <input class="field__input" type="text" name="{{ field }}" value="{{ data[field] }}"
+                           {% if field == 'Prolet' %}autofocus{% endif %}>
+                    {% endif %}
+                    {% if warnings.get(field) %}
+                    <span class="field-warning">{{ warnings[field] }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td class="form-table__actions">
+                    <button class="btn btn--small" type="submit">Сохранить</button>
+                    {% if show_force %}
+                    <button class="btn btn--small btn--warn" type="submit" name="force" value="1">Все равно сохранить</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if mode == 'edit' %}
+            <tr>
+                <td></td>
+                <td class="form-table__actions">
+                    <button class="btn btn--small btn--danger" type="submit" name="action" value="delete"
+                            onclick="return confirm('Удалить запись №{{ row_id }}?');">Удалить</button>
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </form>
+
+    <p><a class="link-back" href="{{ url_for('ipaddr4.main') }}">← Назад к списку</a></p>
+</div>
+{% endblock %}

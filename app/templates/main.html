@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Справочник АРМ{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">Информация об АРМ ТЭСК ТБД</h4>
+
+    <form class="toolbar" method="get" action="{{ url_for('ipaddr4.main') }}">
+        <label class="toolbar__label" for="prolet">Показать пролет</label>
+        <select id="prolet" name="prolet" class="select" onchange="this.form.submit()">
+            {% for value, title in prolets %}
+            <option value="{{ value }}" {{ 'selected' if value == selected else '' }}>{{ title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <div class="toolbar">
+        <form class="toolbar__group" method="get" action="{{ url_for('ipaddr4.report_exist') }}">
+            <button class="btn btn--small" type="submit">Найти КЕ</button>
+            <input class="field__input field__input--inline" type="text" name="KE" placeholder="Номер КЕ">
+        </form>
+        {% if g.user['role'] in ('editor', 'admin') %}
+        <a class="btn btn--small" href="{{ url_for('ipaddr4.add') }}">Добавить</a>
+        {% endif %}
+    </div>
+
+    <div class="table-wrap">
+        <table class="grid">
+            <thead>
+            <tr>
+                <th>№ площадки</th>
+                <th>Ось</th>
+                <th>№ пл.<br>или логин TS</th>
+                <th>IP адрес</th>
+                <th>Основной шлюз</th>
+                <th>MAC адрес</th>
+                <th>PC/TS</th>
+                <th>Телефон</th>
+                <th>Монитор</th>
+                <th>Принтер</th>
+                <th>ИБП</th>
+                <th>Модем</th>
+                <th>CISCO</th>
+                {% if g.user['role'] in ('editor', 'admin') %}
+                <th></th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in groups %}
+                {% if item.type == 'prolet' %}
+                <tr class="group-prolet">
+                    <td colspan="{{ 14 if g.user['role'] in ('editor', 'admin') else 13 }}" title="Номер пролета">{{ item.title }}</td>
+                </tr>
+                {% elif item.type == 'uchastok' %}
+                <tr class="group-uchastok">
+                    <td colspan="{{ 14 if g.user['role'] in ('editor', 'admin') else 13 }}">{{ item.title }}</td>
+                </tr>
+                {% else %}
+                {% set row = item.row %}
+                <tr class="{{ item.parity }}">
+                    <td title="№ площадки">{{ row['AgeregatName'] or '' }}</td>
+                    <td title="Ось">{{ row['Oc'] if row['Oc'] is not none else '' }}</td>
+                    <td title="№ площадки или логин TS">{{ row['ConfigLogin'] or '' }}</td>
+                    <td title="IP адрес">{{ row['IPaddress'] or '' }}</td>
+                    <td title="Основной шлюз">{{ row['Shluz'] or '' }}</td>
+                    <td title="МАС адрес">{{ row['MAC'] or '' }}</td>
+                    <td title="PC/TS">{{ row['KE'] or '' }}</td>
+                    <td title="Телефон">{{ row['Telephon'] or '' }}</td>
+                    <td title="Монитор">{{ row['Monitor'] or '' }}</td>
+                    <td title="Принтер">{{ row['Printer'] or '' }}</td>
+                    <td title="ИБП">{{ row['UPS'] or '' }}</td>
+                    <td title="Модем">{{ row['Modem'] or '' }}</td>
+                    <td>
+                        <a class="tooltip" href="#">{{ row['CISCO'] or '' }}
+                            <span>{{ row['Opisanie'] or '' }}<small></small></span>
+                        </a>
+                    </td>
+                    {% if g.user['role'] in ('editor', 'admin') %}
+                    <td class="cell-action">
+                        <a class="edit-link" title="Редактировать"
+                           href="{{ url_for('ipaddr4.edit', id=row['IDPC']) }}"><img src="/img/buttonedit.png" alt="Редактировать" border="0"></a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего записей: {{ total }}</p>
+</div>
+{% endblock %}

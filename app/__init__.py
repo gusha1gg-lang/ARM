@@ -7,10 +7,10 @@
 import os
 import sqlite3
 
-from flask import Flask, g, jsonify, redirect, render_template, url_for
+from flask import Flask, g, jsonify, redirect, render_template, request, send_from_directory, url_for
 
-from . import auth, db, security, users
-from .config import Config
+from . import auth, db, ipaddr4, security, users
+from .config import BASE_DIR, Config
 
 
 def create_app(config_object=Config) -> Flask:
@@ -25,12 +25,23 @@ def create_app(config_object=Config) -> Flask:
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(users.bp)
+    app.register_blueprint(ipaddr4.bp)
 
     @app.route("/")
     def index():
+        # Как в оригинале: после входа открывается main.aspx.
         if g.user is None:
             return redirect(url_for("auth.login"))
-        return render_template("index.html")
+        return redirect(url_for("ipaddr4.main"))
+
+    # Legacy-ресурсы оригинального сайта (не дублируем файлы, отдаём как есть).
+    @app.route("/img/<path:filename>")
+    def legacy_img(filename):
+        return send_from_directory(BASE_DIR / "img", filename)
+
+    @app.route("/css/<path:filename>")
+    def legacy_css(filename):
+        return send_from_directory(BASE_DIR / "css", filename)
 
     @app.route("/health")
     def health():
@@ -59,7 +70,14 @@ def create_app(config_object=Config) -> Flask:
 
     @app.errorhandler(404)
     def not_found(exc):
-        return render_template("error.html", code=404,
-                               message="Страница не найдена."), 404
+        path = request.path.rstrip("/") or "/"
+        if path.lower().endswith((".aspx", ".htm", ".html")):
+            message = (
+                "Этот раздел ещё не перенесён на новую версию "
+                "(Этап 4 выполняется постранично)."
+            )
+        else:
+            message = "Страница не найдена."
+        return render_template("error.html", code=404, message=message), 404
 
     return app

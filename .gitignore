@@ -15,3 +15,6 @@ venv/
 _backup/
 instance/*.db
 instance/*.db-journal
+
+# Конфигурация окружения opencode (не часть проекта)
+opencode.json

@@ -35,6 +35,251 @@ body {
 
 a { color: var(--blue-dark); }
 
+/* ---------- Шапка (наследие MainMasterPage) ---------- */
+
+.site-header { background: #f0f3f8; }
+
+.banner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.banner img {
+    display: block;
+    width: 1000px;
+    max-width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border: 0;
+}
+
+.topmenu {
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 12px;
+}
+
+.topmenu__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0;
+}
+
+.topmenu__item {
+    position: relative;
+}
+
+.topmenu__item > a {
+    display: block;
+    padding: 10px 12px;
+    font: bold 12px Arial, sans-serif;
+    color: #cccccc;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.topmenu__item:hover > a {
+    background: #00c4ff;
+    color: #ffffff;
+}
+
+.topmenu__sub {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 999;
+    min-width: 260px;
+    margin: 0;
+    padding: 0 9px 9px;
+    list-style: none;
+    background: #333;
+    border: 1px solid #5a5e60;
+    border-radius: 4px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .35);
+}
+
+.topmenu__item:hover .topmenu__sub { display: block; }
+
+.topmenu__sub a {
+    display: block;
+    padding: 8px 2px 0;
+    font: 13px Arial, sans-serif;
+    color: #cccccc;
+    text-decoration: none;
+    border-top: 1px solid #262626;
+    white-space: normal;
+}
+
+.topmenu__sub li:first-child a { border-top: 0; margin-top: 6px; }
+
+.topmenu__sub a:hover { color: #1f80ae; }
+
+.topmenu__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #e2e8f0;
+    padding: 6px 0;
+}
+
+.topmenu__user-link { color: #dbe7ff; text-decoration: none; }
+.topmenu__user-link:hover { color: #fff; text-decoration: underline; }
+
+/* ---------- Страница ---------- */
+
+.page { padding: 4px 0 12px; }
+
+.page__title {
+    font-family: Verdana, sans-serif;
+    font-size: 17px;
+    margin: 8px 0 14px;
+    color: var(--blue-dark);
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    font-family: Verdana, sans-serif;
+    font-size: 13px;
+}
+
+.toolbar__group { display: flex; align-items: center; gap: 8px; margin: 0; }
+.toolbar__label { color: var(--text); }
+
+.field__input--inline { width: auto; min-width: 180px; padding: 5px 8px; }
+
+/* ---------- Таблица-грид (как ASP:Table) ---------- */
+
+.grid {
+    border-collapse: collapse;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+}
+
+.grid th,
+.grid td {
+    border: 1px solid #000;
+    padding: 2px 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.grid thead th {
+    background: #1a4780;
+    color: #fff;
+    font-weight: 700;
+}
+
+.group-prolet td {
+    background: #20b2aa;
+    color: #e0ffff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.group-uchastok td {
+    background: #c1cdc1;
+    text-align: center;
+}
+
+.grid tbody tr.row-odd td { background: #e6e6fa; }
+.grid tbody tr.row-even td { background: #e0ffff; }
+
+.cell-action { width: 32px; }
+
+.edit-link {
+    text-decoration: none;
+    font-size: 15px;
+    color: var(--blue-dark);
+}
+
+.edit-link:hover { color: var(--danger); }
+
+/* Подсказка в ячейке CISCO — логика оригинала (tooltip). */
+.tooltip { position: relative; text-decoration: none; color: #000; }
+
+.tooltip span {
+    position: absolute;
+    right: 0;
+    top: -30px;
+    display: none;
+    min-width: 50px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    font-size: 14px;
+    text-align: right;
+    background-color: #000;
+    border-radius: 5px;
+    color: #fff;
+    z-index: 10;
+}
+
+.tooltip span small {
+    position: absolute;
+    right: 10px;
+    bottom: -6px;
+    border-top: 6px solid #000;
+    border-left: 6px solid transparent;
+}
+
+.tooltip:hover span { display: block; }
+
+.grid--report { margin-bottom: 18px; }
+.report-block { overflow-x: auto; }
+
+/* ---------- Форма (как таблица Addipt4.aspx) ---------- */
+
+.form-card { margin: 0 0 12px; }
+
+.form-table {
+    border-collapse: collapse;
+    font-family: Verdana, sans-serif;
+    font-size: 13px;
+}
+
+.form-table td { padding: 3px 6px 3px 0; vertical-align: top; }
+
+.form-table__label {
+    padding-right: 14px;
+    white-space: nowrap;
+    color: #334155;
+}
+
+.form-table__actions { padding-top: 10px; }
+
+.form-table .field__input { min-width: 280px; }
+
+.field-warning {
+    display: block;
+    margin-top: 3px;
+    color: var(--danger);
+    font-size: 12px;
+}
+
+.btn--warn {
+    color: #92400e;
+    border-color: #fcd34d;
+    background: #fffbeb;
+}
+
+.btn--warn:hover { background: #fef3c7; border-color: #f59e0b; }
+
+.link-back { color: var(--blue-dark); font-size: 13px; text-decoration: none; }
+.link-back:hover { text-decoration: underline; }
+
 /* ---------- Шапка ---------- */
 
 .topbar {
