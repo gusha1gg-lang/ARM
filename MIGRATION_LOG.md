@@ -567,3 +567,53 @@ CSRF, добавление/изменение/удаление, `404` на не�
 
 Артефакты: `app/jarlik.py`, `app/templates/jarlik.html`, `app/templates/jarlik_form.html`,
 `app/static/css/style.css`, `app/__init__.py`, `tools/test_pages_jr.py`, `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — Перенос страниц, партия 9: справочники CISCO / камер / цехов (2026-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Таблицы |
+|---|---|---|---|
+| `/SPR_CISCO.aspx?SPRType=1` | `/SPR_CISCO.aspx?SPRType=1` | `SPR_CISCO.aspx(.cs)` | `SPR_CISCO` (93) |
+| `/SPR_CISCO.aspx?SPRType=2` | `/SPR_CISCO.aspx?SPRType=2` | `SPR_CISCO.aspx(.cs)` | `SPR_CAMERA` (21) |
+| `/spr_shop.aspx` | `/spr_shop.aspx` | `spr_shop.aspx(.cs)` | `NameShop` (12) |
+
+Модуль: `app/spr.py`. Шаблоны: `app/templates/spr_cisco.html`, `spr_shop.html`.
+Стили: `app/static/css/style.css` (`.grid--spr`).
+
+### Сохранено 1-в-1
+- Разделение по `SPRType`: `1` — «Справочник CISCO», любое иное значение (и отсутствие параметра) —
+  «Справочник камер».
+- Выборки `SELECT * FROM [SPR_CISCO] ORDER BY [IP_CISCO]`, `SELECT * FROM [SPR_CAMERA] ORDER BY [Camera_Type]`,
+  `SELECT * FROM [NameShop] ORDER BY [ShopName] DESC`.
+- Наборы колонок, строка добавления в футере таблицы, inline-правка иконками
+  (`buttonedit.png`, `cross.png`, `save.png`, `arrow_undo.png`, `cross_edit_add32.png`, `del.png`).
+- Запросы `INSERT/UPDATE/DELETE` из `ADS_CISCO`, `ADS_Camera`, `AccessDataSource1` — дословно.
+- Валидаторы оригинала: диапазон −1000…1000 и `Int32.TryParse` для пролёта/оси (пусто+пусто допустимо),
+  обязательная марка камеры; тексты сообщений сохранены.
+- Палитра GridView: `LightGoldenrodYellow` / `PaleGoldenrod` / `Tan` / `DarkSlateBlue`.
+- Сортировка списка цехов по клику на «ID цеха» / «Цех» (`AllowSorting`).
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | Правка/добавление/удаление — `editor` и `admin` | Требование ролей Этапа 3. В `spr_shop.aspx.cs` проверка админа была закомментирована — править мог любой, включая viewer |
+| 2 | Параметризованный SQL, CSRF | Безопасность |
+| 3 | Заполнено только одно из полей «Пролет»/«Ось» → сообщение | В оригинале запись молча не добавлялась |
+| 4 | Нечисловые/внедиапазонные значения → сообщение на странице | Тексты `ValidationSummary` сохранены |
+| 5 | Проверка типа камеры (IP/Analog) на сервере | Значение приходит из списка, но проверяется |
+| 6 | POST → redirect (PRG) | Единый стиль страниц |
+| 7 | `DetailsView` показывает только форму добавления | В оригинале он дополнительно дублировал первую запись в режиме чтения |
+
+### Самопроверка
+`tools/test_pages_spr.py` — **48/48**: редирект анонима, права ролей (`403` на POST для viewer),
+заголовки и число строк всех трёх справочников, порядок по умолчанию, сортировка цехов,
+CSRF, валидация пролёта/оси (нечисло, одно поле, вне диапазона), добавление с числами и с NULL,
+правка и удаление в каждом справочнике, `400`/несуществующий `edit`.
+Регрессия: 38/38, 36/36, 46/46, 49/49, 51/51, 32/32, 14/14, 33/33, 23/23.
+`tools/verify_db.py`: Access=3880, SQLite=3880; `SPR_CISCO` — **93**, `SPR_CAMERA` — **21**,
+`NameShop` — **12** (как после миграции).
+
+Артефакты: `app/spr.py`, `app/templates/spr_cisco.html`, `app/templates/spr_shop.html`,
+`app/static/css/style.css`, `app/__init__.py`, `tools/test_pages_spr.py`, `docs/04_PAGES.md`.

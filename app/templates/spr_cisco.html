@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">{{ title }}</h4>
+
+    {% if can_edit %}
+    <form id="insert-form" method="post"
+          action="{{ url_for('spr.spr_cisco', SPRType=spr_type) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="insert">
+    </form>
+    {% for row in rows %}
+    <form id="del-{{ row['ID_CISCO'] if mode == 'cisco' else row['IDCAM_NAME'] }}" method="post"
+          action="{{ url_for('spr.spr_cisco', SPRType=spr_type) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="id" value="{{ row['ID_CISCO'] if mode == 'cisco' else row['IDCAM_NAME'] }}">
+    </form>
+    {% endfor %}
+    {% endif %}
+
+    {% if can_edit and edit_row %}
+    <form id="edit-form" method="post" action="{{ url_for('spr.spr_cisco', SPRType=spr_type) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id"
+               value="{{ edit_row['ID_CISCO'] if mode == 'cisco' else edit_row['IDCAM_NAME'] }}">
+    </form>
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="grid grid--spr">
+            <thead>
+            <tr>
+                <th></th>
+                {% if mode == 'cisco' %}
+                <th>IP_CISCO</th>
+                <th>Пролет</th>
+                <th>Ось</th>
+                <th>Расположение</th>
+                <th>Примечание</th>
+                {% else %}
+                <th>Тип камеры</th>
+                <th>Марка камеры</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                {% set row_id = row['ID_CISCO'] if mode == 'cisco' else row['IDCAM_NAME'] %}
+                {% if can_edit and edit_row and mode == 'cisco' and row_id == edit_id %}
+                <tr class="row-edit">
+                    <td class="cell-action nowrap">
+                        <button class="link-button" type="submit" form="edit-form" title="Обновить">
+                            <img border="0" src="/img/save.png" alt="Обновить">
+                        </button>
+                        <a class="link-button" title="Отмена"
+                           href="{{ url_for('spr.spr_cisco', SPRType=spr_type) }}">
+                            <img border="0" src="/img/arrow_undo.png" alt="Отмена">
+                        </a>
+                    </td>
+                    <td><input class="field__input field__input--cell" type="text" name="IP_CISCO" form="edit-form" value="{{ edit_row['IP_CISCO'] or '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="Prolet_CISCO" form="edit-form" value="{{ edit_row['Prolet_CISCO'] if edit_row['Prolet_CISCO'] is not none else '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="Oc_CISCO" form="edit-form" value="{{ edit_row['Oc_CISCO'] if edit_row['Oc_CISCO'] is not none else '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="Location_CISCO" form="edit-form" value="{{ edit_row['Location_CISCO'] or '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="Opisanie_CISCO" form="edit-form" value="{{ edit_row['Opisanie_CISCO'] or '' }}"></td>
+                </tr>
+                {% elif can_edit and edit_row and mode == 'camera' and row_id == edit_id %}
+                <tr class="row-edit">
+                    <td class="cell-action nowrap">
+                        <button class="link-button" type="submit" form="edit-form" title="Обновить">
+                            <img border="0" src="/img/save.png" alt="Обновить">
+                        </button>
+                        <a class="link-button" title="Отмена"
+                           href="{{ url_for('spr.spr_cisco', SPRType=spr_type) }}">
+                            <img border="0" src="/img/arrow_undo.png" alt="Отмена">
+                        </a>
+                    </td>
+                    <td>
+                        <select class="select select--cell" name="Camera_Type" form="edit-form">
+                            {% for camera_type in camera_types %}
+                            <option value="{{ camera_type }}" {{ 'selected' if camera_type == edit_row['Camera_Type'] else '' }}>{{ camera_type }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="field__input field__input--cell" type="text" name="Camera_Name" form="edit-form" value="{{ edit_row['Camera_Name'] or '' }}"></td>
+                </tr>
+                {% else %}
+                <tr class="{{ 'row-odd' if loop.index0 % 2 == 0 else 'row-even' }}">
+                    {% if can_edit %}
+                    <td class="cell-action nowrap">
+                        <a title="Редактировать"
+                           href="{{ url_for('spr.spr_cisco', SPRType=spr_type, edit=row_id) }}">
+                            <img border="0" src="/img/buttonedit.png" alt="Редактировать">
+                        </a>
+                        <button class="link-button" type="submit" form="del-{{ row_id }}" title="Удалить"
+                                onclick="return confirm('Уверен, что хочешь удалить?');">
+                            <img border="0" src="/img/cross.png" alt="Удалить">
+                        </button>
+                    </td>
+                    {% endif %}
+                    {% if mode == 'cisco' %}
+                    <td>{{ row['IP_CISCO'] or '' }}</td>
+                    <td>{{ row['Prolet_CISCO'] if row['Prolet_CISCO'] is not none else '' }}</td>
+                    <td>{{ row['Oc_CISCO'] if row['Oc_CISCO'] is not none else '' }}</td>
+                    <td>{{ row['Location_CISCO'] or '' }}</td>
+                    <td>{{ row['Opisanie_CISCO'] or '' }}</td>
+                    {% else %}
+                    <td>{{ row['Camera_Type'] or '' }}</td>
+                    <td>{{ row['Camera_Name'] or '' }}</td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ 6 if mode == 'cisco' else 3 }}" class="muted">Список пуст.</td>
+                </tr>
+            {% endfor %}
+
+            {% if can_edit %}
+            <tr class="row-insert">
+                <td class="cell-action">
+                    <button class="link-button" type="submit" form="insert-form" title="Добавить">
+                        <img border="0" src="/img/cross_edit_add32.png" alt="Добавить">
+                    </button>
+                </td>
+                {% if mode == 'cisco' %}
+                <td><input class="field__input field__input--cell" type="text" name="IP_CISCO" form="insert-form" value=""></td>
+                <td><input class="field__input field__input--cell" type="text" name="Prolet_CISCO" form="insert-form" value="" title="Введите число"></td>
+                <td><input class="field__input field__input--cell" type="text" name="Oc_CISCO" form="insert-form" value="" title="Введите число"></td>
+                <td><input class="field__input field__input--cell" type="text" name="Location_CISCO" form="insert-form" value=""></td>
+                <td><input class="field__input field__input--cell" type="text" name="Opisanie_CISCO" form="insert-form" value=""></td>
+                {% else %}
+                <td>
+                    <select class="select select--cell" name="Camera_Type" form="insert-form">
+                        {% for camera_type in camera_types %}
+                        <option value="{{ camera_type }}">{{ camera_type }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input class="field__input field__input--cell" type="text" name="Camera_Name" form="insert-form" value="" title="Введи марку камеры"></td>
+                {% endif %}
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего записей: {{ total }}</p>
+</div>
+{% endblock %}

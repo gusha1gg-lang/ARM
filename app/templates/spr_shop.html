@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Справочник цехов — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">Справочник цехов</h4>
+
+    {% if can_edit %}
+    <form class="form-card" method="post"
+          action="{{ url_for('spr.spr_shop', sort=sort, dir=direction) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="insert">
+        <table class="form-table">
+            <tr>
+                <td class="form-table__label">Цех</td>
+                <td><input class="field__input" type="text" name="ShopName" value=""></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="form-table__actions">
+                    <button class="btn btn--small" type="submit">Добавить</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    {% endif %}
+
+    {% if can_edit and edit_row %}
+    <form id="edit-form" method="post"
+          action="{{ url_for('spr.spr_shop', sort=sort, dir=direction) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id" value="{{ edit_row['ShopID'] }}">
+    </form>
+    {% endif %}
+
+    {% if can_edit %}
+    {% for row in rows %}
+    <form id="del-{{ row['ShopID'] }}" method="post"
+          action="{{ url_for('spr.spr_shop', sort=sort, dir=direction) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="id" value="{{ row['ShopID'] }}">
+    </form>
+    {% endfor %}
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="grid grid--spr">
+            <thead>
+            <tr>
+                {% set id_dir = 'desc' if sort == 'ShopID' and direction == 'asc' else 'asc' %}
+                {% set name_dir = 'desc' if sort == 'ShopName' and direction == 'asc' else 'asc' %}
+                <th><a href="{{ url_for('spr.spr_shop', sort='ShopID', dir=id_dir) }}">ID цеха</a></th>
+                <th><a href="{{ url_for('spr.spr_shop', sort='ShopName', dir=name_dir) }}">Цех</a></th>
+                {% if can_edit %}<th></th>{% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                {% if can_edit and edit_row and edit_row['ShopID'] == row['ShopID'] %}
+                <tr class="row-edit">
+                    <td>{{ row['ShopID'] }}</td>
+                    <td><input class="field__input field__input--cell" type="text" name="ShopName" form="edit-form" value="{{ row['ShopName'] or '' }}"></td>
+                    <td class="cell-action nowrap">
+                        <button class="link-button" type="submit" form="edit-form" title="Обновить">
+                            <img border="0" src="/img/save.png" alt="Обновить">
+                        </button>
+                        <a class="link-button" title="Отмена"
+                           href="{{ url_for('spr.spr_shop', sort=sort, dir=direction) }}">
+                            <img border="0" src="/img/arrow_undo.png" alt="Отмена">
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="{{ 'row-odd' if loop.index0 % 2 == 0 else 'row-even' }}">
+                    <td>{{ row['ShopID'] }}</td>
+                    <td>{{ row['ShopName'] or '' }}</td>
+                    {% if can_edit %}
+                    <td class="cell-action nowrap">
+                        <a title="Редактировать"
+                           href="{{ url_for('spr.spr_shop', sort=sort, dir=direction, edit=row['ShopID']) }}">
+                            <img border="0" src="/img/buttonedit.png" alt="Редактировать">
+                        </a>
+                        <button class="link-button" type="submit" form="del-{{ row['ShopID'] }}" title="Удалить"
+                                onclick="return confirm('Уверен, что хочешь удалить?');">
+                            <img border="0" src="/img/del.png" alt="Удалить">
+                        </button>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ 3 if can_edit else 2 }}" class="muted">Список цехов пуст.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего цехов: {{ total }}</p>
+</div>
+{% endblock %}

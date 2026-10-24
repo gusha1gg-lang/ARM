@@ -614,6 +614,27 @@ a { color: var(--blue-dark); }
 .grid--phone tbody tr.row-even td { background: #ffffff; }
 .grid--phone tbody tr.row-edit td { background: #008a8c; color: #ffffff; }
 
+/* ---------- Справочники CISCO/камер и цехов ---------- */
+
+/* GridView: BackColor LightGoldenrodYellow, BorderColor Tan, шапка/футер Tan
+   полужирные, чередование PaleGoldenrod, выделение DarkSlateBlue. */
+.grid--spr {
+    background: #fafad2;
+    border: 1px solid #d2b48c;
+    font-family: "Segoe UI", Verdana, Tahoma, sans-serif;
+    font-size: 13px;
+}
+.grid--spr th,
+.grid--spr td { border: 0; text-align: left; }
+.grid--spr thead th { background: #d2b48c; color: #000; font-weight: 700; }
+.grid--spr thead th a { color: #000; text-decoration: none; }
+.grid--spr thead th a:hover { text-decoration: underline; }
+.grid--spr tbody tr.row-odd td { background: #fafad2; }
+.grid--spr tbody tr.row-even td { background: #eee8aa; }
+.grid--spr tbody tr.row-edit td { background: #483d8b; color: #f8f8ff; }
+.grid--spr tbody tr.row-insert td { background: #d2b48c; }
+.grid--spr td.cell-action { text-align: center; white-space: nowrap; }
+
 /* ---------- Ярлыки (JR.aspx) ---------- */
 
 /* Оригинал: asp:Table CellPadding=2 CellSpacing=0, шапка #507CD1 с чёрной

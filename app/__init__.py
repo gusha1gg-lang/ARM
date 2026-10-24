@@ -19,6 +19,7 @@ from . import (
     ipaddr_uch,
     jarlik,
     security,
+    spr,
     telefon,
     users,
     video,
@@ -46,6 +47,7 @@ def create_app(config_object=Config) -> Flask:
     app.register_blueprint(telefon.bp)
     app.register_blueprint(cisco.bp)
     app.register_blueprint(jarlik.bp)
+    app.register_blueprint(spr.bp)
 
     @app.route("/")
     def index():
