@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Пользователи — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card__head">Пользователи и роли</div>
+    <div class="card__body">
+        <p class="muted">
+            <strong>viewer</strong> — только просмотр ·
+            <strong>editor</strong> — просмотр и редактирование данных ·
+            <strong>admin</strong> — полный доступ, управление пользователями
+        </p>
+
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Роль</th>
+                    <th>Статус</th>
+                    <th>Создан</th>
+                    <th>Последний вход</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for u in users %}
+                <tr class="{{ '' if u['is_active'] else 'row-inactive' }}">
+                    <td>
+                        {{ u['username'] }}
+                        {% if u['user_id'] == g.user['user_id'] %}<span class="muted">(вы)</span>{% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('users.change_role', user_id=u['user_id']) }}" class="inline-form">
+                            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+                            <select name="role" class="select" onchange="this.form.submit()">
+                                {% for r in valid_roles %}
+                                <option value="{{ r }}" {{ 'selected' if u['role'] == r else '' }}>{{ r }}</option>
+                                {% endfor %}
+                            </select>
+                            <noscript><button class="btn btn--small" type="submit">ОК</button></noscript>
+                        </form>
+                    </td>
+                    <td>
+                        {% if u['is_active'] %}
+                        <span class="status status--ok">активен</span>
+                        {% else %}
+                        <span class="status status--off">заблокирован</span>
+                        {% endif %}
+                    </td>
+                    <td class="nowrap">{{ u['created_at'] or '—' }}</td>
+                    <td class="nowrap">{{ u['last_login'] or '—' }}</td>
+                    <td>
+                        <div class="actions">
+                            <details class="details">
+                                <summary class="btn btn--small">Сменить пароль</summary>
+                                <form method="post" action="{{ url_for('users.reset_password', user_id=u['user_id']) }}" class="details__form">
+                                    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+                                    <input class="field__input" type="password" name="password"
+                                           minlength="6" placeholder="Новый пароль" required>
+                                    <button class="btn btn--small btn--primary" type="submit">Сохранить</button>
+                                </form>
+                            </details>
+
+                            <form method="post" action="{{ url_for('users.toggle_active', user_id=u['user_id']) }}" class="inline-form">
+                                <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+                                <button class="btn btn--small {{ 'btn--danger' if u['is_active'] else '' }}" type="submit">
+                                    {{ 'Заблокировать' if u['is_active'] else 'Разблокировать' }}
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card__head">Добавить пользователя</div>
+    <div class="card__body">
+        <form method="post" action="{{ url_for('users.create') }}" class="form-row">
+            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+            <label class="field field--inline">
+                <span class="field__label">Логин</span>
+                <input class="field__input" type="text" name="username" autocomplete="off" required>
+            </label>
+            <label class="field field--inline">
+                <span class="field__label">Пароль</span>
+                <input class="field__input" type="password" name="password" minlength="6" autocomplete="new-password" required>
+            </label>
+            <label class="field field--inline">
+                <span class="field__label">Роль</span>
+                <select name="role" class="select">
+                    {% for r in valid_roles %}
+                    <option value="{{ r }}" {{ 'selected' if r == 'viewer' else '' }}>{{ r }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button class="btn btn--primary" type="submit">Создать</button>
+        </form>
+        <p class="muted">Минимальная длина пароля — 6 символов. Пароли хранятся в виде хеша PBKDF2-SHA256.</p>
+    </div>
+</div>
+{% endblock %}

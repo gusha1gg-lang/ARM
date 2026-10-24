@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Авторизация — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="login-wrap">
+    <form class="card login-card" method="post" action="{{ url_for('auth.login') }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <div class="card__head">Авторизация</div>
+
+        <div class="card__body">
+            <label class="field">
+                <span class="field__label">Пользователь:</span>
+                <input class="field__input" type="text" name="Login" autocomplete="username" autofocus required>
+            </label>
+
+            <label class="field">
+                <span class="field__label">Пароль:</span>
+                <input class="field__input" type="password" name="Pass" autocomplete="current-password" required>
+            </label>
+
+            {% if error %}
+            <p class="error-text">{{ error }}</p>
+            {% endif %}
+
+            <button class="btn btn--primary btn--wide" type="submit">ВХОД</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
