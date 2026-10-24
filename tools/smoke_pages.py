@@ -14,21 +14,21 @@ import urllib.request
 BASE = "http://127.0.0.1:5000"
 CSRF_RE = re.compile(r'name="_csrf" value="([^"]+)"')
 
+# Реализованные страницы (партии 1–7 Этапа 4 + Этап 3).
 PAGES = [
     "/main.aspx",
-    "/IpaddrTBD.aspx",
     "/Addipt4.aspx",
-    "/EditTBD.aspx",
-    "/Otchet.aspx",
+    "/Edit.aspx?id=1",
+    "/ReportExist.aspx?KE=1234",
     "/IpaddrT5.aspx",
     "/Addipt5.aspx",
-    "/Editipt5.aspx",
+    "/Editipt5.aspx?id=1",
     "/IPaddrUch.aspx",
     "/Addipuch.aspx",
-    "/EditUch.aspx",
+    "/EditUch.aspx?id=14",
     "/IPaddrALL.aspx",
     "/AddipALL.aspx",
-    "/EditALL.aspx",
+    "/EditALL.aspx?id=1",
     "/VideoIP.aspx?VideoType=IP",
     "/VideoIP.aspx?VideoType=Analog",
     "/VideoAnalog.aspx",
@@ -37,6 +37,21 @@ PAGES = [
     "/CISCO.aspx",
     "/CISCO2.aspx",
     "/admin/users/",
+]
+
+# Ещё не перенесённые разделы (пункты 4.4, 4.6, 4.9 плана) — ожидается 404.
+PENDING = [
+    "/JR.aspx",
+    "/AddJR.aspx",
+    "/EditJR.aspx?id=1",
+    "/SPR_CISCO.aspx?SPRType=1",
+    "/SPR_CISCO.aspx?SPRType=2",
+    "/spr_shop.aspx",
+    "/Webnav.aspx",
+    "/Nastroyki.aspx",
+    "/NastoikaT5.aspx",
+    "/NastoikaEBS.aspx",
+    "/Calendar.aspx",
 ]
 
 
@@ -81,7 +96,13 @@ def main() -> int:
         print(f"{'OK  ' if ok else 'FAIL'} {status} {path} ({len(html)} символов)")
 
     print()
-    print(f"ИТОГО: {len(PAGES) - failed}/{len(PAGES)} страниц открываются")
+    print("Ожидаемо не перенесено (404):")
+    for path in PENDING:
+        status, _ = fetch(op, path)
+        print(f"     {status} {path}")
+
+    print()
+    print(f"ИТОГО: {len(PAGES) - failed}/{len(PAGES)} реализованных страниц открываются")
     return 0 if not failed else 1
 
 
