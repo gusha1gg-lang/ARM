@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Список телефонов — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">Список телефонов</h4>
+
+    {% if can_edit %}
+    <form class="form-card" method="post" action="{{ url_for('telefon.main', sort=sort, dir=direction) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="add">
+        <table class="form-table">
+            <tr>
+                <td class="form-table__label">ФИО</td>
+                <td><input class="field__input" type="text" name="fio" value=""></td>
+            </tr>
+            <tr>
+                <td class="form-table__label">Телефон</td>
+                <td><input class="field__input" type="text" name="telnumber" value=""></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="form-table__actions">
+                    <button class="btn btn--small" type="submit">Добавить</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    {% endif %}
+
+    {% if can_edit and edit_row %}
+    <form id="edit-form" method="post" action="{{ url_for('telefon.main', sort=sort, dir=direction) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id" value="{{ edit_row['id'] }}">
+    </form>
+    {% endif %}
+
+    {% if can_edit %}
+    {% for row in rows %}
+    <form id="del-{{ row['id'] }}" method="post" action="{{ url_for('telefon.main', sort=sort, dir=direction) }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="id" value="{{ row['id'] }}">
+    </form>
+    {% endfor %}
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="grid grid--phone">
+            <thead>
+            <tr>
+                {% set fio_dir = 'desc' if sort == 'fio' and direction == 'asc' else 'asc' %}
+                {% set tel_dir = 'desc' if sort == 'telnumber' and direction == 'asc' else 'asc' %}
+                <th><a href="{{ url_for('telefon.main', sort='fio', dir=fio_dir) }}">ФИО</a></th>
+                <th><a href="{{ url_for('telefon.main', sort='telnumber', dir=tel_dir) }}">Телефон</a></th>
+                {% if can_edit %}<th></th>{% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                {% if can_edit and edit_row and edit_row['id'] == row['id'] %}
+                <tr class="row-edit">
+                    <td><input class="field__input field__input--cell" type="text" name="fio" form="edit-form" value="{{ row['fio'] or '' }}"></td>
+                    <td><input class="field__input field__input--cell" type="text" name="telnumber" form="edit-form" value="{{ row['telnumber'] or '' }}"></td>
+                    <td class="cell-action nowrap">
+                        <button class="btn btn--small" type="submit" form="edit-form">Сохранить</button>
+                        <a class="btn btn--small" href="{{ url_for('telefon.main', sort=sort, dir=direction) }}">Отмена</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="{{ 'row-odd' if loop.index0 % 2 == 0 else 'row-even' }}">
+                    <td>{{ row['fio'] or '' }}</td>
+                    <td>{{ row['telnumber'] or '' }}</td>
+                    {% if can_edit %}
+                    <td class="cell-action nowrap">
+                        <a class="btn btn--small" title="Изменить"
+                           href="{{ url_for('telefon.main', sort=sort, dir=direction, edit=row['id']) }}">Изменить</a>
+                        <button class="btn btn--small btn--danger" type="submit" form="del-{{ row['id'] }}"
+                                onclick="return confirm('Уверен, что хочешь удалить?');">Удалить</button>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

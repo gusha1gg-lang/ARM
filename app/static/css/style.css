@@ -600,6 +600,26 @@ a { color: var(--blue-dark); }
 
 .field-ok { color: var(--ok); font-size: 12px; }
 
+/* ---------- Телефоны (telefon.aspx) ---------- */
+
+/* GridView: строки #F7F7DE/белый, шапка #6B696B, правка #008A8C,
+   сетка #DEDFDE (GridLines=Vertical). */
+.grid--phone th,
+.grid--phone td { border: 1px solid #dedfde; }
+
+.grid--phone thead th { background: #6b696b; color: #ffffff; }
+.grid--phone thead th a { color: #ffffff; text-decoration: none; }
+.grid--phone thead th a:hover { text-decoration: underline; }
+.grid--phone tbody tr.row-odd td { background: #f7f7de; }
+.grid--phone tbody tr.row-even td { background: #ffffff; }
+.grid--phone tbody tr.row-edit td { background: #008a8c; color: #ffffff; }
+
+/* ---------- Статические страницы CISCO (Excel-экспорт) ---------- */
+
+.legacy-static { overflow-x: auto; }
+.legacy-static table { border-collapse: collapse; }
+.legacy-static p { margin: 0; }
+
 /* ---------- Адаптивность ---------- */
 
 @media (max-width: 640px) {

@@ -402,3 +402,107 @@ CSRF, валидация, добавление без перезагрузки, 
 Артефакты: `app/video.py`, `app/templates/video.html`, `app/templates/video_analog.html`,
 `app/static/css/style.css`, `app/__init__.py`, `tools/test_pages_video.py`,
 `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — Перенос страниц, партия 6: раздел «Телефоны» (2026-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Таблица |
+|---|---|---|---|
+| `/telefon.aspx` | `/telefon.aspx` | `telefon.aspx`, `telefon.aspx.cs` | `telefon` (44 строки) |
+
+Модуль: `app/telefon.py`. Шаблон: `app/templates/telefon.html`.
+Стили: `app/static/css/style.css` (`.grid--phone`).
+
+### Сохранено 1-в-1
+- Заголовок «Список телефонов», таблица с колонками ФИО / Телефон, порядок строк без `ORDER BY`
+  (`SELECT * FROM [telefon]`).
+- Команды из `AccessDataSource1` без изменений: `INSERT INTO [telefon] ([fio],[telnumber]) VALUES (?, ?)`,
+  `UPDATE [telefon] SET [fio]=?, [telnumber]=? WHERE [id]=?`, `DELETE FROM [telefon] WHERE [id]=?`.
+- Разделение на два «панели» оригинала: просмотр всем вошедшим, правка — с правами редактора.
+- Сортировка по клику на заголовок (`AllowSorting`) — по ФИО и по телефону, по возрастанию/убыванию.
+- Цвета GridView: `#F7F7DE`/белый, шапка `#6B696B`, правка `#008A8C`, вертикальная сетка `#DEDFDE`.
+- Значения с неразрывными пробелами (`Воеводин С.О.`, `Грунин А.Е.`) выводятся как в БД, без обрезки.
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | Добавление/изменение/удаление — `editor` и `admin` | Требование ролей Этапа 3 (в оригинале только admin) |
+| 2 | Параметризованный SQL, CSRF | Безопасность |
+| 3 | `confirm()` перед удалением | Защита от случайного удаления |
+| 4 | POST → redirect (PRG), сортировка сохраняется в адресе | Единый стиль страниц |
+| 5 | Некорректный `id` → `400` | Явная обработка вместо исключения |
+
+### Самопроверка
+`tools/test_pages_telefon.py` — **32/32**: права ролей (`403` на POST для viewer, форма правки скрыта),
+список из 44 строк, порядок по умолчанию, сортировка ФИО/Телефон (asc/desc), некорректная сортировка,
+CSRF, добавление, изменение, удаление, некорректный `id`, несуществующий `edit`.
+Регрессия: 38/38, 36/36, 46/46, 49/49, 51/51, 23/23.
+`tools/verify_db.py`: Access=3880, SQLite=3880; `telefon` — **44** строки (как после миграции).
+
+Артефакты: `app/telefon.py`, `app/templates/telefon.html`, `app/static/css/style.css`,
+`app/__init__.py`, `tools/test_pages_telefon.py`, `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — Перенос страниц, партия 7: раздел «CISCO» (2026-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Данные |
+|---|---|---|---|
+| `/CISCO.aspx` | `/CISCO.aspx` | `CISCO.aspx`, `CISCO.aspx.cs` | статическая таблица Excel-экспорта |
+| `/CISCO2.aspx` | `/CISCO2.aspx` | `CISCO2.aspx`, `CISCO2.aspx.cs` | статическая таблица Excel-экспорта |
+
+Модуль: `app/cisco.py`. Шаблоны: `app/templates/cisco.html`, `app/templates/cisco2.html`.
+Макет: в `app/templates/base.html` добавлен блок `{% block head %}` (для собственных `<style>` страниц).
+Стили: `app/static/css/style.css` (`.legacy-static`).
+
+### Сохранено 1-в-1
+- Разметка обеих страниц (`<style>` и `<table class="MsoNormalTable">` с `mso-*`-атрибутами)
+  перенесена из блоков `Content` без изменения содержимого.
+- `/CISCO.aspx` — «Таблица запитки коммутационных шкафов ТЭСЦ-4».
+- `/CISCO2.aspx` — «Список критичных узлов ВМЗ».
+- Серверной логики в оригинале не было (`Page_Load` пуст, обращений к БД нет) — CRUD не добавлялся.
+- Доступ — только после входа, всем ролям (как в оригинале за авторизацией сайта).
+
+Проверка идентичности: `tools/check_cisco_static.py` — блоки `head`/`content` совпадают с legacy
+(`CISCO.aspx` 128 384 символа, `CISCO2.aspx` 97 407 символов).
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | Страницы вставлены в общий макет `base.html` (шапка, меню, подвал) | Сохранение структуры Master Page |
+| 2 | Обёртка `<div class="legacy-static">` с горизонтальной прокруткой | Широкие Excel-таблицы не ломают вёрстку на узких экранах |
+| 3 | `@login_required` на маршрутах | Явная проверка вместо `web.config`-авторизации |
+
+### Самопроверка
+`tools/test_pages_cisco.py` — **14/14**: редирект анонима на `/Login.aspx`, обе страницы под `viewer`
+и `admin`, заголовки, колонки, наличие данных, меню раздела.
+Регрессия всех предыдущих партий: `test_pages.py` 38/38, `test_pages5.py` 36/36,
+`test_pages_uch.py` 46/46, `test_pages_all.py` 49/49, `test_pages_video.py` 51/51,
+`test_pages_telefon.py` 32/32, `test_auth.py` 23/23.
+`tools/verify_db.py`: Access=3880, SQLite=3880, внешние ключи и кириллица — OK.
+
+Артефакты: `app/cisco.py`, `app/templates/cisco.html`, `app/templates/cisco2.html`,
+`app/templates/base.html`, `app/static/css/style.css`, `app/__init__.py`,
+`tools/test_pages_cisco.py`, `tools/check_cisco_static.py`, `docs/04_PAGES.md`.
+
+---
+
+## Этап 4 — итог (партии 1–7)
+
+| Партия | Раздел | Модуль | Тест |
+|---|---|---|---|
+| 1 | ТЭСК ТБД | `app/ipaddr4.py` | 38/38 |
+| 2 | ТЭСЦ 5 | `app/ipaddr5.py` | 36/36 |
+| 3 | АБК | `app/ipaddr_uch.py` | 46/46 |
+| 4 | Все цеха | `app/ipaddr_all.py` | 49/49 |
+| 5 | Видеонаблюдение | `app/video.py` | 51/51 |
+| 6 | Телефоны | `app/telefon.py` | 32/32 |
+| 7 | CISCO | `app/cisco.py` | 14/14 |
+
+Все рабочие страницы оригинального сайта перенесены (кроме отладочных `temp.aspx`, `temp1.aspx`,
+`test.html`, `NastoikaEBS_test.aspx`). Навигация, URL, названия разделов и данные сохранены;
+итоговая сверка БД — **3880 = 3880**. Этап 5 (финальная проверка под всеми ролями и итоговая
+документация) не начат — ожидается подтверждение пользователя.
