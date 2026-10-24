@@ -52,3 +52,51 @@
 Артефакты: `docs/01_PLAN.md`, `docs/access_schema.json`, `docs/schema_types.txt`, `docs/schema_keys2.txt`.
 
 **Ожидает подтверждения пользователя для перехода к Этапу 2.**
+
+---
+
+## Этап 2 — Каркас проекта и БД (2025-10-24)
+
+### Создан каркас
+- `requirements.txt` (Flask, python-dotenv, pyodbc), `.env.example`.
+- `app/config.py` — конфиг из `.env`; `app/db.py` — подключение к SQLite; `app/__init__.py` — фабрика приложения + `/health`.
+- `run.py` — точка входа.
+- Каталоги: `app/routes`, `app/templates`, `app/static`, `scripts`, `tools`, `instance`.
+- Резервная копия БД: `_backup/2025-10-24/AsutpDB.mdb` (1 740 800 байт).
+
+### Схема
+- `scripts/schema.sql` сгенерирован `tools/gen_schema.py` по фактическим метаданным Access (ADOX + pyodbc).
+- 14 легаси-таблиц + новая `users` + 6 индексов + FK `IPAddressUch.IDUchastok → NameUchastok.IDUchastok`.
+- Все неключевые поля — nullable, как в Access (свойство `Required` не задано).
+
+### Диагностированная проблема и решение
+| Проблема | Причина | Решение |
+|---|---|---|
+| `NOT NULL constraint failed: SPR_CISCO.Prolet_CISCO` при первой миграции | Неверная трактовка `ADOX Column.Attributes`: `adColNullable = 2` (бит 1), а не 1 | Генератор исправлен: `nullable = bool(attrs & 2)`; DDL перегенерирован |
+| `ON CONFLICT` не работает для `sqlite_sequence` | У системной таблицы нет уникального ограничения | Заменено на `DELETE` + `INSERT` |
+
+**Данные не пострадали:** обе ошибки возникали до/после загрузки данных, итоговая миграция выполнена с нуля.
+
+### Миграция данных
+- `scripts/migrate_access_to_sqlite.py`: pyodbc → sqlite3, параметризованные вставки, явное сохранение ID, `NULL` сохраняется, сброс `sqlite_sequence`.
+- Перенесено **3 880 строк** из 14 таблиц.
+
+### Сверка (`tools/verify_db.py` → `docs/02_DB.md`)
+| Проверка | Результат |
+|---|---|
+| Количество строк (14 таблиц) | ✅ 3880 = 3880 |
+| Контрольные суммы (SHA-256 всех строк по PK) | ✅ все совпали |
+| 5 случайных строк на таблицу (все поля) | ✅ совпали |
+| Количество NULL по каждому полю | ✅ совпало |
+| Внешние ключи (`PRAGMA foreign_key_check`) | ✅ нарушений нет |
+| Кириллица / UTF-8 | ✅ совпадает |
+| Имена и порядок полей | ✅ совпадают |
+
+### Самопроверка запуска
+`python run.py` → `GET /health` → `status: ok`, все 14 таблиц + `users` с ожидаемыми количествами.
+
+**Отклонений от оригинала нет. Блокеров нет.**
+
+Артефакты: `scripts/schema.sql`, `scripts/migrate_access_to_sqlite.py`, `tools/gen_schema.py`, `tools/verify_db.py`, `docs/02_DB.md`, `docs/null_diagnostic.txt`.
+
+**Ожидает подтверждения пользователя для перехода к Этапу 3.**

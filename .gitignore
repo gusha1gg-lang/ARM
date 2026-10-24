@@ -12,3 +12,6 @@ __pycache__/
 .env
 venv/
 .pytest_cache/
+_backup/
+instance/*.db
+instance/*.db-journal
