@@ -9,7 +9,7 @@
     <div class="flash flash--error">{{ error }}</div>
     {% endif %}
 
-    <form method="post" class="form-card" action="{{ url_for('ipaddr4.add') if mode == 'add' else url_for('ipaddr4.edit', id=row_id) }}">
+    <form method="post" class="form-card" action="{{ form_action }}">
         <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
         <table class="form-table">
             {% for field in labels %}
@@ -20,7 +20,7 @@
                     <textarea class="field__input" name="{{ field }}" rows="3">{{ data[field] }}</textarea>
                     {% else %}
                     <input class="field__input" type="text" name="{{ field }}" value="{{ data[field] }}"
-                           {% if field == 'Prolet' %}autofocus{% endif %}>
+                           {% if field == autofocus %}autofocus{% endif %}>
                     {% endif %}
                     {% if warnings.get(field) %}
                     <span class="field-warning">{{ warnings[field] }}</span>
@@ -49,6 +49,6 @@
         </table>
     </form>
 
-    <p><a class="link-back" href="{{ url_for('ipaddr4.main') }}">← Назад к списку</a></p>
+    <p><a class="link-back" href="{{ back_url }}">← Назад к списку</a></p>
 </div>
 {% endblock %}

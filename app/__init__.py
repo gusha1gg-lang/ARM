@@ -9,7 +9,7 @@ import sqlite3
 
 from flask import Flask, g, jsonify, redirect, render_template, request, send_from_directory, url_for
 
-from . import auth, db, ipaddr4, security, users
+from . import auth, db, ipaddr4, ipaddr5, security, users
 from .config import BASE_DIR, Config
 
 
@@ -26,6 +26,7 @@ def create_app(config_object=Config) -> Flask:
     app.register_blueprint(auth.bp)
     app.register_blueprint(users.bp)
     app.register_blueprint(ipaddr4.bp)
+    app.register_blueprint(ipaddr5.bp)
 
     @app.route("/")
     def index():

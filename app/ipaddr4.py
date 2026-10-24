@@ -23,6 +23,7 @@ from flask import (
 )
 
 from .db import get_db
+from .ip_shared import find_duplicates
 from .security import login_required, roles_required, validate_csrf
 
 bp = Blueprint("ipaddr4", __name__)
@@ -85,9 +86,6 @@ MULTILINE = {"Opisanie"}
 # Текст предупреждения — дословно из оригинальных валидаторов.
 DUPLICATE_MESSAGE = "КЕ с таким номером уже существует, ты уверен что желаешь сохранить?"
 
-# Таблицы, в которых оригинал искал дубликаты.
-IP_TABLES = ("IPaddress4", "IPAddressUch", "IPaddress5", "IPaddressAll")
-
 
 # ------------------------------------------------------------------ главная
 
@@ -148,38 +146,10 @@ def main():
 # ------------------------------------------------------- проверка дубликатов
 
 
-def _duplicates(field: str, value: str, exclude_id: int | None) -> bool:
-    """Аналог CustomValidator из Addipt4.aspx.cs / Edit.aspx.cs.
-
-    Проверяются только непустые значения (как в ASP.NET:
-    ValidateEmptyText по умолчанию выключен).
-    """
-    if not value:
-        return False
-
-    if field == "KE":
-        condition = '"KE" = ?'
-        param = value
-    else:
-        condition = f'"{field}" LIKE ?'
-        param = f"%{value}%"
-
-    db = get_db()
-    for table in IP_TABLES:
-        query = f'SELECT 1 FROM "{table}" WHERE {condition}'
-        args: list = [param]
-        if exclude_id is not None:
-            query += ' AND "IDPC" <> ?'
-            args.append(exclude_id)
-        if db.execute(query, args).fetchone() is not None:
-            return True
-    return False
-
-
 def _collect_warnings(data: dict, exclude_id: int | None) -> dict:
     warnings = {}
     for field in ("KE", "Monitor", "Printer"):
-        if _duplicates(field, (data.get(field) or "").strip(), exclude_id):
+        if find_duplicates(field, data.get(field) or "", exclude_id):
             warnings[field] = DUPLICATE_MESSAGE
     return warnings
 
@@ -264,7 +234,7 @@ def add():
                 return redirect(url_for("ipaddr4.main"))
 
     return render_template(
-        "ipaddr4_form.html",
+        "ip_form.html",
         mode="add",
         data=data,
         warnings=warnings,
@@ -272,6 +242,9 @@ def add():
         show_force=bool(warnings),
         labels=LABELS,
         multiline=MULTILINE,
+        autofocus="Prolet",
+        form_action=url_for("ipaddr4.add"),
+        back_url=url_for("ipaddr4.main"),
     )
 
 
@@ -317,7 +290,7 @@ def edit():
                 return redirect(url_for("ipaddr4.main"))
 
     return render_template(
-        "ipaddr4_form.html",
+        "ip_form.html",
         mode="edit",
         row_id=row_id,
         data=data,
@@ -326,6 +299,9 @@ def edit():
         show_force=bool(warnings),
         labels=LABELS,
         multiline=MULTILINE,
+        autofocus="Prolet",
+        form_action=url_for("ipaddr4.edit", id=row_id),
+        back_url=url_for("ipaddr4.main"),
     )
 
 

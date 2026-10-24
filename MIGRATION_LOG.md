@@ -142,7 +142,9 @@
 | `/Edit.aspx?id=N` | `/Edit.aspx?id=N` | `Edit.aspx.cs` | `IPaddress4` (UPDATE/DELETE) |
 | `/ReportExist.aspx?KE=…` | `/ReportExist.aspx?KE=…` | `ReportExist.aspx.cs` | `IPaddress4`, `IPAddressUch`, `IPaddress5`, `NameUchastok` |
 
-Модуль: `app/ipaddr4.py`. Шаблоны: `main.html`, `ipaddr4_form.html`, `report.html`.
+Модуль: `app/ipaddr4.py`. Шаблоны: `main.html`, `ip_form.html` (общая форма,
+после партии 1 вынесена в общий шаблон — см. партию 2), `report.html`.
+Модуль `app/ip_shared.py` (общие проверки дубликатов) выделен позже, в партии 2.
 
 ### Сохранено 1-в-1
 - Список пролётов (9 значений) и их подписи; сортировка `Prolet, Oc, Uchastok, AgeregatName`.
@@ -174,8 +176,61 @@
 фильтр по пролёту, редактирование, дубликаты, принудительное сохранение, поиск КЕ, удаление, 404.
 Количество строк `IPaddress4` после тестов — **842** (совпадает с миграцией).
 
-Артефакты: `app/ipaddr4.py`, `app/templates/main.html`, `app/templates/ipaddr4_form.html`,
+Артефакты: `app/ipaddr4.py`, `app/templates/main.html`, `app/templates/ip_form.html`,
 `app/templates/report.html`, `app/templates/base.html`, `app/static/css/style.css`,
 `tools/test_pages.py`, `docs/04_PAGES.md`.
 
 **Ожидает подтверждения пользователя перед следующей партией страниц.**
+
+---
+
+## Этап 4 — Перенос страниц, партия 2: раздел «ТЭСЦ 5» (2025-10-24)
+
+### Перенесено
+| Старый URL | Маршрут | Исходник | Таблицы |
+|---|---|---|---|
+| `/IpaddrT5.aspx` | `/IpaddrT5.aspx` | `IpaddrT5.aspx.cs` | `IPaddress5` |
+| `/Addipt5.aspx` | `/Addipt5.aspx` | `Addipt5.aspx.cs` | `IPaddress5` (INSERT) |
+| `/Editipt5.aspx?id=N` | `/Editipt5.aspx?id=N` | `Editipt5.aspx.cs` | `IPaddress5` (UPDATE/DELETE) |
+
+Модуль: `app/ipaddr5.py`. Шаблоны: `ipaddr5.html`, общая форма `ip_form.html`.
+
+### Сохранено 1-в-1
+- Заголовок «Информация об АРМ ТЭСЦ 5», сортировка `Oc, Uchastok`.
+- Групповые строки участка (`#ABC0E9`), синий заголовок таблицы (`#507CD1`),
+  чередование строк `WhiteSmoke`/`White`.
+- 11 колонок, их порядок и подсказки; tooltip CISCO с `Opisanie`.
+- Все 13 полей формы, подписи и порядок; многострочное «Описание».
+- Валидаторы «Ось» и предупреждения о дубликатах с текстами оригинала,
+  включая особый текст страницы добавления: «Братюня, КЕ с таким номером уже существует,
+  ты уверен что желаешь добавить?».
+- Кнопка «Все равно сохранить», редиректы на `/IpaddrT5.aspx`.
+
+### Рефакторинг без изменения поведения
+- `app/ip_shared.py`: `find_duplicates()` — проверка дубликатов `KE`/`Monitor`/`Printer`
+  по `IPaddress4`, `IPAddressUch`, `IPaddress5`, `IPaddressAll`; `ipaddr4.py` переведён на неё
+  (дублирующий код удалён из модуля).
+- `app/templates/ip_form.html`: общая форма добавления/редактирования для ТЭСК ТБД и ТЭСЦ 5;
+  `ipaddr4_form.html` удалён (его содержимое перенесено в общий шаблон).
+- Повторный прогон `tools/test_pages.py` после рефакторинга — 38/38.
+
+### Отклонения (осознанные, обоснованы)
+| № | Отклонение | Причина |
+|---|---|---|
+| 1 | «Добавить»/редактирование доступны `editor` и `admin` | Требование ролей Этапа 3 |
+| 2 | Параметризованный SQL | Безопасность |
+| 3 | CSRF-токены в формах | Безопасность |
+| 4 | Подтверждение удаления (`confirm`) | Защита от случайного удаления |
+| 5 | Нечисловая/пустая «Ось» отклоняется и при «Все равно сохранить» | В оригинале — ошибка ODBC |
+| 6 | Общий шаблон `ip_form.html` | Устранение дублирования; вид и поведение идентичны |
+
+### Самопроверка
+`tools/test_pages5.py` — **36/36**: права viewer/editor/admin, CSRF, валидация «Ось»,
+добавление, редактирование, дубликат КЕ с текстом оригинала, принудительное сохранение,
+удаление, 404. Количество строк `IPaddress5` после тестов — **384** (совпадает с миграцией).
+
+Артефакты: `app/ipaddr5.py`, `app/ip_shared.py`, `app/templates/ipaddr5.html`,
+`app/templates/ip_form.html`, `app/ipaddr4.py` (правки), `app/__init__.py`,
+`app/static/css/style.css`, `tools/test_pages5.py`, `docs/04_PAGES.md`.
+
+**Ожидает подтверждения пользователя перед партией 3.**

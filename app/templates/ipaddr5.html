@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}ТЭСЦ 5 — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">Информация об АРМ ТЭСЦ 5</h4>
+
+    {% if g.user['role'] in ('editor', 'admin') %}
+    <div class="toolbar">
+        <a class="btn btn--small" href="{{ url_for('ipaddr5.add') }}">Добавить</a>
+    </div>
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="grid grid--t5">
+            <thead>
+            <tr>
+                <th>Ось</th>
+                <th>IP адрес</th>
+                <th>MAC адрес</th>
+                <th>PC/TS</th>
+                <th>Логин TS</th>
+                <th>Телефон</th>
+                <th>Монитор</th>
+                <th>Принтер</th>
+                <th>ИБП</th>
+                <th>Модем</th>
+                <th>CISCO</th>
+                {% if g.user['role'] in ('editor', 'admin') %}
+                <th></th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in groups %}
+                {% if item.type == 'uchastok' %}
+                <tr class="group-uchastok5">
+                    <td colspan="{{ 12 if g.user['role'] in ('editor', 'admin') else 11 }}"
+                        title="Название Участка">{{ item.title }}</td>
+                </tr>
+                {% else %}
+                {% set row = item.row %}
+                <tr class="{{ item.parity }}">
+                    <td title="ОСЬ">{{ row['Oc'] if row['Oc'] is not none else '' }}</td>
+                    <td title="IP адрес">{{ row['IPaddress'] or '' }}</td>
+                    <td title="МАС адрес">{{ row['MAC'] or '' }}</td>
+                    <td title="PC/TS">{{ row['KE'] or '' }}</td>
+                    <td title="Логин TS">{{ row['ConfigLogin'] or '' }}</td>
+                    <td title="Телефон">{{ row['Telephon'] or '' }}</td>
+                    <td title="Монитор">{{ row['Monitor'] or '' }}</td>
+                    <td title="Принтер">{{ row['Printer'] or '' }}</td>
+                    <td title="ИБП">{{ row['UPS'] or '' }}</td>
+                    <td title="Модем">{{ row['Modem'] or '' }}</td>
+                    <td>
+                        <a class="tooltip" href="#">{{ row['CISCO'] or '' }}
+                            <span>{{ row['Opisanie'] or '' }}<small></small></span>
+                        </a>
+                    </td>
+                    {% if g.user['role'] in ('editor', 'admin') %}
+                    <td class="cell-action">
+                        <a class="edit-link" title="Редактировать"
+                           href="{{ url_for('ipaddr5.edit', id=row['IDPC']) }}"><img src="/img/buttonedit.png" alt="Редактировать" border="0"></a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего записей: {{ total }}</p>
+</div>
+{% endblock %}

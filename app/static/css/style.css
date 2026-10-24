@@ -198,6 +198,17 @@ a { color: var(--blue-dark); }
 .grid tbody tr.row-odd td { background: #e6e6fa; }
 .grid tbody tr.row-even td { background: #e0ffff; }
 
+/* ТЭСЦ 5: заголовок синий #507CD1, строки WhiteSmoke/White, участок #ABC0E9. */
+.grid--t5 thead th { background: #507cd1; }
+
+.grid tbody tr.row-smoke td { background: #f5f5f5; }
+.grid tbody tr.row-white td { background: #ffffff; }
+
+.group-uchastok5 td {
+    background: #abc0e9;
+    text-align: center;
+}
+
 .cell-action { width: 32px; }
 
 .edit-link {
