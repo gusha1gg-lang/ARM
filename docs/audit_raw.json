@@ -1,0 +1,750 @@
+{
+  "IPAddressUch": {
+    "cols": [
+      [
+        "IDPC",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "IDUchastok",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Kabinet",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Level",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "ConfigLogin",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IPaddress",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "MAC",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "KE",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Telephon",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Opisanie",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ],
+      [
+        "Monitor",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Printer",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "UPS",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Modem",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "CISCO",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 1733
+  },
+  "IPaddress4": {
+    "cols": [
+      [
+        "IDPC",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Prolet",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Oc",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Uchastok",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "AgeregatName",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "ConfigLogin",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IPaddress",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Shluz",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "MAC",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "KE",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Telephon",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Opisanie",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ],
+      [
+        "Monitor",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Printer",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "UPS",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Modem",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "CISCO",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 842
+  },
+  "IPaddress5": {
+    "cols": [
+      [
+        "IDPC",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Oc",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Uchastok",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "ConfigLogin",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IPaddress",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "MAC",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "KE",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Telephon",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Opisanie",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ],
+      [
+        "Monitor",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Printer",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "UPS",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Modem",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "CISCO",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 384
+  },
+  "IPaddressAll": {
+    "cols": [
+      [
+        "IDPC",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "ShopID",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Prolet",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Oc",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Uchastok",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "AgeregatName",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "ConfigLogin",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IPaddress",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Shluz",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "MAC",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "KE",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Telephon",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Opisanie",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ],
+      [
+        "Monitor",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Printer",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "UPS",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Modem",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "CISCO",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 542
+  },
+  "Jarlik": {
+    "cols": [
+      [
+        "IDJarlik",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "LnkNameJarlik",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "NameJarlik",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 27
+  },
+  "NameProlet": {
+    "cols": [
+      [
+        "ProletID",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "ShopID",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Prolet",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Prolet_name",
+        "<class 'str'>",
+        255,
+        255
+      ]
+    ],
+    "count": 33
+  },
+  "NameShop": {
+    "cols": [
+      [
+        "ShopID",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "ShopName",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Поле1",
+        "<class 'str'>",
+        255,
+        255
+      ]
+    ],
+    "count": 12
+  },
+  "NameUchastok": {
+    "cols": [
+      [
+        "IDUchastok",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Nameuchastka",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Поле1",
+        "<class 'str'>",
+        255,
+        255
+      ]
+    ],
+    "count": 29
+  },
+  "SPR_CAMERA": {
+    "cols": [
+      [
+        "IDCAM_NAME",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Camera_Type",
+        "<class 'str'>",
+        10,
+        10
+      ],
+      [
+        "Camera_Name",
+        "<class 'str'>",
+        255,
+        255
+      ]
+    ],
+    "count": 21
+  },
+  "SPR_CISCO": {
+    "cols": [
+      [
+        "ID_CISCO",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "IP_CISCO",
+        "<class 'str'>",
+        255,
+        255
+      ],
+      [
+        "Prolet_CISCO",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Oc_CISCO",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Location_CISCO",
+        "<class 'str'>",
+        255,
+        255
+      ],
+      [
+        "Opisanie_CISCO",
+        "<class 'str'>",
+        255,
+        255
+      ]
+    ],
+    "count": 93
+  },
+  "UserPass": {
+    "cols": [
+      [
+        "UserID",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Login",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Pass",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 1
+  },
+  "Video_Camera_all": {
+    "cols": [
+      [
+        "ID_VID_CAM",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "IDCAM_NAME",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "ID_CISCO",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Camera_Type",
+        "<class 'str'>",
+        255,
+        255
+      ],
+      [
+        "ShopID",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Prolet",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Oc",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "Uchastok",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Camera_number",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IPaddress",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Login_password",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IP_Server_PC",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "upload_img",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ],
+      [
+        "Opisanie",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ],
+      [
+        "Monitor",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Video_out_lacation_PC",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "CISCO",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "Port_CISCO",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "IP_CAMERA_STREAM",
+        "<class 'str'>",
+        1073741823,
+        1073741823
+      ]
+    ],
+    "count": 117
+  },
+  "telefon": {
+    "cols": [
+      [
+        "id",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "fio",
+        "<class 'str'>",
+        50,
+        50
+      ],
+      [
+        "telnumber",
+        "<class 'str'>",
+        50,
+        50
+      ]
+    ],
+    "count": 44
+  },
+  "temp": {
+    "cols": [
+      [
+        "idt",
+        "<class 'int'>",
+        10,
+        10
+      ],
+      [
+        "t",
+        "<class 'int'>",
+        10,
+        10
+      ]
+    ],
+    "count": 2
+  }
+}

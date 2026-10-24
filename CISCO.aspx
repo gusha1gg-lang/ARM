@@ -1,0 +1,2267 @@
+﻿<%@ Page Language="C#" MasterPageFile="~/MainMasterPage.master" AutoEventWireup="true" CodeFile="CISCO.aspx.cs" Inherits="_Default" Title="Справочник ТЭСК ТБД" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<style id="Список узлов ТЭСЦ-4_12495_Styles">
+<!--table
+	{mso-displayed-decimal-separator:"\,";
+	mso-displayed-thousand-separator:" ";}
+.xl1512495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	white-space:nowrap;}
+.xl2212495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:yellow;
+	font-size:12.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:center;
+	vertical-align:bottom;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:.5pt solid windowtext;
+	background:#333399;
+	mso-pattern:auto none;
+	white-space:nowrap;}
+.xl2312495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:yellow;
+	font-size:12.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:center;
+	vertical-align:bottom;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:#333399;
+	mso-pattern:auto none;
+	white-space:nowrap;}
+.xl2412495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:.5pt solid windowtext;
+	background:#CCFFFF;
+	mso-pattern:auto none;
+	white-space:nowrap;}
+.xl2512495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:.5pt solid windowtext;
+	background:#CCFFFF;
+	mso-pattern:auto none;
+	white-space:nowrap;}
+.xl2612495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:700;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:center;
+	vertical-align:bottom;
+	border:.5pt solid windowtext;
+	background:#CCFFFF;
+	mso-pattern:auto none;
+	white-space:nowrap;}
+.xl2712495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:center;
+	vertical-align:middle;
+	border:.5pt solid windowtext;
+	background:#CCFFFF;
+	mso-pattern:auto none;
+	white-space:nowrap;}
+.xl2812495
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Arial Cyr";
+	mso-generic-font-family:auto;
+	mso-font-charset:204;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:.5pt solid windowtext;
+	background:#CCFFFF;
+	mso-pattern:auto none;
+	white-space:normal;}
+-->
+</style>
+
+
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:204;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:1627421319 -2147483648 8 0 66047 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:14.0pt;
+	font-family:Arial;
+	color:blue;
+	mso-font-kerning:0pt;
+	font-weight:normal;}
+h2
+	{mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-weight:normal;}
+h3
+	{mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:14.0pt;
+	font-family:Arial;}
+h4
+	{mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-style:italic;
+	mso-bidi-font-style:normal;}
+h5
+	{mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	font-size:14.0pt;
+	font-family:Arial;
+	color:blue;}
+h6
+	{mso-style-next:Обычный;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:6;
+	font-size:14.0pt;
+	font-family:Arial;
+	color:purple;
+	font-weight:normal;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	font-size:16.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	color:blue;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	font-size:14.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	font-weight:bold;}
+p.MsoBodyText2, li.MsoBodyText2, div.MsoBodyText2
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	font-size:14.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	color:blue;}
+p.MsoBodyText3, li.MsoBodyText3, div.MsoBodyText3
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	font-size:14.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	color:blue;
+	font-weight:bold;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-noshow:yes;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:8.0pt;
+	font-family:Tahoma;
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:841.9pt 595.3pt;
+	mso-page-orientation:landscape;
+	margin:26.95pt 2.0cm 42.55pt 2.0cm;
+	mso-header-margin:35.45pt;
+	mso-footer-margin:35.45pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<div align=center>
+<div class=Section1>
+
+<p class=MsoTitle>Таблица запитки коммутационных шкафов ТЭСЦ-4 по проекту
+Э90436-ЭС</p>
+
+<p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=1020
+ style='width:765.0pt;margin-left:-12.6pt;border-collapse:collapse;border:none;
+ mso-border-alt:solid black .75pt;mso-yfti-tbllook:480;mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+ mso-border-insideh:.75pt solid black;mso-border-insidev:.75pt solid black'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:53.4pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;mso-border-alt:
+  solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:53.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>№ шкафа<o:p></o:p></span></b></p>
+  </td>
+  <td width=187 style='width:139.95pt;border:solid black 1.0pt;border-left:
+  none;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:53.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Место установки<o:p></o:p></span></b></p>
+  </td>
+  <td width=211 style='width:158.0pt;border:solid black 1.0pt;border-left:none;
+  mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:53.4pt'>
+  <h1><b>Основное<o:p></o:p></b></h1>
+  <h1><b>эл.снабжение<o:p></o:p></b></h1>
+  </td>
+  <td width=189 style='width:141.55pt;border:solid black 1.0pt;border-left:
+  none;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:53.4pt'>
+  <h1><b><span style='color:purple'>Резервное эл.снабжение<o:p></o:p></span></b></h1>
+  </td>
+  <td width=177 style='width:133.1pt;border:solid black 1.0pt;border-left:none;
+  mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:53.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Расположение по осям<o:p></o:p></span></b></p>
+  </td>
+  <td width=173 style='width:129.9pt;border:solid black 1.0pt;border-left:none;
+  mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:53.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b
+  style='mso-bidi-font-weight:normal'><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Примечание<o:p></o:p></span></i></b></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:71.45pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.45pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.45pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>УАПТ<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>кабинет ст. мастера<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.45pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>7ПСУ-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>7ПР1,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№5<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.45pt'>
+  <p class=MsoBodyText2><span style='color:purple'>в ШР№17 (ряд Л’/1, оси 4-5)
+  дополнительно уст.<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>авт. с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.45pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряды Л/1-Л’/1<o:p></o:p></span></p>
+  <h1>Оси 3-4</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.45pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Огарков Е.А.<o:p></o:p></span></i></p>
+  <p class=MsoNormal><span style='font-size:14.0pt;font-family:Arial'><span
+  style='mso-spacerun:yes'> </span><span style='mso-spacerun:yes'> </span><i
+  style='mso-bidi-font-style:normal'>75-73,75-92<o:p></o:p></i></span></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Сот.89103826784<o:p></o:p></span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:70.65pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_2<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>ПУ-31<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>ПУ-31,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>сущ. авт. 2А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=16А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>(от свободной фазы)<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>от сущ. осветительной
+  сети<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>(от отв. коробки)
+  ПУ-31<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Пролет К’-Л<o:p></o:p></span></p>
+  <h1>Оси 10-11</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Костин Б.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>36-83<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103826772</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;height:79.5pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:79.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_3<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:79.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>УАПТ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>комната мастера<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>уч-ка<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:79.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>6ПСУ-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>6ПРЧ-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№7<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:79.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>шинопровод<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>МГР-33,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>ответвительная
+  коробка шинопровода №22<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:79.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряды Л/1-Л’/1<o:p></o:p></span></p>
+  <h1>Оси 17-18</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:79.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Огарков Е.А.<o:p></o:p></span></i></p>
+  <p class=MsoNormal><span style='font-size:14.0pt;font-family:Arial'><span
+  style='mso-spacerun:yes'>  </span><i style='mso-bidi-font-style:normal'>75-73,75-92<o:p></o:p></i></span></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Сот.89103826784 </span></i><span
+  style='font-size:14.0pt;font-family:Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:4;height:66.4pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:66.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_4<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:66.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-8<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:66.4pt'>
+  <h1>ПА-23,</h1>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>дополнительно уст. авт. </span><span style='font-size:14.0pt;
+  font-family:Arial;color:blue'>с </span><span lang=EN-US style='font-size:
+  14.0pt;font-family:Arial;color:blue;mso-ansi-language:EN-US'>I</span><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=31,5А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>в сущ. шкафной сборке<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:66.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>тамбур АСУ-8,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>ЩО1,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. №3<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=20А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:66.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Пролет К’-Л<o:p></o:p></span></p>
+  <h1>Ось 23</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:66.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Костин Б.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>36-83<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103826772</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:5;height:62.2pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.2pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_5<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.2pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>ОТК УАПТ<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.2pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>3ПСУ-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>407ПРН2,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от свободной фазы<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№9<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=31,5А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.2pt'>
+  <p class=MsoBodyText2><span style='color:purple'>в ЩО4 (ряд Л’,<o:p></o:p></span></p>
+  <p class=MsoBodyText2><span style='color:purple'>оси 33-34) дополнительно
+  уст.<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>авт. с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=25А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.2pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряд Л’<o:p></o:p></span></p>
+  <h1>Ось 32-33</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.2pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Огарков Е.А.<o:p></o:p></span></i></p>
+  <p class=MsoNormal><span style='font-size:14.0pt;font-family:Arial'><span
+  style='mso-spacerun:yes'>  </span><i style='mso-bidi-font-style:normal'>75-73,75-92<o:p></o:p></i></span></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Сот.89103826784</span></i><span
+  style='font-size:14.0pt;font-family:Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:6;height:89.1pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:89.1pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_6<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:89.1pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>ПУ-44<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>МЛК<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:89.1pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>3ПСУ-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>407ПРН2,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от свободной фазы<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№9<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=31,5А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:89.1pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с вводных клемм
+  автомата осветительной сети ПУ-44<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:89.1pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряды К’-Л<o:p></o:p></span></p>
+  <h1>Оси 34-35</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:89.1pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Костин Б.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>36-83<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103826772</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:7;height:62.05pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.05pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_7<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.05pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-10<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.05pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>3ПСУ-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>407ПРН2-2,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№2 (заменен)<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=10А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.05pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>АСУ-10,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>ПРН22А,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. №7<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.05pt'>
+  <h1>Ряды К’-Л</h1>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ось 43<o:p></o:p></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.05pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Костин Б.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>36-83<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103826772</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:8;height:25.8pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:25.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_8<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:25.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:25.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:25.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:25.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:25.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:9;height:62.0pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span
+  style='font-size:14.0pt;font-family:Arial'>4_9<o:p></o:p></span></b></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>См. мастера СНК<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от автомата<span
+  style='mso-spacerun:yes'>   </span>с Iн.рас.=16А<span
+  style='mso-spacerun:yes'>   </span>в 5ПРЧ1-1-АСУ в<span
+  style='mso-spacerun:yes'>  </span>5ПСУ-1<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'><o:p>&nbsp;</o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>от сущ. щитка 1ЩО в
+  помещ. СНК<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.0pt'>
+  <h5><span style='font-weight:normal'>РядА, Ось 7<o:p></o:p></span></h5>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Дмитриев В.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>43-61<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103823530</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:10;height:62.7pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span
+  style='font-size:14.0pt;font-family:Arial;color:black'>4_10<o:p></o:p></span></b></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>ПУ-27<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>Гидропресс 2<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'><o:p>&nbsp;</o:p></span></p>
+  <p class=MsoBodyText3><span style='font-weight:normal'>5ПСУ-1, 5ПРЧ1-1-АСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>авт с Iн.рас.=16А</span><span style='color:blue'><o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:purple'><o:p>&nbsp;</o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:purple'>от сущ. щитка 1ЩО6б<o:p></o:p></span></p>
+  <p class=MsoNormal><span style='color:purple'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><span
+  style='mso-spacerun:yes'> </span><span style='color:blue'>Ряд Б’ –Г ,Ось 9<o:p></o:p></span></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.7pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Дмитриев В.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>43-61<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103823530</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:11;height:70.95pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.95pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span
+  style='font-size:14.0pt;font-family:Arial'>4_11<o:p></o:p></span></b></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.95pt'>
+  <p class=MsoBodyText><span style='font-weight:normal'>Электронная мастерская<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>к.340<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.95pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'><o:p>&nbsp;</o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>4ПСУ-1, 4ПРЧ-1АСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>№3 с Iн.рас.=20А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.95pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'><o:p>&nbsp;</o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>4ПСУ-1, 409ПРН1 ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>№2 с Iн.рас.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.95pt'>
+  <h5><span style='font-weight:normal'>Ряд А, Ось 22<o:p></o:p></span></h5>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.95pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Дмитриев В.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>43-61<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103823530<o:p></o:p></span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:12;height:62.6pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.6pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_12<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.6pt'>
+  <h2>ПСИ-4 </h2>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.6pt'>
+  <h2><span style='color:blue'>АСУ-6,<o:p></o:p></span></h2>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>ПРНА-26,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№7 (или №13)<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=16А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>(через ЯАВР-4.15 в АСУ
+  6)</span><span style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:
+  Arial;color:blue'><o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.6pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>3ПСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>406ПРН3-АСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>Q</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>15<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=16А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>(через ЯАВР-4.15 в
+  АСУ-6)<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.6pt'>
+  <h1>Ряд В</h1>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ось 34-35<o:p></o:p></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.6pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Дмитриев В.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>43-61<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103823530</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:13;height:70.15pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_13<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.15pt'>
+  <h3><span style='font-weight:normal'>АСУ-12<o:p></o:p></span></h3>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'><o:p>&nbsp;</o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>3ПСУ-1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>406ПРН3-АСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Iн.рас.=16А</span><span
+  style='font-size:14.0pt;font-family:Arial'><o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>АСУ-12<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>от существующего
+  щитка ПРН<span style='mso-spacerun:yes'>  </span>(чистые сети),<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.15pt'>
+  <h5><span style='font-weight:normal'>Ряд А,Ось 35/1<o:p></o:p></span></h5>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:14;height:71.55pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.55pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_14<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.55pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>ППА<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.55pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>От существующего щитка
+  ЩК<span style='mso-spacerun:yes'>  </span>(чистые сети), установленного в
+  помещении ППА</span><span style='font-size:14.0pt;font-family:Arial'>.<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.55pt'>
+  <h2><span style='color:purple'>2ПСУ-1,<o:p></o:p></span></h2>
+  <h2><span style='color:purple'>406ПРН2-2<o:p></o:p></span></h2>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>№4 с Iн.рас.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.55pt'>
+  <h5><span style='font-weight:normal'>РядА<o:p></o:p></span></h5>
+  <h5><span style='font-weight:normal'>Ось 45<o:p></o:p></span></h5>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.55pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:15;height:61.9pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:61.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_15<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:61.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-6<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.9pt'>
+  <h2><span style='color:blue'>АСУ-6,<o:p></o:p></span></h2>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>ПРНА-26,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>гр.авт.№7 (или №13)<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=16А</span><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'><o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>3ПСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>406ПРН3-АСУ,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>Q</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>15<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.9pt'>
+  <h1>Ряды В-Г</h1>
+  <h1>Ось 43</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Дмитриев В.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>43-61<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103823530</span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:16;height:68.5pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:68.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_16-1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_16-2<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:68.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АБК ТЭСК ТБД<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>3 этаж БРИЗ<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:68.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>компьютерный щиток ЩК 34,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>гр. авт. №1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:blue;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:blue'>н.р.=16А</span><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'><o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:68.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>осветительный щиток
+  ЩО-3,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=20А</span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:68.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:68.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:17;height:70.8pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_17<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-5<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>АСУ-5,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>ПРН 9А,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>гр. авт. №2<o:p></o:p></span></p>
+  <h1>с <span lang=EN-US style='mso-ansi-language:EN-US'>I</span>н.р.=16А</h1>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>2ПСУ-2,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>427ПР2,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. №6<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=16А<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряд В<o:p></o:p></span></p>
+  <h1>Ось 49-50</h1>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:18;height:62.35pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.35pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_18<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.35pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>ДИТ<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>2 этаж<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.35pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>ДИТ 2 этаж.<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от авт<span
+  style='mso-spacerun:yes'>  </span>с Iном.рас.=16А в ЩК (чистые сети)<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.35pt'>
+  <p class=MsoBodyText2><span style='color:purple'>1ПСУ-1<o:p></o:p></span></p>
+  <p class=MsoBodyText2><span style='color:purple'>от авт<span
+  style='mso-spacerun:yes'>  </span>с Iном.рас.= 16А в 416ПРН1-АСУ<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.35pt'>
+  <h5><span style='font-weight:normal'>Ряд А<o:p></o:p></span></h5>
+  <h5><span style='font-weight:normal'>Ось 52/1<o:p></o:p></span></h5>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.35pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:19;height:62.15pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_19<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-4<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>АСУ-4<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>ПРНА-7,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>гр. авт. №6<o:p></o:p></span></p>
+  <h1>с <span lang=EN-US style='mso-ansi-language:EN-US'>I</span>н.р.=20А</h1>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>тамбур АСУ-4,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>освет. щиток ЩО,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. №1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=20А</span><span
+  style='color:purple'><o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряд В<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Оси 55-2 –55-3</span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.15pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:20;height:62.3pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_20<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-2<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.3pt'>
+  <h1><span style='mso-bidi-font-size:12.0pt'>АСУ-2<o:p></o:p></span></h1>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>ПРН 3А,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>гр. авт. №5<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>с </span><span lang=EN-US style='font-size:14.0pt;mso-bidi-font-size:
+  12.0pt;font-family:Arial;color:blue;mso-ansi-language:EN-US'>I</span><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:blue'>н.р.=20А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:purple'>АСУ-2,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;
+  color:purple'>ПР-99,<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>гр. авт. №7<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>с </span><span
+  lang=EN-US style='font-size:14.0pt;font-family:Arial;color:purple;mso-ansi-language:
+  EN-US'>I</span><span style='font-size:14.0pt;font-family:Arial;color:purple'>н.р.=16А</span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряд В<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ось 65-66</span><span
+  style='color:blue'><o:p></o:p></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal><i style='mso-bidi-font-style:normal'><span
+  style='font-size:14.0pt;font-family:Arial'>Клименков О.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>38-97<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103824160</span></i></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:21;height:62.25pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.25pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_21<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:62.25pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АСУ-1<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.25pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>АСУ-1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от<span
+  style='mso-spacerun:yes'>  </span>авт<span style='mso-spacerun:yes'> 
+  </span>№14 с Iном.рас.=16А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>ПРНА-1А<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.25pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>Iном.рас.=16А<span
+  style='mso-spacerun:yes'>  </span>в ПР, в АСУ-1 в помещении кондиционеров.<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.25pt'>
+  <h3><span style='color:blue;font-weight:normal'>Ряд У-Т, Ось 55-55/1<o:p></o:p></span></h3>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.25pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Ермолаев А.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>44-70<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103874621</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:22;height:71.0pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_22<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>5ПСУ-2<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>5ПСУ-2<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от автомата №11<span
+  style='mso-spacerun:yes'>  </span>с Iном.рас.=16А, в<span
+  style='mso-spacerun:yes'>  </span>1ЩО-2<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>5ПСУ-2<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>от<span
+  style='mso-spacerun:yes'>  </span>авт<span style='mso-spacerun:yes'> 
+  </span>с Iном.рас.=32А<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>в 2ПР<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>Ряд У-Т, Ось 62-63<o:p></o:p></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.0pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Ермолаев А.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>44-70<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103874621</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:23;height:70.85pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_23<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:70.85pt'>
+  <h3><span style='font-weight:normal'>ПСУ ПШФ<o:p></o:p></span></h3>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от<span
+  style='mso-spacerun:yes'>  </span>автомата<span style='mso-spacerun:yes'> 
+  </span>с Iном.рас.=16А, ЩАО6</span><span style='font-size:14.0pt;font-family:
+  Arial'>.<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>от авт<span
+  style='mso-spacerun:yes'>  </span>с Iном.рас.=16А, в щитке ЩО6.<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.85pt'>
+  <h3><span style='color:blue;font-weight:normal'>Ряд У-Т, Ось 74-75<o:p></o:p></span></h3>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.85pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Ермолаев А.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>44-70<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103874621</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:24;height:71.5pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_24<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:71.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>АБК Склад флюса<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>2 этаж к.№3<o:p></o:p></span></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></p>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:71.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Ермолаев А.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>44-70<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103874621</span></i><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:25;mso-yfti-lastrow:yes;height:61.65pt'>
+  <td width=83 style='width:62.5pt;border:solid black 1.0pt;border-top:none;
+  mso-border-top-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:61.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial'>4_25<o:p></o:p></span></p>
+  </td>
+  <td width=187 style='width:139.95pt;border-top:none;border-left:none;
+  border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:
+  solid black .75pt;mso-border-left-alt:solid black .75pt;mso-border-alt:solid black .75pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:61.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Кабинет Ст. мастера формовки<o:p></o:p></span></i></p>
+  </td>
+  <td width=211 valign=top style='width:158.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>1ПСУ-1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:blue'>от автомата №7<span
+  style='mso-spacerun:yes'>  </span>с Iн.рас.=25А<span
+  style='mso-spacerun:yes'>  </span>1ПРНА-5(чистые сети)<o:p></o:p></span></p>
+  </td>
+  <td width=189 valign=top style='width:141.55pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>1ПСУ-1<o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-size:14.0pt;font-family:Arial;color:purple'>от авт<span
+  style='mso-spacerun:yes'>  </span>с Iн.рас.=16А<span
+  style='mso-spacerun:yes'>  </span>416ПРН1-АСУ<o:p></o:p></span></p>
+  </td>
+  <td width=177 valign=top style='width:133.1pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.65pt'>
+  <h4><span style='color:blue;font-weight:normal'>Ряд А, Ось 56/1<o:p></o:p></span></h4>
+  </td>
+  <td width=173 valign=top style='width:129.9pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  mso-border-top-alt:solid black .75pt;mso-border-left-alt:solid black .75pt;
+  mso-border-alt:solid black .75pt;padding:0cm 5.4pt 0cm 5.4pt;height:61.65pt'>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Эл. участка<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Ермолаев А.В.<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>44-70<o:p></o:p></span></i></p>
+  <p class=MsoNormal align=center style='text-align:center'><i
+  style='mso-bidi-font-style:normal'><span style='font-size:14.0pt;font-family:
+  Arial'>Сот.89103874621</span></i><b><span style='font-size:14.0pt;font-family:
+  Arial'><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+</div>
+<div id="Список узлов ТЭСЦ-4_12495" align=center x:publishsource="Excel">
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=673 style='border-collapse:
+ collapse;table-layout:fixed;width:505pt'>
+ <col width=64 style='width:48pt'>
+ <col width=408 style='mso-width-source:userset;mso-width-alt:14921;width:306pt'>
+ <col width=201 style='mso-width-source:userset;mso-width-alt:7350;width:151pt'>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl2212495 width=673 style='height:15.75pt;
+  width:505pt'>Список узлов ТЭСЦ-4</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2412495 style='height:12.75pt;border-top:none'>&nbsp;</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2512495 style='height:12.75pt;border-top:none'>№ узла</td>
+  <td class=xl2612495 style='border-top:none;border-left:none'>Наименование</td>
+  <td class=xl2612495 style='border-top:none;border-left:none'>Примечание</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>1</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>УАПТ (ПА19/20, Л-Л’, оси 4-5, шкаф IC4.1)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>2</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ31 (К-Л’, оси 9 – 10, шкаф IC4.2)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>3</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Комната оперативок УАПТ (Л-Л’, оси 17-18 шкаф<span
+  style='mso-spacerun:yes'>  </span>IC4. 3)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>4</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-8 (К-Л, оси 22-23, шкаф IC4.4)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>5</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ОТК УАПТ (Л-Л’, оси 32-33, шкаф IC4.5)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>6</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ-44 (К-Л, оси 36-37, шкаф IC4.6)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>7</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-10 (оси 42-43, Л-Л’, шкаф IC4.7)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>9</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>СНК (А-Б, оси 6-7, IC4.9)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>10</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ-27 (В, оси 8 -27, шкаф IC4.10) Н</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>11</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Электронная мастерская, ком 240 (А-Б, 21-22, IC4.11)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>12</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПСИ4 (В-Г, оси 36-37, РУЗК, шкаф IC4.12)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>13</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-12 (А-Б, оси 35 – 36, шкаф MC4.13)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>14</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ППА (А-Б, ось 42, шкаф IC4.14)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>15</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-6 (Г, оси 42-43, шкаф IC4.15)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>16</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АБК ТЭСЦ4 шкаф IC4.16)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>17</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-5 (В, оси 49-50, шкаф IC4.17)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>18</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ИАП и СПУ (А-Б, ось 52, IC4.18)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>19</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-4 (В оси 55-2 – 55-3, шкаф IC4.19)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>20</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-2 (В, ось 65, шкаф IC4. 20)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>21</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-1 (У, оси 55 - 55-1,шкаф IC4. 21)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>22</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>5ПСУ-2 (У, оси 62-63, шкаф IC4.22)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>23</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Склад штрипса (У, оси 71-72, шкаф IC4.23)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>24</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Склад флюса</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=34 style='height:25.5pt'>
+  <td height=34 class=xl2712495 style='height:25.5pt;border-top:none' x:num>25</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Помещение старшего мастера сварки (А-Б' оси 63-64 шкаф IC4.25)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>30</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПА-4 (В, ось 74, шкаф IC4.30)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>31</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>1ПСУ-2 (Г, ось 57, шкаф IC4.31)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>32</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>4ПСУ-2 (Г, ось 28, шкаф IC4.32)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>33</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>5ПСУ-2 (Г, оси 14-15, шкаф IC4.33) Н</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>34</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>2ПСУ-3 (Л-Л’, оси 39, шкаф IC4.34)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>35</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>1-1ПСУ-3 (Л-Л‘, оси 52-53,шкаф IC4.35)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=34 style='height:25.5pt'>
+  <td height=34 class=xl2712495 style='height:25.5pt;border-top:none' x:num>36</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Помещение оперативок участка внутреннего покрытия (Л’, оси
+  57-58, шкаф IC4.36, 2-ой этаж)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=34 style='height:25.5pt'>
+  <td height=34 class=xl2712495 style='height:25.5pt;border-top:none' x:num>37</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Помещение сменного мастера участка формовки (Ф-Ф’, оси 65-66,
+  IC4.37)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>38</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>АСУ-7 (В, оси 14-15, шкаф IC4.38)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>40</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>Помещение мастеров (П-П’, оси 68 – 70, шкаф IC4.40)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>41</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ3 (Л’-П,оси 73 – 74, шкаф IC4.41)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>42</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ5 (Л’-П,оси 77 – 78, шкаф IC4.42)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>43</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ6 (Л’-П,оси 82 – 83, шкаф IC4.43)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <tr height=17 style='height:12.75pt'>
+  <td height=17 class=xl2712495 style='height:12.75pt;border-top:none' x:num>44</td>
+  <td class=xl2812495 width=408 style='border-top:none;border-left:none;
+  width:306pt'>ПУ7 (Л’-П,оси 86 – 87, шкаф IC4.44)</td>
+  <td class=xl2412495 style='border-top:none;border-left:none'>&nbsp;</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=64 style='width:48pt'></td>
+  <td width=408 style='width:306pt'></td>
+  <td width=201 style='width:151pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</div>
+</div>
+</asp:Content>
+

@@ -1,0 +1,96 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MainMasterPage.master.cs" Inherits="MainMasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link rel="SHORTCUT ICON" href="~/img/favicon.ico" type="image/x-icon"/>
+    <link href="css/menu2.css" rel="stylesheet" type="text/css" />
+    <title>Справочник ТЭСК ТБД</title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        body{margin:0px;padding:0px;background-color:#F0F3F8;}
+        .style1
+        {
+            width: 100%;
+             
+        }
+        
+    </style>
+  
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <table class="style1" cellpadding="0" cellspacing="0" bgcolor="#F0F3F8">
+            <tr>
+                <td >
+                    <a href="Login.aspx"><img src="img/KPK.jpg" style="width: 1000px; height: 120px; border:0;" 
+                        alt="Справочник ТЭСК ТБД" /></a></td>
+            </tr>
+            
+<tr style="background-color:#333" >
+<td>
+<ul id="css3menu1" class="topmenu">
+	<li class="topfirst"><a href="#" style="height:32px;line-height:32px;"><span><img src="./css/samples.png" alt="IP адреса"/>Рабочие места</span></a>
+	<ul>
+		<li class="subfirst"><a href="./main.aspx">ТЭСК ТБД</a></li>
+		<li><a href="./IpaddrT5.aspx">ТЭСЦ 5</a></li>
+		<li><a href="./IPaddrUch.aspx">АБК</a></li>
+        <li><a href="./IPaddrALL.aspx">Все цеха</a></li>
+	</ul></li>
+	<li class="topmenu"><a href="./JR.aspx" style="height:32px;line-height:32px;"><img src="./css/download.png" alt="Все ярлыки"/>Все ярлыки</a></li>
+	
+	<li class="topmenu"><a href="#" style="height:32px;line-height:32px;"><span><img src="./css/blue_circle - nuke.png" alt="Настройки"/>Настройки</span></a>
+	<ul>
+		<li class="subfirst"><a href="./NastroykaOPT.htm">Инструкция по печати этикеток на ОПТ(Zebra)</a></li>
+		<li><a href="./NastoikaT5.aspx">Настройка Zebra в ТЭСЦ 5</a></li>
+		<li><a href="./NastoikaEBS.aspx">Настройка маркировщика EBS-250</a></li>
+		<li><a href="./birka_akp5.htm">Настройка печати бирок на АКП5 в ДМАП ТЭСК ТБД</a></li>
+		<li><a href="./Инструкция по перезапуску WinCC.htm">Инструкция по перезапуску WinCC</a></li>
+		<li><a href="./tururushka.htm">Настройка ручных сканеров Symbol</a></li>
+		<li><a href="http://portal.vsw.ru/dit/uis/DocLib1/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D0%B8%D0%BD%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D0%BE%D0%B2%20%D1%81%D0%BB%D1%83%D0%B6%D0%B1%D1%8B%20%D0%BF%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B8/VPN%20Android.jpg">Настройки VPN Android</a></li>
+	</ul></li>
+	<li class="topmenu"><a href="#" style="height:32px;line-height:32px;"><span><img src="./css/blue_circle - web.png" alt="CISCO"/>CISCO</span></a>
+	<ul>
+		<li class="subfirst"><a href="./CISCO.aspx">Шкафы</a></li>
+		<li class="subfirst"><a href="./CISCO2.aspx">Узлы ВМЗ</a></li>
+		<li><a href="http://nms.vsw.ru/nagvis/frontend/nagvis-js/">CISCO nagvis</a></li>
+	</ul></li>
+	<li class="topmenu"><a href="./telefon.aspx" style="height:32px;line-height:32px;"><img src="./css/blue_circle - phone.png" alt="Телефоны"/>Телефоны</a></li>
+    <li class="topmenu"><a href="./Webnav.aspx" style="height:32px;line-height:32px;">Web Navigator</a></li>
+	<li class="topmenu"><a href="#" style="height:32px;line-height:32px;"><span><img src="./css/camera-web_4334.png" alt="VideoCam"/>Видеонаблюдение</span></a>
+	<ul>
+		<li class="subfirst"><a href="./VideoIP.aspx?VideoType=IP">IP видеонаблюдение</a></li>
+		<li class="subfirst"><a href="./VideoIP.aspx?VideoType=Analog">Аналоговое видеонаблюдение</a></li>
+	</ul></li>
+    <!-- <li class="topmenu"><a href="#" style="height:32px;line-height:32px;"><span>Мониторинг</span></a>
+        <ul>
+            <li class="topmenu"><a href="./test.html" style="height:32px;line-height:32px;">Мониторинг</a></li>
+            <li class="topmenu"><a href="../E$/Pub/Питание шкафов Cisco.htm" style="height:32px;line-height:32px;">test</a></li>
+        </ul>
+    </li> -->
+</ul>
+
+
+</td>
+</tr>
+            
+            <tr>
+                <td>
+               
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</body>
+</html>

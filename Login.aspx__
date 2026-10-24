@@ -1,0 +1,70 @@
+﻿<%@ Page Language="C#" MasterPageFile="~/MainMasterPage.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="_Default" Title="Справочник ТЭСК ТБД" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
+    <style type="text/css">
+        .style3
+        {
+            width: 250px;
+            border-style: solid;
+            border-width: 1px;  
+        }
+        .style4
+        {
+            font-family: Verdana;
+            text-align: center;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+        .style5
+        {
+            font-family: Verdana;
+        }
+    </style>
+
+<script language="javascript" type="text/javascript">
+// <!CDATA[
+
+function Text1_onclick() {
+
+}
+
+// ]]>
+</script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <div style="margin:5px">
+        
+        <table class="style3">
+            <tr>
+                <td bgcolor="#0066CC" class="style4" colspan="2">
+                    Авторизация</td>
+            </tr>
+            <tr>
+                <td class="style5">
+                    Пользователь:</td>
+                <td>
+                    <asp:TextBox ID="Login" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style5">
+                    Пароль:</td>
+                <td>
+                    <asp:TextBox ID="Pass" runat="server" TextMode="Password"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td style="text-align: right">
+                    <asp:Button ID="Button1" runat="server" BackColor="White" BorderColor="#507CD1" 
+                        BorderStyle="Solid" Font-Size="X-Small" ForeColor="#284E98" TabIndex="3" 
+                        Text="ВХОД" onclick="Button1_Click" />
+                </td>
+            </tr>
+        </table>
+        <img src="images/Symbolfoto/" alt="" />
+    </div> 
+</asp:Content>
+

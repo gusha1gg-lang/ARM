@@ -1,0 +1,14 @@
+﻿bin/
+obj/
+*.suo
+*.user
+.vs/
+*.pdb
+*.cache
+App_Data/*.ldb
+*.ldb
+__pycache__/
+*.pyc
+.env
+venv/
+.pytest_cache/
