@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}АБК — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h4 class="page__title">Информация об АРМ на внешних участках</h4>
+
+    <form class="toolbar" method="get" action="{{ url_for('ipaddr_uch.main') }}">
+        <label class="toolbar__label" for="uchastok">Показать участок</label>
+        <select id="uchastok" name="uchastok" class="select" onchange="this.form.submit()">
+            {% for value, title in options %}
+            <option value="{{ value }}" {{ 'selected' if value == selected else '' }}>{{ title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if g.user['role'] in ('editor', 'admin') %}
+    <div class="toolbar">
+        <a class="btn btn--small" href="{{ url_for('ipaddr_uch.add') }}">Добавить</a>
+    </div>
+    {% endif %}
+
+    <div class="table-wrap">
+        <table class="grid grid--abk">
+            <thead>
+            <tr>
+                <th>Этаж</th>
+                <th>Кабинет</th>
+                <th>Логин TS</th>
+                <th>IP адрес</th>
+                <th>CISCO</th>
+                <th>MAC адрес</th>
+                <th>PC/TS</th>
+                <th>Телефон</th>
+                <th>Монитор</th>
+                <th>Принтер</th>
+                <th>ИБП</th>
+                <th>Модем</th>
+                {% if g.user['role'] in ('editor', 'admin') %}
+                <th></th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in groups %}
+                {% if item.type == 'uchastok' %}
+                <tr class="group-uchastok-abk">
+                    <td colspan="{{ 13 if g.user['role'] in ('editor', 'admin') else 12 }}"
+                        title="Название участка">{{ item.title }}</td>
+                </tr>
+                {% else %}
+                {% set row = item.row %}
+                <tr class="{{ item.parity }}">
+                    <td title="Этаж">{{ row['Level'] if row['Level'] is not none else '' }}</td>
+                    <td title="Кабинет">{{ row['Kabinet'] or '' }}</td>
+                    <td title="Логин TS">{{ row['ConfigLogin'] or '' }}</td>
+                    <td title="IP адрес">{{ row['IPaddress'] or '' }}</td>
+                    <td>
+                        <a class="tooltip" href="#">{{ row['CISCO'] or '' }}
+                            <span>{{ row['Opisanie'] or '' }}<small></small></span>
+                        </a>
+                    </td>
+                    <td title="МАС адрес">{{ row['MAC'] or '' }}</td>
+                    <td title="PC/TS">{{ row['KE'] or '' }}</td>
+                    <td title="Телефон">{{ row['Telephon'] or '' }}</td>
+                    <td title="Монитор">{{ row['Monitor'] or '' }}</td>
+                    <td title="Принтер">{{ row['Printer'] or '' }}</td>
+                    <td title="ИБП">{{ row['UPS'] or '' }}</td>
+                    <td title="Модем">{{ row['Modem'] or '' }}</td>
+                    {% if g.user['role'] in ('editor', 'admin') %}
+                    <td class="cell-action">
+                        <a class="edit-link" title="Редактировать"
+                           href="{{ url_for('ipaddr_uch.edit', id=row['IDPC']) }}"><img src="/img/buttonedit.png" alt="Редактировать" border="0"></a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="muted">Всего записей: {{ total }}</p>
+</div>
+{% endblock %}

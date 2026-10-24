@@ -209,6 +209,13 @@ a { color: var(--blue-dark); }
     text-align: center;
 }
 
+/* АБК: шапка #1a4780, строки #e6e6fa/#e0ffff, участок #20B2AA. */
+.group-uchastok-abk td {
+    background: #20b2aa;
+    color: #e0ffff;
+    text-align: center;
+}
+
 .cell-action { width: 32px; }
 
 .edit-link {

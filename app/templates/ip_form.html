@@ -1,9 +1,12 @@
 {% extends "base.html" %}
-{% block title %}{{ 'Добавление данных' if mode == 'add' else 'Редактирование данных' }} — Справочник ТЭСК ТБД{% endblock %}
+{% set selects = selects|default({}) %}
+{% set multiline = multiline|default([]) %}
+{% set form_title = heading|default('') or ('Добавление данных' if mode == 'add' else 'Редактирование данных') %}
+{% block title %}{{ form_title }} — Справочник ТЭСК ТБД{% endblock %}
 
 {% block content %}
 <div class="page">
-    <h2 class="page__title">{{ 'Добавление данных' if mode == 'add' else 'Редактирование данных' }}</h2>
+    <h2 class="page__title">{{ form_title }}</h2>
 
     {% if error %}
     <div class="flash flash--error">{{ error }}</div>
@@ -16,7 +19,13 @@
             <tr>
                 <td class="form-table__label">{{ labels[field] }}</td>
                 <td>
-                    {% if field in multiline %}
+                    {% if field in selects %}
+                    <select class="select" name="{{ field }}">
+                        {% for value, title in selects[field] %}
+                        <option value="{{ value }}" {{ 'selected' if data[field]|string == value|string else '' }}>{{ title }}</option>
+                        {% endfor %}
+                    </select>
+                    {% elif field in multiline %}
                     <textarea class="field__input" name="{{ field }}" rows="3">{{ data[field] }}</textarea>
                     {% else %}
                     <input class="field__input" type="text" name="{{ field }}" value="{{ data[field] }}"
