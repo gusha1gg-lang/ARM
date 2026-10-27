@@ -385,30 +385,29 @@ a { color: var(--blue-dark); }
 
 /* table-layout: fixed — колонки делят ровно 100% ширины контейнера,
    поэтому таблица физически не может выйти за экран.
-   Размер шрифта масштабируется вместе с окном (clamp), чтобы на узких
-   экранах текст оставался читаемым, а не обрезался. */
+   Шрифт немного крупнее, отступы увеличены для лучшей читаемости. */
 .container--fluid .grid {
     width: 100%;
     max-width: 100%;
     min-width: 0;
     table-layout: fixed;
-    font-size: clamp(8px, 0.62vw, 12.5px);
+    font-size: clamp(9px, 0.7vw, 13px);
 }
 
 .container--fluid .grid th,
 .container--fluid .grid td {
-    padding: 2px 2px;
+    padding: 3px 4px;
     white-space: normal;
     word-break: break-word;
     overflow-wrap: anywhere;
     hyphens: auto;
-    line-height: 1.12;
-    vertical-align: top;
+    line-height: 1.16;
+    vertical-align: middle;
 }
 
 .container--fluid .grid thead th {
-    font-size: .94em;
-    line-height: 1.06;
+    font-size: .96em;
+    line-height: 1.12;
     vertical-align: middle;
 }
 
