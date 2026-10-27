@@ -359,9 +359,14 @@ a { color: var(--blue-dark); }
 .container {
     flex: 1;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 24px 20px 40px;
+    padding: 24px 24px 40px;
+    box-sizing: border-box;
+}
+
+.container:not(.container--fluid) {
+    max-width: min(1400px, 96vw);
 }
 
 /* ---------- Рабочие места: таблица всегда по ширине экрана ---------- */
@@ -742,7 +747,7 @@ a { color: var(--blue-dark); }
 /* ---------- Адаптивность ---------- */
 
 @media (max-width: 640px) {
-    .container { padding: 16px 12px 32px; }
+    .container { padding: 16px 12px 32px; max-width: 100%; }
     .topbar__inner { padding: 10px 12px; }
     .table th, .table td { padding: 8px; }
     .form-row { flex-direction: column; align-items: stretch; }
