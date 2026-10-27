@@ -428,7 +428,7 @@ a { color: var(--blue-dark); }
 .container--fluid .group-uchastok td,
 .container--fluid .group-uchastok5 td,
 .container--fluid .group-uchastok-abk td {
-    text-align: left;
+    text-align: center;
     padding: 3px 6px;
     white-space: normal;
     word-break: break-word;
