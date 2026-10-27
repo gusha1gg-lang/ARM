@@ -144,3 +144,31 @@ def toggle_active(user_id: int):
     action = "разблокирован" if new_state else "заблокирован"
     flash(f"Пользователь «{user['username']}» {action}.", "success")
     return redirect(url_for("users.index"))
+
+
+@bp.route("/<int:user_id>/rename", methods=("POST",))
+@roles_required("admin")
+def rename(user_id: int):
+    validate_csrf()
+    db = get_db()
+    user = _get_user_or_404(user_id)
+
+    new_username = (request.form.get("new_username") or "").strip()
+
+    if not new_username:
+        flash("Укажите новое имя пользователя.", "error")
+        return redirect(url_for("users.index"))
+    if new_username == user["username"]:
+        flash("Имя пользователя не изменилось.", "error")
+        return redirect(url_for("users.index"))
+    if db.execute(
+        "SELECT 1 FROM users WHERE username = ? COLLATE NOCASE AND user_id != ?",
+        (new_username, user_id),
+    ).fetchone():
+        flash(f"Пользователь «{new_username}» уже существует.", "error")
+        return redirect(url_for("users.index"))
+
+    db.execute("UPDATE users SET username = ? WHERE user_id = ?", (new_username, user_id))
+    db.commit()
+    flash(f"Пользователь «{user['username']}» переименован в «{new_username}».", "success")
+    return redirect(url_for("users.index"))

@@ -53,6 +53,16 @@
                     <td>
                         <div class="actions">
                             <details class="details">
+                                <summary class="btn btn--small">Переименовать</summary>
+                                <form method="post" action="{{ url_for('users.rename', user_id=u['user_id']) }}" class="details__form">
+                                    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+                                    <input class="field__input" type="text" name="new_username"
+                                           value="{{ u['username'] }}" autocomplete="off" required>
+                                    <button class="btn btn--small btn--primary" type="submit">Сохранить</button>
+                                </form>
+                            </details>
+
+                            <details class="details">
                                 <summary class="btn btn--small">Сменить пароль</summary>
                                 <form method="post" action="{{ url_for('users.reset_password', user_id=u['user_id']) }}" class="details__form">
                                     <input type="hidden" name="_csrf" value="{{ csrf_token() }}">

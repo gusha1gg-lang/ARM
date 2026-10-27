@@ -364,6 +364,21 @@ a { color: var(--blue-dark); }
     padding: 24px 20px 40px;
 }
 
+.container--fluid {
+    max-width: 100%;
+    padding: 8px 16px 40px;
+}
+
+.container--fluid .table-wrap {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.container--fluid .grid {
+    width: max-content;
+    min-width: 100%;
+}
+
 .footer {
     text-align: center;
     color: var(--muted);
