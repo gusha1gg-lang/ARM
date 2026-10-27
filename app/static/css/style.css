@@ -364,26 +364,85 @@ a { color: var(--blue-dark); }
     padding: 24px 20px 40px;
 }
 
+/* ---------- Рабочие места: таблица всегда по ширине экрана ---------- */
+
+/* Контейнер этих страниц не ограничен 1200px и не даёт горизонтальной прокрутки. */
 .container--fluid {
     max-width: 100%;
-    padding: 4px 16px 40px;
+    width: 100%;
+    padding: 4px 8px 24px;
+    overflow-x: clip;
 }
+
+.container--fluid .page { min-width: 0; }
 
 .container--fluid .table-wrap {
-    overflow-x: auto;
     width: 100%;
-    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    overflow-x: clip;
+    -webkit-overflow-scrolling: auto;
 }
 
+/* table-layout: fixed — колонки делят ровно 100% ширины контейнера,
+   поэтому таблица физически не может выйти за экран.
+   Размер шрифта масштабируется вместе с окном (clamp), чтобы на узких
+   экранах текст оставался читаемым, а не обрезался. */
 .container--fluid .grid {
     width: 100%;
-    min-width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    font-size: clamp(8px, 0.62vw, 12.5px);
 }
 
 .container--fluid .grid th,
 .container--fluid .grid td {
-    white-space: nowrap;
+    padding: 2px 2px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    line-height: 1.12;
+    vertical-align: top;
 }
+
+.container--fluid .grid thead th {
+    font-size: .94em;
+    line-height: 1.06;
+    vertical-align: middle;
+}
+
+/* Колонка с иконкой правки — минимальная и без отступов. */
+.container--fluid .cell-action {
+    width: 2.2%;
+    padding: 0;
+}
+
+.container--fluid .cell-action img {
+    width: 14px;
+    height: 14px;
+}
+
+/* Заголовки пролётов и участков: длинный текст переносится, а не растягивает таблицу. */
+.container--fluid .group-prolet td,
+.container--fluid .group-uchastok td,
+.container--fluid .group-uchastok5 td,
+.container--fluid .group-uchastok-abk td {
+    text-align: left;
+    padding: 3px 6px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Всплывающая подсказка CISCO не должна создавать горизонтальный скролл. */
+.container--fluid .tooltip span {
+    white-space: normal;
+    max-width: 60vw;
+}
+
+.container--fluid .page__title { margin: 4px 0 8px; }
+.container--fluid .toolbar { margin-bottom: 8px; }
 
 .footer {
     text-align: center;
