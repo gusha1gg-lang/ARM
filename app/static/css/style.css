@@ -366,17 +366,23 @@ a { color: var(--blue-dark); }
 
 .container--fluid {
     max-width: 100%;
-    padding: 8px 16px 40px;
+    padding: 4px 16px 40px;
 }
 
 .container--fluid .table-wrap {
     overflow-x: auto;
     width: 100%;
+    -webkit-overflow-scrolling: touch;
 }
 
 .container--fluid .grid {
-    width: max-content;
+    width: 100%;
     min-width: 100%;
+}
+
+.container--fluid .grid th,
+.container--fluid .grid td {
+    white-space: nowrap;
 }
 
 .footer {
