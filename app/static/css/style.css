@@ -391,23 +391,23 @@ a { color: var(--blue-dark); }
     max-width: 100%;
     min-width: 0;
     table-layout: fixed;
-    font-size: clamp(9px, 0.7vw, 13px);
+    font-size: clamp(10px, 0.76vw, 14px);
 }
 
 .container--fluid .grid th,
 .container--fluid .grid td {
-    padding: 3px 4px;
+    padding: 4px 5px;
     white-space: normal;
     word-break: break-word;
     overflow-wrap: anywhere;
     hyphens: auto;
-    line-height: 1.16;
+    line-height: 1.18;
     vertical-align: middle;
 }
 
 .container--fluid .grid thead th {
-    font-size: .96em;
-    line-height: 1.12;
+    font-size: .98em;
+    line-height: 1.14;
     vertical-align: middle;
 }
 
@@ -748,3 +748,12 @@ a { color: var(--blue-dark); }
     .form-row { flex-direction: column; align-items: stretch; }
     .field--inline { min-width: 0; }
 }
+
+/* ---------- Кнопка «Наверх» ---------- */
+.scroll-top { position: fixed; right: 18px; bottom: 18px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.6); background: linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(40,78,152,.35); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .2s ease, visibility .2s ease, transform .2s ease, filter .2s ease; z-index: 1000; padding: 0; }
+.scroll-top--left { right: auto; left: 18px; }
+.scroll-top:hover { filter: brightness(1.08); }
+.scroll-top:active { transform: translateY(12px); }
+.scroll-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.scroll-top svg { display: block; }
+@media (max-width: 640px) { .scroll-top { right: 12px; bottom: 12px; width: 40px; height: 40px; } .scroll-top--left { right: auto; left: 12px; } }
