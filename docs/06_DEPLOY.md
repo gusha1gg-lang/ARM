@@ -5,7 +5,7 @@
 устанавливать на сервере ничего не нужно. Исключение — ODBC-драйвер Access,
 и только если миграцию базы вы делаете на сервере (п. 4.2).
 
-Проверено на: Python 3.13.0 x64, Windows 11.
+Проверено на: Python 3.13.0 и 3.12.10 (x64), Windows 11.
 
 ---
 
@@ -45,30 +45,36 @@
 
 ## 3. Требование к Python
 
-На сервере должен быть **Python 3.13 x64** (проверено на 3.13.0) в `PATH`
-или установленный лаунчером `py`.
+Подходит **Python 3.12 или 3.13, обязательно x64** (проверено на 3.13.0 и
+3.12.10). Версия должна быть в `PATH` или ставиться лаунчером `py`.
 
-Почему именно 3.13: в `vendor\markupsafe\` лежит бинарный `.pyd` под CPython
-3.13 x64. Другая версия Python → `ImportError` при старте. Если версия
-отличается, на машине с интернетом (или где pip разрешён) выполните:
+Почему так:
 
-```powershell
-pip install --target C:\ARM-OMK\vendor --upgrade -r requirements.txt
-```
+| Модуль в `vendor\` | 3.13 | 3.12 |
+|---|---|---|
+| Flask, Jinja2, Werkzeug, dotenv, waitress, click, itsdangerous, blinker | чистый Python | чистый Python |
+| `markupsafe` | ускоренный `_speedups.cp313-win_amd64.pyd` | `.pyd` не подходит, автоматически берётся чистый Python — работает так же, чуть медленнее |
+| `pyodbc` (только для миграции) | `pyodbc.cp313-win_amd64.pyd` | `pyodbc.cp312-win_amd64.pyd` — лежит рядом |
 
-той же версией Python, что стоит на сервере, и скопируйте `vendor\` заново.
+Обе сборки `pyodbc` лежат в одной папке, нужная подхватывается по версии
+Python. Ничего устанавливать не нужно.
 
 Проверка на сервере:
 
 ```powershell
-python --version      # Python 3.13.x
+python --version      # Python 3.12.x или 3.13.x
 python -c "import sys; print(sys.maxsize > 2**32)"   # True (64-bit)
 ```
 
-То же касается `pyodbc` (нужен только для миграции из Access): он лежит
-в `vendor\pyodbc.cp313-win_amd64.pyd` и тоже привязан к Python 3.13 x64.
-Если версия Python другая — пересоберите `vendor\` командой выше, но уже
-с `requirements-dev.txt` (там есть `pyodbc`).
+Если на сервере **другая** версия Python (3.11, 3.14 и т. п.), на машине
+с интернетом (или где pip разрешён) выполните той же версией Python, что
+стоит на сервере:
+
+```powershell
+pip install --target C:\ARM-OMK\vendor --upgrade -r requirements-dev.txt
+```
+
+и скопируйте `vendor\` заново.
 
 ## 4. Перенос базы из Access на сервере (необязательно)
 
@@ -159,7 +165,7 @@ Remove-Item instance\asutp.db-wal, instance\asutp.db-shm -ErrorAction SilentlyCo
 
 | Ошибка | Причина / решение |
 |---|---|
-| `ModuleNotFoundError: No module named 'pyodbc'` | запущен другой Python (не 3.13 x64) или в `vendor\` нет `pyodbc.cp313-win_amd64.pyd` |
+| `ModuleNotFoundError: No module named 'pyodbc'` | запущен другой Python (не 3.12/3.13 x64) или в `vendor\` нет файла `pyodbc.cp312/313-win_amd64.pyd` |
 | `pyodbc.InterfaceError: Data source name not found` | не установлен ODBC-драйвер Access (п. 4.2) |
 | `architecture mismatch` / «драйвер не найден» | 32-бит драйвер при 64-бит Python (или наоборот) |
 | `Could not lock file` / рядом появился `.ldb` | `.mdb` открыт в MS Access — закройте его |
@@ -370,9 +376,10 @@ print("изменено строк:", c.total_changes)
 
 ## 13. Чек-лист приёмки
 
-- [ ] `python --version` → 3.13.x, 64-bit.
+- [ ] `python --version` → 3.12.x или 3.13.x, 64-bit.
 - [ ] Папка `vendor\` скопирована (в ней `flask`, `waitress`).
-- [ ] `instance\asutp.db` скопирована, размер ~780 КБ.
+- [ ] `instance\asutp.db` скопирована либо создана миграцией (п. 4), размер ~780 КБ.
+- [ ] Если миграция была на сервере — `tools\verify_db.py` дал `Access=3880, SQLite=3880`.
 - [ ] `start_server.bat` запускается без ошибок, окно не закрывается.
 - [ ] `http://127.0.0.1:5000/health` → `{"status":"ok"}`.
 - [ ] Вход `admin`, пароль изменён через «Сменить пароль».

@@ -28,16 +28,20 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 | Компонент | Версия | Когда нужен |
 |---|---|---|
 | Windows | 11 | всегда |
-| Python | 3.13 x64 (проверено на 3.13.0) | всегда |
+| Python | **3.12 или 3.13, x64** (проверено на 3.13.0 и 3.12.10) | всегда |
 | Flask, python-dotenv, waitress | уже в `vendor\` | всегда |
 | pyodbc | уже в `vendor\` (5.3.0) | только для миграции из Access и `tools/verify_db.py` |
 | драйвер `Microsoft Access Driver (*.mdb, *.accdb)` | — | только для миграции из Access (ставится один раз, см. `docs/06_DEPLOY.md`, п. 4.2) |
 
-> **Почему Python именно 3.13 x64.** В `vendor\` лежит бинарный модуль
-> `markupsafe` (`.pyd`), собранный под CPython 3.13 x64. На другой версии
-> Python он не загрузится. Если на сервере другая версия — на машине с
-> интернетом выполните `pip install --target vendor -r requirements.txt`
-> той же версией Python, что стоит на сервере.
+> **Про версию Python.** Нужен **3.12 или 3.13, обязательно x64**.
+> Бинарные модули в `vendor\`: `markupsafe\_speedups.cp313-win_amd64.pyd`
+> (на 3.12 не загрузится и `markupsafe` сам перейдёт на чистый Python —
+> работает так же, чуть медленнее) и `pyodbc` — для него в `vendor\` лежат
+> сборки под обе версии, нужная подхватывается автоматически.
+> Проверено запуском без site-packages на 3.13.0 и 3.12.10.
+> Если нужна другая версия Python — на машине с интернетом выполните
+> `pip install --target vendor -r requirements.txt` (и `requirements-dev.txt`
+> для `pyodbc`) той же версией Python, что стоит на сервере.
 
 ## 2. Установка
 
@@ -386,7 +390,8 @@ tools\backup_db.bat                      # то же для планировщи
 | Порт 5000 занят | закройте старый процесс или измените `PORT` в `.env` |
 | После правки кода ничего не меняется | `DEBUG=0` — перезапустите `start_server.bat` |
 | `ModuleNotFoundError: flask` на сервере | не скопирована папка `vendor\` |
-| `ImportError` / ошибка `markupsafe` при старте | версия Python не 3.13 x64 — см. раздел 1 |
+| `ImportError` / ошибка `markupsafe` при старте | версия Python не 3.12/3.13 x64 — см. раздел 1 |
+| `ModuleNotFoundError: pyodbc` при миграции | Python не 3.12/3.13 x64 (в `vendor\` лежат сборки только под них) |
 | Сайт не открывается с другого ПК | `HOST=0.0.0.0` в `.env` + правило брандмауэра для порта 5000 |
 | В `.htm` кракозябры | файлы в windows-1251; их нельзя пересохранять в UTF-8 без изменения `<meta charset>` |
 | Забыт пароль администратора | создайте нового admin через `python` + `werkzeug.security.generate_password_hash` или восстановите копию БД |
