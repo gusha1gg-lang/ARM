@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Смена пароля — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="page__head">
+        <h2 class="page__title">Смена своего пароля</h2>
+    </div>
+
+    {% if error %}
+    <div class="flash flash--error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('account.index') }}" class="form-card">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <table class="form-table">
+            <tr>
+                <td class="form-table__label">Пользователь</td>
+                <td class="form-table__value">
+                    <strong>{{ g.user['username'] }}</strong>
+                    <span class="role-tag role-{{ g.user['role'] }}">{{ g.user['role'] }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-table__label">Текущий пароль</td>
+                <td class="form-table__value">
+                    <input class="field__input" type="password" name="current_password"
+                           autocomplete="current-password" autofocus required>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-table__label">Новый пароль</td>
+                <td class="form-table__value">
+                    <input class="field__input" type="password" name="new_password"
+                           minlength="6" autocomplete="new-password" required>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-table__label">Повторите новый пароль</td>
+                <td class="form-table__value">
+                    <input class="field__input" type="password" name="repeat_password"
+                           minlength="6" autocomplete="new-password" required>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="form-table__actions">
+                    <button class="btn btn--primary" type="submit">Сохранить</button>
+                    <a class="btn btn--ghost" href="{{ url_for('index') }}">Отмена</a>
+                </td>
+            </tr>
+        </table>
+        <p class="muted">Минимальная длина пароля — 6 символов. Пароль хранится
+            в виде хеша PBKDF2-SHA256.</p>
+    </form>
+</div>
+{% endblock %}

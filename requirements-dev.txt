@@ -1,0 +1,7 @@
+# Зависимости для разработки и миграции из MS Access.
+# На рабочем сервере НЕ нужны: там используется папка vendor/.
+-r requirements.txt
+
+# Драйвер Access для scripts/migrate_access_to_sqlite.py.
+# Требует установленного драйвера «Microsoft Access Driver (*.mdb, *.accdb)».
+pyodbc>=5.1

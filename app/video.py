@@ -18,10 +18,12 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 from flask import (
     Blueprint,
     abort,
+    current_app,
     flash,
     g,
     jsonify,
@@ -33,7 +35,6 @@ from flask import (
 )
 
 from .audit import log_action
-from .config import BASE_DIR
 from .db import get_db
 from .security import login_required, roles_required, validate_csrf
 
@@ -44,8 +45,15 @@ VIDEO_TYPES = {
     "Analog": "Аналоговое видеонаблюдение",
 }
 
-# Каталог загрузок оригинального сайта: в БД уже лежат значения uploads/<файл>.
-UPLOAD_DIR = BASE_DIR / "uploads"
+
+def upload_dir() -> Path:
+    """Каталог загрузок из настроек (UPLOAD_FOLDER).
+
+    В БД уже лежат значения ``uploads/<файл>``, поэтому по умолчанию это
+    ``uploads/`` в корне проекта. Раньше путь был жёстко прописан здесь и
+    игнорировал UPLOAD_FOLDER — файлы уходили не туда, куда смотрит бэкап.
+    """
+    return Path(current_app.config["UPLOAD_FOLDER"])
 
 ALLOWED_EXTENSIONS = (".png", ".jpeg", ".jpg", ".gif")
 MAX_UPLOAD_SIZE = 4 * 1024 * 1024
@@ -292,7 +300,7 @@ def _log_details(data: dict, camera_type: str | None = None) -> str:
 @login_required
 def uploaded_file(filename):
     """Отдача файлов из legacy-каталога uploads/ (значения upload_img)."""
-    return send_from_directory(UPLOAD_DIR, filename)
+    return send_from_directory(upload_dir(), filename)
 
 
 @bp.route("/VideoIP/upload", methods=("POST",))
@@ -321,8 +329,9 @@ def upload():
     if size > MAX_UPLOAD_SIZE:
         return jsonify(ok=False, message="Максимальный размер файла 4Mb"), 400
 
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    file.save(str(UPLOAD_DIR / name))
+    target_dir = upload_dir()
+    target_dir.mkdir(parents=True, exist_ok=True)
+    file.save(str(target_dir / name))
     log_action("upload", "Video_Camera_all", None, f"Загружен файл {name}")
     return jsonify(ok=True, message="Файл загружен", path=f"uploads/{name}")
 

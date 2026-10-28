@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="login-wrap">
-    <form class="card login-card" method="post" action="{{ url_for('auth.login') }}">
+    <form class="card login-card" method="post" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
         <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
         <div class="card__head">Авторизация</div>
 

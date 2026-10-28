@@ -69,6 +69,7 @@
             {% if g.user['role'] == 'admin' %}
             <a class="topmenu__user-link" href="{{ url_for('users.index') }}">Пользователи</a>
             {% endif %}
+            <a class="topmenu__user-link" href="{{ url_for('account.index') }}">Сменить пароль</a>
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
                 <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn--ghost btn--small">Выйти</button>

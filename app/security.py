@@ -9,20 +9,48 @@ from __future__ import annotations
 
 import hmac
 import secrets
+import time
 from functools import wraps
 
-from flask import abort, g, redirect, request, session, url_for
+from flask import abort, current_app, g, redirect, request, session, url_for
 
 from .db import get_db
 
 # Порядок «старшинства» ролей — для проверки «не ниже чем».
 ROLE_LEVEL = {"viewer": 1, "editor": 2, "admin": 3}
 
+#: Значение по умолчанию, если PERMANENT_SESSION_LIFETIME не задан.
+SESSION_LIFETIME_SECONDS = 24 * 60 * 60
+
+
+def session_expired() -> bool:
+    """Истёк ли срок сессии (1 сутки с момента входа, а не бездействия).
+
+    Flask сам отбрасывает просроченную cookie, но её срок можно «сдвинуть»:
+    любое изменение сессии (flash-сообщение, CSRF-токен) переподписывает
+    cookie с новым сроком. Поэтому время входа хранится отдельно в
+    ``session["login_at"]`` и проверяется явно.
+    """
+    login_at = session.get("login_at")
+    if login_at is None:
+        return True
+    try:
+        age = time.time() - float(login_at)
+    except (TypeError, ValueError):
+        return True
+    lifetime = current_app.config.get("PERMANENT_SESSION_LIFETIME")
+    seconds = lifetime.total_seconds() if lifetime else SESSION_LIFETIME_SECONDS
+    return age > seconds
+
 
 def load_logged_in_user() -> None:
     """Загрузить пользователя из сессии в g.user (или None)."""
     user_id = session.get("user_id")
     g.user = None
+    if user_id is not None and session_expired():
+        # Сутки с момента входа прошли — сессию закрываем.
+        session.clear()
+        user_id = None
     if user_id is not None:
         g.user = get_db().execute(
             "SELECT user_id, username, role, is_active, created_at, last_login "

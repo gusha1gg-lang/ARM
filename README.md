@@ -10,10 +10,15 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 * **Аутентификация:** сессии Flask, пароли — PBKDF2-SHA256, роли `viewer` / `editor` / `admin`.
 * **Журнал действий:** страница **«Логи»** (`/Logs.aspx`) — кто, что и когда сделал;
   на формах редактирования справа от заголовка видно, кто и когда менял запись.
-* **Запуск:** только локально, `http://127.0.0.1:5000`.
+* **Сессии:** сутки с момента входа (не «сутки бездействия»); пароль каждый
+  пользователь может сменить сам — шапка → «Сменить пароль» (`/Account.aspx`).
+* **Запуск:** локально — `python run.py`; на сервере — `start_server.bat`
+  (waitress, слушает локальную сеть). Библиотеки лежат в `vendor/`,
+  `pip install` на сервере не нужен.
 
-Статус миграции: **Этапы 0–4 выполнены**, Этап 5 — финальная проверка и документация.
-Отчёт по страницам — [`docs/04_PAGES.md`](docs/04_PAGES.md), журнал изменений —
+Статус миграции: **Этапы 0–5 выполнены**, Этап 6 — подготовка к работе на сервере.
+Отчёт по страницам — [`docs/04_PAGES.md`](docs/04_PAGES.md), инструкция по
+переносу — [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md), журнал изменений —
 [`MIGRATION_LOG.md`](MIGRATION_LOG.md).
 
 ---
@@ -23,17 +28,30 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 | Компонент | Версия | Когда нужен |
 |---|---|---|
 | Windows | 11 | всегда |
-| Python | 3.11+ (проверено на 3.13) | всегда |
-| Flask, python-dotenv | см. `requirements.txt` | всегда |
+| Python | 3.13 x64 (проверено на 3.13.0) | всегда |
+| Flask, python-dotenv, waitress | уже в `vendor\` | всегда |
 | pyodbc + драйвер `Microsoft Access Driver (*.mdb, *.accdb)` | — | только для миграции из Access и `tools/verify_db.py` |
 
+> **Почему Python именно 3.13 x64.** В `vendor\` лежит бинарный модуль
+> `markupsafe` (`.pyd`), собранный под CPython 3.13 x64. На другой версии
+> Python он не загрузится. Если на сервере другая версия — на машине с
+> интернетом выполните `pip install --target vendor -r requirements.txt`
+> той же версией Python, что стоит на сервере.
+
 ## 2. Установка
+
+### На рабочем сервере (без интернета и без pip)
+
+Ничего устанавливать не нужно: библиотеки лежат в папке `vendor\`.
+Достаточно скопировать проект целиком (см. [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md)).
+
+### На машине разработчика
 
 ```powershell
 cd C:\ARM-OMK
 python -m venv venv
 venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 copy .env.example .env
 ```
 
@@ -44,7 +62,8 @@ python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
 Полученную строку впишите в `.env` вместо `change-me-to-random-string`.
-Файл `.env` в git не попадает.
+Файл `.env` в git не попадает. При запуске `serve.py` ключ создаётся
+автоматически, если его нет.
 
 ### Перенос данных из Access (один раз)
 
@@ -76,6 +95,27 @@ python tools/verify_db.py
 
 ## 3. Запуск
 
+### Рабочий режим (сервер, общий доступ)
+
+```powershell
+cd C:\ARM-OMK
+start_server.bat
+```
+
+или напрямую:
+
+```powershell
+python serve.py
+```
+
+* Работает waitress — постоянный WSGI-сервер (не отладочный).
+* Слушает `0.0.0.0:5000` — сайт доступен из локальной сети:
+  `http://<IP-сервера>:5000/`.
+* Если `.env` нет, он создаётся автоматически вместе со случайным `SECRET_KEY`.
+* Остановка — `Ctrl+C`.
+
+### Режим разработки
+
 ```powershell
 cd C:\ARM-OMK
 venv\Scripts\activate
@@ -83,26 +123,30 @@ python run.py
 ```
 
 Откройте <http://127.0.0.1:5000> — приложение перенаправит на `/Login.aspx`.
+`run.py` использует `HOST`, `PORT` и `DEBUG` из `.env`; при `DEBUG=1`
+сервер сам перезагружается после правок кода.
 
 * Логин администратора — `admin` (перенесён из `UserPass`).
 * Пароль — прежний, из старой базы. **Смените его** после первого входа
-  (шапка → «Пользователи» → «Сменить пароль»).
-* Для остановки сервера — `Ctrl+C`.
+  (шапка → «Сменить пароль»; администратор может менять пароли и в разделе
+  «Пользователи»).
 * Порт занят: измените `PORT` в `.env` или завершите процесс, слушающий 5000.
-
-`run.py` использует `HOST`, `PORT` и `DEBUG` из `.env`. Для обычной работы
-рекомендуется `DEBUG=0`; при `DEBUG=1` сервер сам перезагружается после правок кода.
 
 ## 4. Настройки (`.env`)
 
 | Переменная | По умолчанию | Назначение |
 |---|---|---|
-| `SECRET_KEY` | `dev-only-insecure-key` | ключ подписи сессий (обязательно заменить) |
+| `SECRET_KEY` | `dev-only-insecure-key` | ключ подписи сессий (`serve.py` заменяет автоматически) |
 | `DATABASE_PATH` | `instance/asutp.db` | путь к SQLite относительно корня проекта |
-| `UPLOAD_FOLDER` | `app/static/uploads` | куда сохраняются картинки камер |
-| `HOST` | `127.0.0.1` | адрес прослушивания (только локально) |
+| `UPLOAD_FOLDER` | `uploads` | куда сохраняются картинки камер |
+| `HOST` | `127.0.0.1` (`serve.py` — `0.0.0.0`) | адрес прослушивания |
 | `PORT` | `5000` | порт |
-| `DEBUG` | `1` | `1` — режим отладки, `0` — обычный |
+| `DEBUG` | `0` | `1` — режим разработки, `0` — обычный |
+| `LOG_DIR` | `logs` | каталог журнала приложения |
+
+Сессия живёт **сутки с момента входа** (`PERMANENT_SESSION_LIFETIME`,
+`SESSION_REFRESH_EACH_REQUEST=False`). Продлить её нельзя: после 24 часов
+нужно войти заново, после входа откроется та же страница.
 
 ## 5. Роли
 
@@ -167,6 +211,7 @@ C:\ARM-OMK\
 │   ├── db.py                 # соединение SQLite на запрос
 │   ├── security.py           # g.user, @login_required, @roles_required, CSRF
 │   ├── auth.py               # /Login.aspx, /logout
+│   ├── account.py            # /Account.aspx — смена своего пароля
 │   ├── users.py              # /admin/users/ (только admin)
 │   ├── audit.py              # журнал действий /Logs.aspx + audit_log
 │   ├── ipaddr4.py            # ТЭСК ТБД
@@ -196,12 +241,22 @@ C:\ARM-OMK\
 │   ├── test_stage5_roles.py  # матрица «страницы × роли» (173)
 │   ├── test_audit.py         # журнал действий и «последнее изменение» (30)
 │   ├── test_prolet_minus.py  # отрицательный «Номер пролета» (-1) (18)
+│   ├── test_session_and_account.py  # таймаут сессии и смена пароля (21)
+│   ├── backup_db.py          # резервная копия БД (и файлов)
+│   ├── backup_db.bat         # то же для планировщика заданий
 │   └── gen_static_pages.py   # генератор шаблонов статики
-├── docs\                     # 00_AUDIT, 01_PLAN, 02_DB, 03_AUTH, 04_PAGES, 05_FINAL
+├── docs\                     # 00_AUDIT, 01_PLAN, 02_DB, 03_AUTH, 04_PAGES, 05_FINAL, 06_DEPLOY
+├── vendor\                   # библиотеки Flask/dotenv/waitress (для сервера без pip)
+├── logs\                     # журнал приложения app.log (в git не входит)
 ├── instance\asutp.db         # рабочая БД (в git не входит)
 ├── App_Data\AsutpDB.mdb      # исходная база Access (не изменяется)
-├── run.py                    # python run.py
-├── requirements.txt
+├── run.py                    # режим разработки: python run.py
+├── serve.py                  # рабочий режим: waitress
+├── start_server.bat          # запуск сервера двойным щелчком
+├── install_autostart.bat     # автозапуск при входе в Windows
+├── remove_autostart.bat      # удалить автозапуск
+├── requirements.txt          # рабочие зависимости (уже в vendor\)
+├── requirements-dev.txt      # + pyodbc для миграции из Access
 ├── .env.example
 ├── MIGRATION_LOG.md          # журнал всех изменений по этапам
 └── (legacy: *.aspx, *.cs, *.htm, *.files, App_Code\, css\, img\, images\, Slegenie\)
@@ -213,7 +268,8 @@ C:\ARM-OMK\
 ## 8. Проверки и тесты
 
 Все сквозные тесты работают через HTTP и требуют запущенного `python run.py`
-на `http://127.0.0.1:5000`.
+на `http://127.0.0.1:5000`. Исключение — `test_session_and_account.py`:
+он работает внутри процесса (`test_client`), сервер ему не нужен.
 
 ```powershell
 python tools/verify_db.py          # сверка БД с Access
@@ -221,6 +277,7 @@ python tools/smoke_pages.py        # все страницы → 200
 python tools/test_stage5_roles.py  # матрица доступа по ролям
 python tools/test_audit.py         # журнал действий и «последнее изменение»
 python tools/test_prolet_minus.py  # «Номер пролета» = -1 и «Все равно сохранить»
+python tools/test_session_and_account.py  # таймаут сессии и смена пароля
 python tools/check_static_pages.py # статика 1-в-1 с legacy
 python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 ```
@@ -241,6 +298,7 @@ python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 | `test_stage5_roles.py` (матрица) | 173 |
 | `test_audit.py` (журнал действий) | 30 |
 | `test_prolet_minus.py` (пролёт -1) | 18 |
+| `test_session_and_account.py` (сессия, пароль) | 21 |
 | `smoke_pages.py` (все страницы) | 36 |
 
 Тесты создают временных пользователей (`test_viewer`, `test_editor`) и тестовые
@@ -251,22 +309,34 @@ python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 ## 9. База данных и резервные копии
 
 * Рабочая БД: `instance/asutp.db` (в git не входит).
+* Режим журнала — **WAL** (`asutp.db-wal` / `-shm` рядом с базой, в git не входят).
+  Это позволяет 2–3 пользователям работать одновременно без ошибок
+  «database is locked».
 * Схема: `scripts/schema.sql` — имена таблиц/полей и типы повторяют Access
   (маппинг типов описан в `docs/02_DB.md`).
 * Таблица журнала `audit_log` создаётся приложением при старте
   (`CREATE TABLE IF NOT EXISTS`), в миграции Access её нет.
-* Перед экспериментами скопируйте файл:
+* Резервная копия (корректна и при включённом WAL):
 
 ```powershell
-Copy-Item instance\asutp.db "_backup\asutp-$(Get-Date -Format yyyyMMdd-HHmm).db"
+python tools\backup_db.py                # только БД → _backup\db\asutp-ГГГГММДД-ЧЧММСС.db
+python tools\backup_db.py --with-files   # + uploads\ и Slegenie\
+tools\backup_db.bat                      # то же для планировщика, пишет в _backup\logs\backup.log
 ```
 
+  Хранятся последние 30 копий (`--keep N` — изменить).
 * `scripts/migrate_access_to_sqlite.py` **пересоздаёт** базу из Access:
   изменения, сделанные в приложении, будут потеряны — сначала сделайте копию.
+* Расписание бэкапов и перенос на сервер — [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md).
 
 ## 10. Безопасность
 
-* Приложение слушает только `127.0.0.1` (локальное использование).
+* Сессия — сутки с момента входа, затем повторный вход. Пароль можно сменить
+  самому: шапка → «Сменить пароль» (`/Account.aspx`).
+* Отладчик Flask на сервере выключен: `serve.py` принудительно ставит `DEBUG=0`,
+  значение по умолчанию — тоже `0`.
+* `serve.py` не запускается со значением-заглушкой `SECRET_KEY`: генерирует
+  случайный ключ и записывает его в `.env`.
 * Пароли — PBKDF2-SHA256; в открытом виде не хранятся.
 * Все изменяющие формы защищены CSRF-токеном; запрос без токена → `400`.
 * SQL — только параметризованный (`?`), без конкатенации пользовательских строк.
@@ -274,6 +344,18 @@ Copy-Item instance\asutp.db "_backup\asutp-$(Get-Date -Format yyyyMMdd-HHmm).db"
   видна ли кнопка в интерфейсе.
 * `SECRET_KEY` и `.env` не коммитятся; в репозитории только `.env.example`.
 * Загружаемые картинки камер: проверка расширения и размера (до 4 МБ, как в оригинале).
+* `/health` отдаёт только `{"status": "ok"}` — без пути к БД и количества строк.
+* Заголовки `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`.
+* Приложение рассчитано на **внутреннюю сеть**: HTTPS, блокировка подбора пароля
+  и обратный прокси не настроены (при выходе за пределы сети — обязательны).
+
+### Известное ограничение: `UserPass.Pass`
+
+В legacy-таблице `UserPass` поле `Pass` хранит **пароль администратора
+в открытом виде** (перенесено из Access как есть, структура и данные не менялись).
+Пароль в `users.password_hash` при этом хранится правильно. Пока БД не выходит
+за пределы доверенных машин — риск ограничен; при копировании базы на сетевую
+папку или в облако значение `Pass` лучше затереть (см. `docs/06_DEPLOY.md`).
 
 ## 11. Документация
 
@@ -285,6 +367,7 @@ Copy-Item instance\asutp.db "_backup\asutp-$(Get-Date -Format yyyyMMdd-HHmm).db"
 | [`docs/03_AUTH.md`](docs/03_AUTH.md) | вход, роли, управление пользователями |
 | [`docs/04_PAGES.md`](docs/04_PAGES.md) | отчёты по каждой странице и отклонения |
 | [`docs/05_FINAL.md`](docs/05_FINAL.md) | итоговая проверка Этапа 5 |
+| [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md) | перенос на сервер, `.env`, автозапуск, бэкапы |
 | [`MIGRATION_LOG.md`](MIGRATION_LOG.md) | журнал изменений по этапам |
 
 ## 12. Частые проблемы
@@ -294,6 +377,9 @@ Copy-Item instance\asutp.db "_backup\asutp-$(Get-Date -Format yyyyMMdd-HHmm).db"
 | `no such table: users` | не выполнена миграция: `python scripts/migrate_access_to_sqlite.py` |
 | `pyodbc.InterfaceError: Data source name not found` | нет драйвера Access — установите «Microsoft Access Database Engine» (нужен только для миграции) |
 | Порт 5000 занят | закройте старый процесс или измените `PORT` в `.env` |
-| После правки кода ничего не меняется | `DEBUG=0` — перезапустите `python run.py` |
+| После правки кода ничего не меняется | `DEBUG=0` — перезапустите `start_server.bat` |
+| `ModuleNotFoundError: flask` на сервере | не скопирована папка `vendor\` |
+| `ImportError` / ошибка `markupsafe` при старте | версия Python не 3.13 x64 — см. раздел 1 |
+| Сайт не открывается с другого ПК | `HOST=0.0.0.0` в `.env` + правило брандмауэра для порта 5000 |
 | В `.htm` кракозябры | файлы в windows-1251; их нельзя пересохранять в UTF-8 без изменения `<meta charset>` |
 | Забыт пароль администратора | создайте нового admin через `python` + `werkzeug.security.generate_password_hash` или восстановите копию БД |

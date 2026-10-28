@@ -1,6 +1,8 @@
 """Вход и выход. URL сохранён как в оригинале: /Login.aspx."""
 from __future__ import annotations
 
+import time
+
 from flask import (
     Blueprint,
     g,
@@ -60,9 +62,13 @@ def login():
             error = LOGIN_ERROR
         else:
             session.clear()
+            session.permanent = True
+            # Точка отсчёта суточного срока — момент входа.
+            session["login_at"] = time.time()
             session["user_id"] = user["user_id"]
             db.execute(
-                "UPDATE users SET last_login = datetime('now') WHERE user_id = ?",
+                "UPDATE users SET last_login = datetime('now', 'localtime') "
+                "WHERE user_id = ?",
                 (user["user_id"],),
             )
             db.commit()
