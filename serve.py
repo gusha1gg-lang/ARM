@@ -41,8 +41,11 @@ DATABASE_PATH=instance/asutp.db
 UPLOAD_FOLDER=uploads
 
 # Адрес и порт. 0.0.0.0 — доступ из локальной сети.
+# PORT=80 — сайт открывается без порта: http://<IP-компьютера>/
+# Если порт 80 занят другой программой, поставьте PORT=5000 и добавьте
+# порт в адрес: http://<IP-компьютера>:5000/
 HOST=0.0.0.0
-PORT=5000
+PORT=80
 
 # Отладка. На сервере всегда 0.
 DEBUG=0
@@ -94,6 +97,66 @@ def _ensure_secret_key() -> str:
     return current
 
 
+def _primary_ipv4() -> str:
+    """Основной IPv4-адрес в локальной сети (пакеты при этом не отправляются)."""
+    import socket
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        sock.connect(("10.255.255.255", 1))
+        return sock.getsockname()[0]
+    except OSError:
+        return ""
+    finally:
+        sock.close()
+
+
+def _local_ipv4() -> list[str]:
+    """IPv4-адреса этого компьютера без петлевых и служебных (169.254.*)."""
+    import socket
+
+    result: list[str] = []
+    try:
+        infos = socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET)
+    except OSError:
+        return result
+    for info in infos:
+        ip = info[4][0]
+        if ip.startswith("127.") or ip.startswith("169.254."):
+            continue
+        if ip not in result:
+            result.append(ip)
+    return result
+
+
+def _port_is_free(host: str, port: int) -> bool:
+    """Проверить, можно ли занять порт (Windows: порт 80 доступен без админа)."""
+    import socket
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        try:
+            sock.bind((host, port))
+        except OSError:
+            return False
+    return True
+
+
+def _report_busy_port(port: int) -> None:
+    print()
+    print(f"ОШИБКА: порт {port} уже занят другой программой.")
+    print("  Кто занял порт (в командной строке от администратора):")
+    print(f"    netstat -ano | findstr :{port}")
+    print("    tasklist /FI \"PID eq <номер из последнего столбца>\"")
+    print()
+    print("  Что делать:")
+    print("   1) остановить программу, занявшую порт (часто это IIS или другой")
+    print("      веб-сервер), затем запустить start_server.bat снова;")
+    print("   2) либо открыть файл .env в папке проекта (Блокнотом), заменить")
+    print("      строку PORT=80 на PORT=5000 и запустить снова — сайт будет")
+    print("      открываться по адресу http://<IP-компьютера>:5000/")
+    print()
+
+
 def main() -> int:
     if not VENDOR_DIR.is_dir():
         print("Не найден каталог vendor/ — библиотеки не укомплектованы.")
@@ -115,13 +178,28 @@ def main() -> int:
     application = create_app()
     application.config["DEBUG"] = False
 
+    suffix = "" if port == 80 else f":{port}"
+    primary = _primary_ipv4()
+
     print()
     print("ARM-OMK — Справочник ТЭСК ТБД")
-    print(f"  адрес:  http://{host}:{port}/")
+    print(f"  на этом компьютере:  http://127.0.0.1{suffix}/")
+    if primary:
+        print(f"  из локальной сети:   http://{primary}{suffix}/")
+    else:
+        for ip in _local_ipv4():
+            print(f"  из локальной сети:   http://{ip}{suffix}/")
+    if host == "127.0.0.1":
+        print("  ВНИМАНИЕ: HOST=127.0.0.1 — доступ только с этого компьютера.")
+        print("  Для доступа из сети укажите в .env HOST=0.0.0.0")
     print(f"  БД:     {application.config['DATABASE']}")
     print(f"  журнал: {Path(application.config['LOG_DIR']) / 'app.log'}")
     print("  остановка: Ctrl+C")
     print()
+
+    if not _port_is_free(host, port):
+        _report_busy_port(port)
+        return 2
 
     serve(
         application,

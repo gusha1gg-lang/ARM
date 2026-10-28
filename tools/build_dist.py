@@ -7,7 +7,7 @@
   * ресурсы legacy-сайта, которые отдаёт приложение: ``uploads/``,
     ``Slegenie/``, ``img/``, ``css/``, ``images/``, ``*.files/``, ``*.htm``;
   * запуск и автозапуск: ``serve.py``, ``start_server.bat``,
-    ``install_autostart.bat``, ``remove_autostart.bat``;
+    ``install_autostart.bat``, ``remove_autostart.bat``, ``install_firewall.bat``;
   * миграция и обслуживание: ``scripts/``, ``tools/verify_db.py``,
     ``tools/backup_db.py``, ``tools/backup_db.bat``, ``App_Data/AsutpDB.mdb``;
   * документация: ``docs/``, ``README.md``, ``MIGRATION_LOG.md``,
@@ -51,6 +51,7 @@ FILES = [
     "serve.py",
     "start_server.bat",
     "install_autostart.bat",
+    "install_firewall.bat",
     "remove_autostart.bat",
     "requirements.txt",
     "requirements-dev.txt",
@@ -91,15 +92,31 @@ HOWTO = """ARM-OMK — справочник ТЭСК ТБД
 ЗАПУСК
   1. Скопировать эту папку целиком, например в C:\\ARM-OMK
   2. Двойной щелчок по start_server.bat
-  3. Открыть http://127.0.0.1:5000/
+  3. Открыть http://127.0.0.1/   (без порта)
   4. Войти: admin и прежний пароль, затем шапка -> «Сменить пароль»
 
   При первом запуске serve.py сам создаст .env со случайным SECRET_KEY
   и папку logs\\.
 
-ДОСТУП ИЗ ЛОКАЛЬНОЙ СЕТИ (PowerShell от администратора)
+АДРЕС БЕЗ ПОРТА (http://10.100.10.1/)
+  Сайт слушает порт 80 - стандартный порт HTTP, поэтому в адресе он
+  не виден. В .env по умолчанию уже стоит HOST=0.0.0.0 и PORT=80.
+  Порт 80 в Windows не требует прав администратора.
+  Если открыть с :5000 - в .env замените PORT=5000 на PORT=80.
+
+  Если порт 80 занят другой программой (часто IIS), serve.py напишет
+  об этом и предложит варианты: остановить занявшую программу или
+  поставить в .env PORT=5000 (тогда адрес будет http://<IP>:5000/).
+
+ДОСТУП ИЗ ЛОКАЛЬНОЙ СЕТИ (один раз, от администратора)
+  install_firewall.bat  ->  правый щелчок, «Запуск от имени администратора»
+  Скрипт открывает входящий порт 80 для профилей «домен» и «частная сеть».
+
+  То же вручную (PowerShell от администратора):
   New-NetFirewallRule -DisplayName "ARM-OMK web" -Direction Inbound `
-    -Protocol TCP -LocalPort 5000 -Action Allow -Profile Domain,Private
+    -Protocol TCP -LocalPort 80 -Action Allow -Profile Domain,Private
+
+  После этого сайт открывается с других ПК: http://IP-этого-компьютера/
 
 АВТОЗАПУСК ПРИ ВХОДЕ В WINDOWS
   install_autostart.bat (запуск от имени администратора)
@@ -117,8 +134,9 @@ HOWTO = """ARM-OMK — справочник ТЭСК ТБД
   Подробно: docs\\06_DEPLOY.md, пункт 4.
 
 ПРОВЕРКА, ЧТО ВСЁ ЖИВО
-  http://127.0.0.1:5000/health  ->  {"status":"ok"}
+  http://127.0.0.1/health  ->  {"status":"ok"}
   журнал: logs\\app.log
+  если порт другой: http://127.0.0.1:<PORT>/health
 """
 
 
