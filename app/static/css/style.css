@@ -711,15 +711,24 @@ a { color: var(--blue-dark); }
 .grid--phone tbody tr.row-even td { background: #ffffff; }
 .grid--phone tbody tr.row-edit td { background: #008a8c; color: #ffffff; }
 
-/* Как в оригинале (telefon.aspx): таблица растянута на ширину монитора,
-   текст прижат влево, колонка с кнопками — фиксированной ширины справа. */
-.container--fluid .grid--phone { width: 100%; }
+/* Как в оригинале (telefon.aspx): таблица по ширине содержимого (а не на весь
+   монитор), прижата влево; колонки не растягиваются, текст слева. */
+.container--fluid .grid--phone {
+    width: 100%;
+    max-width: 760px;
+    table-layout: auto;
+}
 .container--fluid .grid--phone th,
-.container--fluid .grid--phone td { text-align: left; padding: 5px 9px; }
-.container--fluid .grid--phone .cell-action {
-    width: 210px;
-    text-align: right;
+.container--fluid .grid--phone td {
+    text-align: left;
+    padding: 5px 9px;
     white-space: nowrap;
+}
+/* Колонка с кнопками — по ширине кнопок, всегда в одну строку. */
+.container--fluid .grid--phone .cell-action {
+    width: 1%;
+    white-space: nowrap;
+    text-align: left;
 }
 
 /* ---------- Справочники CISCO/камер и цехов ---------- */
@@ -764,7 +773,7 @@ a { color: var(--blue-dark); }
 
 /* Как в оригинале (JR.aspx): таблица на всю ширину монитора,
    названия ярлыков — по левому краю, иконки — в узкой правой колонке. */
-.container--fluid .table--jarlik { width: 100%; font-size: 15px; }
+.container--fluid .table--jarlik { width: 100%; max-width: 760px; font-size: 15px; }
 .container--fluid .table--jarlik th.table--jarlik__head { font-size: 15px; }
 .container--fluid .table--jarlik td.table--jarlik__name {
     padding: 5px 10px;
