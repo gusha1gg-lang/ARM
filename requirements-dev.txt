@@ -2,6 +2,8 @@
 # На рабочем сервере НЕ нужны: там используется папка vendor/.
 -r requirements.txt
 
-# Драйвер Access для scripts/migrate_access_to_sqlite.py.
-# Требует установленного драйвера «Microsoft Access Driver (*.mdb, *.accdb)».
-pyodbc>=5.1
+# pyodbc для scripts/migrate_access_to_sqlite.py. Нужен только если
+# пересобирать vendor/ или ставить окружение через pip: на сервере модуль
+# уже лежит в vendor/pyodbc.cp313-win_amd64.pyd.
+# Требует установленного ODBC-драйвера «Microsoft Access Driver (*.mdb, *.accdb)».
+pyodbc==5.3.0

@@ -14,9 +14,15 @@ import os
 import sqlite3
 import sys
 
-from werkzeug.security import generate_password_hash
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# На сервере сторонние библиотеки лежат в vendor/ — pip там недоступен.
+VENDOR_DIR = os.path.join(BASE_DIR, "vendor")
+if os.path.isdir(VENDOR_DIR) and VENDOR_DIR not in sys.path:
+    sys.path.insert(0, VENDOR_DIR)
+
+from werkzeug.security import generate_password_hash  # noqa: E402
+
 SQLITE_PATH = os.path.join(BASE_DIR, "instance", "asutp.db")
 
 

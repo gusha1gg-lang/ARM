@@ -1161,3 +1161,47 @@ NSSM и другие сторонние `.exe` не используются —
 `tools/test_session_and_account.py` (новый), `vendor/` (новый),
 `requirements.txt`, `requirements-dev.txt` (новый), `.env.example`,
 `.gitignore`, `docs/06_DEPLOY.md` (новый), `README.md`, `MIGRATION_LOG.md`.
+
+---
+
+## Этап 6 — доработка: миграция БД на сервере (2026-10-28)
+
+### Задача
+Пользователь хочет сначала перенести проект на сервер, а миграцию
+Access → SQLite выполнить уже там. Ранее предполагалось, что миграция
+делается на ПК разработчика (там `pip` разрешён), а на сервер копируется
+готовый `instance/asutp.db`. Для варианта «мигрировать на сервере» не хватало
+двух вещей: `pyodbc` (на сервере нет `pip`) и понятной инструкции.
+
+### Что сделано
+
+| Изменение | Файл | Комментарий |
+|---|---|---|
+| `pyodbc` 5.3.0 положен в `vendor/` | `vendor/pyodbc.cp313-win_amd64.pyd`, `vendor/pyodbc.pyi`, `vendor/pyodbc-5.3.0.dist-info/` | взят готовый wheel `pyodbc-5.3.0-cp313-cp313-win_amd64.whl` и распакован; `pip` на сервере не нужен |
+| Скрипты миграции сами подключают `vendor/` | `scripts/migrate_access_to_sqlite.py`, `scripts/migrate_legacy_admin.py`, `tools/verify_db.py` | 4 строки: путь к `vendor/` добавляется в `sys.path` до импорта `pyodbc`/`werkzeug` |
+| Новый раздел «Перенос базы из Access на сервере» | `docs/06_DEPLOY.md`, п. 4 | два способа (A — мигрировать на ПК и скопировать файл, B — мигрировать на сервере), требования к ODBC-драйверу, порядок шагов, откат, таблица ошибок |
+| Раздел «Что копировать» уточнён | `docs/06_DEPLOY.md`, п. 1–3 | `scripts/`, `App_Data/AsutpDB.mdb`, `tools/verify_db.py` — нужны только при миграции на сервере; в `vendor/` добавлен `pyodbc` |
+| README | `README.md`, п. 1, 2 | `pyodbc` → «уже в `vendor/`», отдельная строка про ODBC-драйвер; в инструкции по миграции — оба варианта |
+| `requirements-dev.txt` | — | `pyodbc==5.3.0` (та же версия, что в `vendor/`), пояснение, что нужен только для пересборки `vendor/` |
+
+### Проверка (Python без site-packages: `python -S` — имитация сервера)
+
+| Проверка | Результат |
+|---|---|
+| `import pyodbc` из `vendor/` без site-packages | ✅ 5.3.0, `vendor\pyodbc.cp313-win_amd64.pyd` |
+| Подключение к `App_Data/AsutpDB.mdb` | ✅ драйвер найден, таблицы читаются (`IPaddress4` = 842 и т. д.) |
+| `python -S scripts/migrate_access_to_sqlite.py` (копия скрипта, БД во временный файл) | ✅ 14 таблиц, `Итого строк: 3880`, внешние ключи OK |
+| `python -S scripts/migrate_legacy_admin.py` | ✅ `admin` уже в `users`, дубликат не создан |
+| `python -S tools/verify_db.py` | ✅ `Access=3880, SQLite=3880`, FK OK, кириллица OK (checksum ❌ только у `IPaddress4`/`IPaddress5` — реальные правки через сайт) |
+
+Рабочая база `instance/asutp.db` при проверках **не изменялась**
+(миграция запускалась на временный файл).
+
+### Замечания
+* `pyodbc` — бинарный модуль под CPython 3.13 x64, как и `markupsafe`:
+  на сервере должен быть Python 3.13 x64.
+* Для миграции на сервере нужен ODBC-драйвер «Microsoft Access Driver
+  (*.mdb, *.accdb)» (Access Database Engine 2016 x64). Если он уже стоит
+  (legacy-сайт на этом же сервере работал с `.mdb`), ставить ничего не нужно.
+* Откат после миграции на сервере — `instance/asutp_before_migration.db`
+  (шаг 2 инструкции).

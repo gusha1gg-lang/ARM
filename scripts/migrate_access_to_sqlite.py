@@ -15,9 +15,15 @@ import os
 import sqlite3
 import sys
 
-import pyodbc
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# На сервере сторонние библиотеки лежат в vendor/ — pip там недоступен.
+VENDOR_DIR = os.path.join(BASE_DIR, "vendor")
+if os.path.isdir(VENDOR_DIR) and VENDOR_DIR not in sys.path:
+    sys.path.insert(0, VENDOR_DIR)
+
+import pyodbc  # noqa: E402
+
 MDB_PATH = os.path.join(BASE_DIR, "App_Data", "AsutpDB.mdb")
 SQLITE_PATH = os.path.join(BASE_DIR, "instance", "asutp.db")
 SCHEMA_PATH = os.path.join(BASE_DIR, "scripts", "schema.sql")

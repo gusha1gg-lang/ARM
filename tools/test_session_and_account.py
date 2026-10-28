@@ -16,6 +16,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE_DIR))
 
+# Библиотеки лежат в vendor/ — на сервере pip нет.
+VENDOR_DIR = BASE_DIR / "vendor"
+if VENDOR_DIR.is_dir():
+    sys.path.insert(0, str(VENDOR_DIR))
+
 from werkzeug.security import check_password_hash  # noqa: E402
 
 from app import create_app  # noqa: E402

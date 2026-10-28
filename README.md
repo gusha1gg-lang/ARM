@@ -30,7 +30,8 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 | Windows | 11 | всегда |
 | Python | 3.13 x64 (проверено на 3.13.0) | всегда |
 | Flask, python-dotenv, waitress | уже в `vendor\` | всегда |
-| pyodbc + драйвер `Microsoft Access Driver (*.mdb, *.accdb)` | — | только для миграции из Access и `tools/verify_db.py` |
+| pyodbc | уже в `vendor\` (5.3.0) | только для миграции из Access и `tools/verify_db.py` |
+| драйвер `Microsoft Access Driver (*.mdb, *.accdb)` | — | только для миграции из Access (ставится один раз, см. `docs/06_DEPLOY.md`, п. 4.2) |
 
 > **Почему Python именно 3.13 x64.** В `vendor\` лежит бинарный модуль
 > `markupsafe` (`.pyd`), собранный под CPython 3.13 x64. На другой версии
@@ -66,6 +67,12 @@ python -c "import secrets; print(secrets.token_hex(32))"
 автоматически, если его нет.
 
 ### Перенос данных из Access (один раз)
+
+Миграцию можно выполнить на любом ПК, где разрешён `pip` и установлен драйвер
+Access, а затем скопировать готовый файл `instance/asutp.db` на сервер.
+Либо выполнить её прямо на сервере — `pyodbc` уже лежит в `vendor\`,
+дополнительно нужен только ODBC-драйвер Access
+(подробно: [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md), п. 4).
 
 ```powershell
 python scripts/migrate_access_to_sqlite.py
@@ -246,7 +253,7 @@ C:\ARM-OMK\
 │   ├── backup_db.bat         # то же для планировщика заданий
 │   └── gen_static_pages.py   # генератор шаблонов статики
 ├── docs\                     # 00_AUDIT, 01_PLAN, 02_DB, 03_AUTH, 04_PAGES, 05_FINAL, 06_DEPLOY
-├── vendor\                   # библиотеки Flask/dotenv/waitress (для сервера без pip)
+├── vendor\                   # библиотеки Flask/dotenv/waitress/pyodbc (для сервера без pip)
 ├── logs\                     # журнал приложения app.log (в git не входит)
 ├── instance\asutp.db         # рабочая БД (в git не входит)
 ├── App_Data\AsutpDB.mdb      # исходная база Access (не изменяется)
@@ -256,7 +263,7 @@ C:\ARM-OMK\
 ├── install_autostart.bat     # автозапуск при входе в Windows
 ├── remove_autostart.bat      # удалить автозапуск
 ├── requirements.txt          # рабочие зависимости (уже в vendor\)
-├── requirements-dev.txt      # + pyodbc для миграции из Access
+├── requirements-dev.txt      # зависимости для разработки (pyodbc тоже есть в vendor\)
 ├── .env.example
 ├── MIGRATION_LOG.md          # журнал всех изменений по этапам
 └── (legacy: *.aspx, *.cs, *.htm, *.files, App_Code\, css\, img\, images\, Slegenie\)
