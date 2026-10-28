@@ -84,6 +84,10 @@ LABELS = {
 
 MULTILINE = {"Opisanie"}
 
+#: Нижняя граница «Номера пролета». Пролёт -1 существует в справочнике
+#: NameProlet («Пролет №-1 Ф-Ц») и в таблице IPaddress4.
+PROLET_MIN = -1000
+
 # Текст предупреждения — дословно из оригинальных валидаторов.
 DUPLICATE_MESSAGE = "КЕ с таким номером уже существует, ты уверен что желаешь сохранить?"
 
@@ -155,22 +159,36 @@ def _collect_warnings(data: dict, exclude_id: int | None) -> dict:
     return warnings
 
 
-def _validate_numbers(data: dict) -> str | None:
-    """Проверка числовых полей (RequiredFieldValidator + RangeValidator)."""
+def _validate_numbers(data: dict) -> tuple[str | None, str | None]:
+    """Проверка числовых полей (RequiredFieldValidator + RangeValidator).
+
+    Возвращает пару (блокирующая_ошибка, ошибка_диапазона).
+
+    * Блокирующую ошибку (поле пустое или не является числом) обойти нельзя:
+      без числа запись в БД невозможна.
+    * Ошибку диапазона можно обойти кнопкой «Все равно сохранить» —
+      в оригинале это была кнопка Button2 на Addipt4.aspx.
+
+    Нижняя граница пролёта — -1000, а не 0: в справочнике NameProlet есть
+    пролёт -1 («Пролет №-1 Ф-Ц»), и в самой таблице уже есть такие записи.
+    В оригинале отрицательный пролёт вводился именно через «Все равно
+    сохранить».
+    """
     for field, empty_message, range_message in (
         ("Prolet", "Требуется номер пролета", "Номером пролета должно быть число"),
         ("Oc", "Недопустимый формат данных", "Введите число, чтобы указать ось"),
     ):
         value = (data.get(field) or "").strip()
         if not value:
-            return empty_message
+            return empty_message, None
         try:
             number = int(value)
         except ValueError:
-            return range_message
-        if not 0 <= number <= 10000:
-            return range_message
-    return None
+            return range_message, None
+        low = PROLET_MIN if field == "Prolet" else 0
+        if not low <= number <= 10000:
+            return None, range_message
+    return None, None
 
 
 def _row_to_data(row: sqlite3.Row) -> dict:
@@ -232,20 +250,25 @@ def add():
     data = {field: "" for field in FIELDS}
     warnings: dict = {}
     error = None
+    show_force = False
 
     if request.method == "POST":
         validate_csrf()
         data = _form_data()
         force = request.form.get("force") == "1"
 
-        error = _validate_numbers(data)
-        if error is None:
+        blocking, range_error = _validate_numbers(data)
+        if blocking is not None:
+            error = blocking
+        else:
             warnings = _collect_warnings(data, None)
-            if not warnings or force:
+            if force or (range_error is None and not warnings):
                 new_id = _insert(get_db(), data)
                 log_action("create", "IPaddress4", new_id, _log_details(data))
                 flash("Запись добавлена.", "success")
                 return redirect(url_for("ipaddr4.main"))
+            error = range_error
+            show_force = True
 
     return render_template(
         "ip_form.html",
@@ -253,7 +276,7 @@ def add():
         data=data,
         warnings=warnings,
         error=error,
-        show_force=bool(warnings),
+        show_force=show_force,
         labels=LABELS,
         multiline=MULTILINE,
         autofocus="Prolet",
@@ -282,6 +305,7 @@ def edit():
     data = _row_to_data(row)
     warnings: dict = {}
     error = None
+    show_force = False
 
     if request.method == "POST":
         validate_csrf()
@@ -297,14 +321,18 @@ def edit():
         data = _form_data()
         force = request.form.get("force") == "1"
 
-        error = _validate_numbers(data)
-        if error is None:
+        blocking, range_error = _validate_numbers(data)
+        if blocking is not None:
+            error = blocking
+        else:
             warnings = _collect_warnings(data, row_id)
-            if not warnings or force:
+            if force or (range_error is None and not warnings):
                 _update(db, row_id, data)
                 log_action("update", "IPaddress4", row_id, _log_details(data))
                 flash("Изменения сохранены.", "success")
                 return redirect(url_for("ipaddr4.main"))
+            error = range_error
+            show_force = True
 
     return render_template(
         "ip_form.html",
@@ -313,7 +341,7 @@ def edit():
         data=data,
         warnings=warnings,
         error=error,
-        show_force=bool(warnings),
+        show_force=show_force,
         labels=LABELS,
         multiline=MULTILINE,
         autofocus="Prolet",

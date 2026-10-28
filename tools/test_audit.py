@@ -29,7 +29,7 @@ DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 
 ADMIN_LOGIN = "admin"
 ADMIN_PASSWORD = "11111111"
-MARKER = "__АУДИТ__"
+MARKER = "АУДИТ-МЕТКА"  # без «_»: символ «_» в LIKE — шаблон одного символа
 
 passed = 0
 failed = 0

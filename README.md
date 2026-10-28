@@ -195,6 +195,7 @@ C:\ARM-OMK\
 │   ├── test_pages*.py        # по разделам (38–51)
 │   ├── test_stage5_roles.py  # матрица «страницы × роли» (173)
 │   ├── test_audit.py         # журнал действий и «последнее изменение» (30)
+│   ├── test_prolet_minus.py  # отрицательный «Номер пролета» (-1) (18)
 │   └── gen_static_pages.py   # генератор шаблонов статики
 ├── docs\                     # 00_AUDIT, 01_PLAN, 02_DB, 03_AUTH, 04_PAGES, 05_FINAL
 ├── instance\asutp.db         # рабочая БД (в git не входит)
@@ -219,6 +220,7 @@ python tools/verify_db.py          # сверка БД с Access
 python tools/smoke_pages.py        # все страницы → 200
 python tools/test_stage5_roles.py  # матрица доступа по ролям
 python tools/test_audit.py         # журнал действий и «последнее изменение»
+python tools/test_prolet_minus.py  # «Номер пролета» = -1 и «Все равно сохранить»
 python tools/check_static_pages.py # статика 1-в-1 с legacy
 python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 ```
@@ -238,6 +240,7 @@ python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 | `test_auth.py` (роли) | 23 |
 | `test_stage5_roles.py` (матрица) | 173 |
 | `test_audit.py` (журнал действий) | 30 |
+| `test_prolet_minus.py` (пролёт -1) | 18 |
 | `smoke_pages.py` (все страницы) | 36 |
 
 Тесты создают временных пользователей (`test_viewer`, `test_editor`) и тестовые
