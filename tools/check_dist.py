@@ -137,7 +137,40 @@ def main() -> int:
     print(f"  документация: {len(docs)} файлов")
     check(len(docs) >= 8, "docs/ — 8 документов", "не хватает документов в docs/")
 
-    section("4. БАЗА ДАННЫХ")
+    section("4. ВАРИАНТ ДЛЯ LINUX")
+    linux_dir = DIST / "linux"
+    check(linux_dir.is_dir(), "папка linux/ на месте", "нет папки linux/")
+    if linux_dir.is_dir():
+        for name in ("УСТАНОВКА.md", "start_server.sh", "install_service.sh",
+                     "uninstall_service.sh", "install_firewall.sh",
+                     "backup_db.sh", "install_backup_timer.sh",
+                     "arm-omk.service", "arm-omk-backup.service",
+                     "arm-omk-backup.timer", "nginx-arm-omk.conf.example"):
+            check((linux_dir / name).is_file(), f"linux/{name}",
+                  f"нет linux/{name}")
+
+        crlf = [p.name for p in linux_dir.rglob("*")
+                if p.is_file() and p.suffix in (".sh", ".service", ".timer")
+                and b"\r\n" in p.read_bytes()]
+        check(not crlf, "скрипты и юниты с LF (bash и systemd поймут)",
+              f"переводы строк CRLF в: {crlf}")
+
+        script = linux_dir / "start_server.sh"
+        if script.is_file():
+            check(script.read_bytes().startswith(b"#!/usr/bin/env bash"),
+                  "start_server.sh с шебангом", "у start_server.sh нет шебанга")
+
+        unit = linux_dir / "arm-omk.service"
+        if unit.is_file():
+            text = unit.read_text(encoding="utf-8")
+            check(all(token in text for token in ("@ROOT@", "@USER@", "@PYTHON@")),
+                  "шаблон юнита с подстановками @ROOT@/@USER@/@PYTHON@",
+                  "в шаблоне юнита нет подстановок")
+            check("AmbientCapabilities=CAP_NET_BIND_SERVICE" in text,
+                  "порт 80 без root (CAP_NET_BIND_SERVICE)",
+                  "в юните нет CAP_NET_BIND_SERVICE")
+
+    section("5. БАЗА ДАННЫХ")
     db = DIST / "instance" / "asutp.db"
     con = sqlite3.connect(f"file:{db}?mode=ro&immutable=1", uri=True)
     tables = [r[0] for r in con.execute(
@@ -220,7 +253,7 @@ def main() -> int:
     else:
         ok("все файлы по ссылкам из БД есть")
 
-    section("5. КОДИРОВКИ")
+    section("6. КОДИРОВКИ")
     bad = []
     for path in files:
         if path.suffix == ".bat" or path.name == "КАК-ЗАПУСТИТЬ.txt":
@@ -243,7 +276,7 @@ def main() -> int:
           "КАК-ЗАПУСТИТЬ.txt с BOM (Блокнот откроет правильно)", "нет BOM")
     check(b"\r\n" in howto, "КАК-ЗАПУСТИТЬ.txt с CRLF", "нет CRLF")
 
-    section("6. НАСТРОЙКИ")
+    section("7. НАСТРОЙКИ")
     env = (DIST / ".env.example").read_text(encoding="utf-8")
     for key, value in (("PORT", "80"), ("HOST", "0.0.0.0"), ("DEBUG", "0")):
         check(f"{key}={value}" in env, f".env.example: {key}={value}",

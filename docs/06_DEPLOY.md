@@ -539,6 +539,39 @@ print("изменено строк:", c.total_changes)
 
 ---
 
+## 14. Вариант для Linux
+
+В комплекте есть папка `linux\` — инструкция и скрипты для Linux-сервера.
+Код сайта, база и ресурсы те же, отличается только обвязка:
+
+| Windows | Linux |
+|---|---|
+| `start_server.bat` | `linux/start_server.sh` |
+| `install_autostart.bat` (Планировщик) | `linux/install_service.sh` (systemd, автозапуск) |
+| `remove_autostart.bat` | `linux/uninstall_service.sh` |
+| `install_firewall.bat` (`netsh`) | `linux/install_firewall.sh` (`ufw`/`firewalld`) |
+| `tools\backup_db.bat` | `linux/backup_db.sh` + таймер systemd |
+| порт 80 без прав администратора | `CAP_NET_BIND_SERVICE` в `linux/arm-omk.service` |
+
+Полная инструкция: `linux\УСТАНОВКА.md` (требования, перенос через `tar`/`rsync`,
+быстрая проверка на порту 5000, служба, вариант с nginx, брандмауэр, копии,
+права, частые проблемы, чек-лист).
+
+Что на Linux не работает и почему это не блокер:
+
+- **ярлыки `.lnk`** из раздела «Все ярлыки» — скачиваются как файлы, но
+  «ярлыками Windows» не являются;
+- **миграция из Access** (`scripts\migrate_access_to_sqlite.py`,
+  `tools\verify_db.py`) — требует ODBC-драйвер Access, выполняется на Windows;
+  база уже перенесена;
+- **`vendor\*.pyd`** — Windows-библиотеки, на Linux не используются (сайт их
+  не импортирует).
+
+Проверка комплекта: `python tools\check_dist.py` дополнительно контролирует
+наличие `linux\`, переводы строк LF в скриптах и `CAP_NET_BIND_SERVICE` в юните.
+
+---
+
 ## Приложение: изменения, сделанные на Этапе 6
 
 | Файл | Изменение |

@@ -11,7 +11,9 @@
   * миграция и обслуживание: ``scripts/``, ``tools/verify_db.py``,
     ``tools/backup_db.py``, ``tools/backup_db.bat``, ``App_Data/AsutpDB.mdb``;
   * документация: ``docs/``, ``README.md``, ``MIGRATION_LOG.md``,
-    ``requirements*.txt``, ``.env.example``, ``КАК-ЗАПУСТИТЬ.txt``.
+    ``requirements*.txt``, ``.env.example``, ``КАК-ЗАПУСТИТЬ.txt``;
+  * вариант для Linux: ``deploy/linux/`` копируется в ``linux/``
+    (инструкция, скрипты запуска, systemd-юниты, брандмауэр, бэкап).
 
 Не попадает: тесты (``tools/test_*.py``), ``_backup/``, ``logs/``, ``venv/``,
 исходники ASP.NET (``*.aspx``, ``*.cs``, ``App_Code/``), ``.git``,
@@ -70,6 +72,13 @@ FILES = [
 
 IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo", "bin")
 
+#: Исходники варианта для Linux (в комплект попадают как ``linux/``).
+LINUX_SRC = BASE / "deploy" / "linux"
+LINUX_DIR_NAME = "linux"
+
+#: Файлы, которым на Linux нужны переводы строк LF.
+LF_SUFFIXES = {".sh", ".service", ".timer", ".md", ".example", ".conf"}
+
 HOWTO = """ARM-OMK — справочник ТЭСК ТБД
 Готовый комплект для переноса на сервер (Windows 11)
 
@@ -82,6 +91,7 @@ HOWTO = """ARM-OMK — справочник ТЭСК ТБД
   App_Data\\   исходная база Access (нужна только для миграции)
   scripts\\    миграция Access -> SQLite
   tools\\      сверка БД и резервные копии
+  linux/       вариант для Linux: инструкция, systemd, брандмауэр, бэкап
   docs\\       документация (перенос — docs\\06_DEPLOY.md)
 
 ТРЕБОВАНИЯ
@@ -97,6 +107,11 @@ HOWTO = """ARM-OMK — справочник ТЭСК ТБД
 
   При первом запуске serve.py сам создаст .env со случайным SECRET_KEY
   и папку logs\\.
+
+LINUX
+  Файлы .bat в Linux не работают. Для Linux есть отдельная инструкция
+  и скрипты в папке linux/: linux/УСТАНОВКА.md (systemd, порт 80,
+  ufw/firewalld, резервные копии). Код и база те же самые.
 
 АДРЕС БЕЗ ПОРТА (http://10.100.10.1/)
   Сайт слушает порт 80 - стандартный порт HTTP, поэтому в адресе он
@@ -180,6 +195,23 @@ def copy_db(src: Path, dst: Path) -> None:
             stale.unlink()
 
 
+def copy_linux(src: Path, dst: Path) -> None:
+    """Скопировать скрипты и инструкцию для Linux, приведя текст к LF.
+
+    bash и systemd не понимают переводы строк CRLF: скрипт падает с
+    ``bad interpreter: /usr/bin/env bash^M``, юнит — с ошибкой разбора.
+    В git файлы хранятся с LF (см. ``.gitattributes``), но рабочая копия на
+    Windows может быть выгружена с CRLF, поэтому приводим явно.
+    """
+    shutil.copytree(src, dst, ignore=IGNORE)
+    for path in dst.rglob("*"):
+        if path.is_file() and path.suffix in LF_SUFFIXES:
+            data = path.read_bytes()
+            fixed = data.replace(b"\r\n", b"\n")
+            if fixed != data:
+                path.write_bytes(fixed)
+
+
 def tree_size(path: Path) -> int:
     total = 0
     for root, _dirs, files in os.walk(path):
@@ -218,6 +250,8 @@ def main() -> int:
     # Сначала проверяем, что всё на месте, — чтобы не получить половину комплекта.
     missing = [p for p in DIRS if not (BASE / p).is_dir()]
     missing += [p for p in FILES if not (BASE / p).is_file()]
+    if not LINUX_SRC.is_dir():
+        missing.append(str(LINUX_SRC.relative_to(BASE)))
     if missing:
         print("ОШИБКА: не найдены обязательные элементы:", file=sys.stderr)
         for p in missing:
@@ -251,6 +285,10 @@ def main() -> int:
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dst)
         print(f"  {name:<40} {human(dst.stat().st_size):>10}")
+
+    copy_linux(LINUX_SRC, TARGET / LINUX_DIR_NAME)
+    print(f"  {'linux/ (для Linux)':<40} "
+          f"{human(tree_size(TARGET / LINUX_DIR_NAME)):>10}")
 
     copy_db(BASE / "instance" / "asutp.db", TARGET / "instance" / "asutp.db")
     print(f"  {'instance/asutp.db (снимок)':<40} "

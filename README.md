@@ -70,6 +70,21 @@ python tools\check_dist.py
 библиотеки, базу (16 таблиц, 3 880 строк, целостность, кириллицу), кодировки
 и отсутствие рабочих артефактов (`.env`, `logs`, `__pycache__`, `-wal`).
 
+### На Linux-сервере
+
+В комплекте есть папка `linux\` — скрипты и инструкция для Linux
+(`linux/УСТАНОВКА.md`): запуск, служба systemd с автозапуском, порт 80,
+брандмауэр (`ufw`/`firewalld`), ежедневные резервные копии, вариант с nginx,
+разбор частых проблем. Код сайта, база и ресурсы те же, что на Windows.
+
+Коротко (на Linux, после копирования комплекта):
+
+```bash
+chmod +x linux/*.sh
+PORT=5000 ./linux/start_server.sh     # проба
+sudo ./linux/install_service.sh       # служба + автозапуск, http://IP/
+```
+
 ### На машине разработчика
 
 ```powershell
@@ -285,6 +300,7 @@ C:\ARM-OMK\
 │   ├── check_dist.py         # проверка готовности комплекта к переносу
 │   └── gen_static_pages.py   # генератор шаблонов статики
 ├── docs\                     # 00_AUDIT … 06_DEPLOY, 07_STACK (стек, библиотеки, код)
+├── deploy\linux\             # исходники варианта для Linux (в комплекте — linux\)
 ├── ARM-OMK-main\             # готовый комплект для сервера (tools\build_dist.py, в git не входит)
 ├── vendor\                   # библиотеки Flask/dotenv/waitress/pyodbc (для сервера без pip)
 ├── logs\                     # журнал приложения app.log (в git не входит)
@@ -299,6 +315,7 @@ C:\ARM-OMK\
 ├── requirements.txt          # рабочие зависимости (уже в vendor\)
 ├── requirements-dev.txt      # зависимости для разработки (pyodbc тоже есть в vendor\)
 ├── .env.example
+├── .gitattributes            # LF для linux-скриптов (иначе bash/systemd не поймут)
 ├── MIGRATION_LOG.md          # журнал всех изменений по этапам
 └── (legacy: *.aspx, *.cs, *.htm, *.files, App_Code\, css\, img\, images\, Slegenie\)
 ```

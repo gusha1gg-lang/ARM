@@ -1,8 +1,8 @@
 """Рабочий (серверный) запуск: python serve.py
 
 Отличия от run.py:
-  * используется waitress — рабочий WSGI-сервер для Windows, а не отладочный
-    сервер Flask;
+  * используется waitress — рабочий WSGI-сервер (Windows и Linux), а не
+    отладочный сервер Flask;
   * DEBUG принудительно выключен;
   * если SECRET_KEY не задан (или остался значением-заглушкой), он
     генерируется и записывается в .env — иначе cookie сессии можно подделать;
@@ -136,7 +136,11 @@ def _local_ipv4() -> list[str]:
 
 
 def _port_is_free(host: str, port: int) -> bool:
-    """Проверить, можно ли занять порт (Windows: порт 80 доступен без админа)."""
+    """Проверить, можно ли занять порт.
+
+    На Windows порт 80 доступен без прав администратора; на Linux — только
+    root или служба с ``CAP_NET_BIND_SERVICE`` (см. ``linux/arm-omk.service``).
+    """
     import socket
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -150,16 +154,31 @@ def _port_is_free(host: str, port: int) -> bool:
 def _report_busy_port(port: int) -> None:
     print()
     print(f"ОШИБКА: порт {port} уже занят другой программой.")
-    print("  Кто занял порт (в командной строке от администратора):")
-    print(f"    netstat -ano | findstr :{port}")
-    print("    tasklist /FI \"PID eq <номер из последнего столбца>\"")
-    print()
-    print("  Что делать:")
-    print("   1) остановить программу, занявшую порт (часто это IIS или другой")
-    print("      веб-сервер), затем запустить start_server.bat снова;")
-    print("   2) либо открыть файл .env в папке проекта (Блокнотом), заменить")
-    print("      строку PORT=80 на PORT=5000 и запустить снова — сайт будет")
-    print("      открываться по адресу http://<IP-компьютера>:5000/")
+    if os.name == "nt":
+        print("  Кто занял порт (в командной строке от администратора):")
+        print(f"    netstat -ano | findstr :{port}")
+        print("    tasklist /FI \"PID eq <номер из последнего столбца>\"")
+        print()
+        print("  Что делать:")
+        print("   1) остановить программу, занявшую порт (часто это IIS или другой")
+        print("      веб-сервер), затем запустить start_server.bat снова;")
+        print("   2) либо открыть файл .env в папке проекта (Блокнотом), заменить")
+        print("      строку PORT=80 на PORT=5000 и запустить снова — сайт будет")
+        print("      открываться по адресу http://<IP-компьютера>:5000/")
+    else:
+        print("  Кто занял порт:")
+        print(f"    sudo ss -ltnp 'sport = :{port}'")
+        print()
+        print("  Что делать:")
+        print("   1) остановить программу, занявшую порт (nginx, apache и т.п.),")
+        print("      либо оставить nginx на 80 и проксировать на ARM-OMK")
+        print("      (linux/nginx-arm-omk.conf.example);")
+        print("   2) либо заменить в .env строку PORT=80 на PORT=5000 — сайт будет")
+        print("      открываться по адресу http://<IP-компьютера>:5000/.")
+        print()
+        print("  Если порт свободен, но при запуске от обычного пользователя")
+        print("  написано «занят» — на Linux порт 80 требует прав. Запускайте")
+        print("  через службу: sudo linux/install_service.sh")
     print()
 
 

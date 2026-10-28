@@ -1,0 +1,7 @@
+# Скрипты и юниты для Linux должны иметь переводы строк LF:
+# с CRLF bash выдаёт "bad interpreter: /usr/bin/env bash^M",
+# а systemd не разбирает юнит.
+deploy/linux/* text eol=lf
+*.sh     text eol=lf
+*.service text eol=lf
+*.timer  text eol=lf

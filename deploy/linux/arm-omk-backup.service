@@ -1,0 +1,15 @@
+# Шаблон службы резервного копирования (запускается таймером).
+# Ставится скриптом install_backup_timer.sh.
+[Unit]
+Description=ARM-OMK - резервная копия базы
+# Инструкция: linux/УСТАНОВКА.md
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=@USER@
+Group=@USER@
+WorkingDirectory=@ROOT@
+Environment=PYTHONIOENCODING=utf-8
+Environment=PYTHON=@PYTHON@
+ExecStart=/usr/bin/env bash @LINUXDIR@/backup_db.sh

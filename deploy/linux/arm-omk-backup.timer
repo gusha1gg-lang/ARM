@@ -1,0 +1,12 @@
+# Шаблон таймера: ежедневная резервная копия в 03:00.
+# Ставится скриптом install_backup_timer.sh.
+[Unit]
+Description=ARM-OMK - ежедневная резервная копия базы
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+RandomizedDelaySec=5m
+
+[Install]
+WantedBy=timers.target
