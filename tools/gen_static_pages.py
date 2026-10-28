@@ -66,7 +66,6 @@ def convert_body(body: str) -> str:
 
 PAGES = [
     ("Webnav.aspx", "app/templates/webnav.html", "Web Navigator"),
-    ("Nastroyki.aspx", "app/templates/nastroyki.html", "Список настроек"),
     ("NastoikaT5.aspx", "app/templates/nastoika_t5.html", "Настройка Zebra в ТЭСЦ 5"),
     ("NastoikaEBS.aspx", "app/templates/nastoika_ebs.html",
      "Настройка маркировщика EBS-250"),

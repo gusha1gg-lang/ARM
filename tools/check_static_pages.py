@@ -1,7 +1,7 @@
 """Сверка статических страниц: legacy-разметка vs шаблон (1-в-1).
 
 Сравнивает блоки ContentPlaceHolderID="head" / "ContentPlaceHolderID" из
-Webnav.aspx, Nastroyki.aspx, NastoikaT5.aspx, NastoikaEBS.aspx, Calendar.aspx
+Webnav.aspx, NastoikaT5.aspx, NastoikaEBS.aspx, Calendar.aspx
 с содержимым шаблонов app/templates/*.html (с учётом замены asp:контролов
 на обычный HTML — см. tools/gen_static_pages.py).
 

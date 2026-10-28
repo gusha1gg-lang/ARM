@@ -24,7 +24,7 @@
 
 Страницы чтения: `main`, `IpaddrT5`, `IPaddrUch`, `IPaddrALL`, `JR`, оба режима
 `VideoIP`, `VideoAnalog`, `telefon`, `CISCO`, `CISCO2`, `ReportExist`,
-`SPR_CISCO?SPRType=1|2`, `spr_shop`, `Webnav`, `Nastroyki`, `NastoikaT5`,
+`SPR_CISCO?SPRType=1|2`, `spr_shop`, `Webnav`, `NastoikaT5`,
 `NastoikaEBS`, `Calendar`, 4 файла `.htm`.
 Формы: `Addipt4`, `Edit`, `Addipt5`, `Editipt5`, `Addipuch`, `EditUch`,
 `AddipALL`, `EditALL`, `AddJR`, `EditJR`.
@@ -87,7 +87,7 @@
 | Проверка | Результат |
 |---|---|
 | `tools/check_cisco_static.py` | `CISCO.aspx` и `CISCO2.aspx` совпадают 1-в-1 (128 384 / 97 407 символов) |
-| `tools/check_static_pages.py` | `Webnav`, `Nastroyki`, `NastoikaT5`, `NastoikaEBS`, `Calendar` совпадают 1-в-1 (113 910 символов у календаря) |
+| `tools/check_static_pages.py` | `Webnav`, `NastoikaT5`, `NastoikaEBS`, `Calendar` совпадают 1-в-1 (113 910 символов у календаря); `Nastroyki` исключена — страница удалена 2026-10-28 |
 | 4 файла `.htm` | на месте, отдаются байт-в-байт с кодировкой из `<meta charset>` |
 | `.files`-ресурсы | доступны из 3 разрешённых папок; посторонние пути → `404` |
 

@@ -3,7 +3,6 @@
 Перенесено 1-в-1 из legacy-файлов:
 
   * ``Webnav.aspx``        — «Web Navigator»;
-  * ``Nastroyki.aspx``     — «Список настроек» (ссылки на инструкции);
   * ``NastoikaT5.aspx``    — «Настройка Zebra в ТЭСЦ 5» (картинки images/T5*.jpg);
   * ``NastoikaEBS.aspx``   — «Настройка маркировщика EBS-250»;
   * ``Calendar.aspx``      — «Календарь» (большая Excel-таблица).
@@ -15,6 +14,10 @@
 Серверной логики и обращений к БД в этих файлах нет: ``Page_Load`` пуст,
 данные не используются. Поэтому CRUD не добавлялся — только просмотр.
 Доступ — после входа, всем ролям (как и было за авторизацией сайта).
+
+``/Nastroyki.aspx`` удалён по требованию пользователя: страница не используется
+(в оригинале ссылка на неё в меню была закомментирована, инструкции открываются
+из выпадающего меню «Настройки»).
 """
 from __future__ import annotations
 
@@ -46,12 +49,6 @@ CHARSET_RE = re.compile(rb'charset=["\']?([A-Za-z0-9_\-]+)')
 @login_required
 def webnav():
     return render_template("webnav.html")
-
-
-@bp.route("/Nastroyki.aspx")
-@login_required
-def nastroyki():
-    return render_template("nastroyki.html")
 
 
 @bp.route("/NastoikaT5.aspx")

@@ -1,6 +1,6 @@
 """Сквозной тест статических страниц (Этап 4, партия 10).
 
-Проверяет /Webnav.aspx, /Nastroyki.aspx, /NastoikaT5.aspx, /NastoikaEBS.aspx,
+Проверяет /Webnav.aspx, /NastoikaT5.aspx, /NastoikaEBS.aspx,
 /Calendar.aspx, готовые .htm оригинала (NastroykaOPT, birka_akp5, tururushka,
 Инструкция по перезапуску WinCC) и их папки *.files: доступ после входа,
 содержимое, кодировку, картинки и белый список файлов.
@@ -26,8 +26,6 @@ DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 #: Статические aspx-страницы: URL → признаки содержимого.
 PAGES = {
     "/Webnav.aspx": ("WEB NAVIGATOR", "Форма для мастеров", "scada-003.d0.vsw.ru"),
-    "/Nastroyki.aspx": ("Список настроек", "/NastroykaOPT.htm",
-                        "Настройка ручных сканеров Symbol", "/Настройка ODBC.htm"),
     "/NastoikaT5.aspx": ("Настройка Zebra в ТЭСЦ 5",
                          "images/T51.jpg", "images/T52.jpg",
                          "images/T53.jpg", "images/T54.jpg"),

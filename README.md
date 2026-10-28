@@ -135,13 +135,15 @@ URL сохранены как в оригинале (`.aspx` / `.htm`).
 | Ярлыки | `/JR.aspx`, `/AddJR.aspx`, `/EditJR.aspx?id=N`, `/Slegenie/<файл>` | `Jarlik` + файлы `Slegenie/` |
 | CISCO | `/CISCO.aspx`, `/CISCO2.aspx` | статические таблицы |
 | Справочники | `/SPR_CISCO.aspx?SPRType=1\|2`, `/spr_shop.aspx` | `SPR_CISCO`, `SPR_CAMERA`, `NameShop` |
-| Настройки | `/Nastroyki.aspx`, `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/NastroykaOPT.htm`, `/birka_akp5.htm`, `/tururushka.htm`, `/Инструкция по перезапуску WinCC.htm` | статические страницы |
+| Настройки | `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/NastroykaOPT.htm`, `/birka_akp5.htm`, `/tururushka.htm`, `/Инструкция по перезапуску WinCC.htm` | статические страницы |
 | Прочее | `/Webnav.aspx`, `/Calendar.aspx` | статические страницы |
 | Пользователи | `/admin/users/` | `users` |
 
-Страницы `/CISCO.aspx`, `/CISCO2.aspx`, `/Webnav.aspx`, `/Nastroyki.aspx`,
+Страницы `/CISCO.aspx`, `/CISCO2.aspx`, `/Webnav.aspx`,
 `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/Calendar.aspx` и `.htm`-файлы
 не работают с БД: их разметка перенесена без изменений.
+Страница `/Nastroyki.aspx` удалена (2026-10-28) — не использовалась; инструкции
+открываются из выпадающего меню «Настройки».
 
 ## 7. Структура проекта
 

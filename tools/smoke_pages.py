@@ -43,7 +43,6 @@ PAGES = [
     "/SPR_CISCO.aspx?SPRType=2",
     "/spr_shop.aspx",
     "/Webnav.aspx",
-    "/Nastroyki.aspx",
     "/NastoikaT5.aspx",
     "/NastoikaEBS.aspx",
     "/Calendar.aspx",

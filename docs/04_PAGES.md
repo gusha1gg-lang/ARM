@@ -747,7 +747,7 @@
 | Старый URL | Новый маршрут | Шаблон | Модуль |
 |---|---|---|---|
 | `/Webnav.aspx` | `/Webnav.aspx` | `app/templates/webnav.html` | `app/static_pages.py` |
-| `/Nastroyki.aspx` | `/Nastroyki.aspx` | `app/templates/nastroyki.html` | `app/static_pages.py` |
+| `/Nastroyki.aspx` | — (удалена 2026-10-28) | — | — |
 | `/NastoikaT5.aspx` | `/NastoikaT5.aspx` | `app/templates/nastoika_t5.html` | `app/static_pages.py` |
 | `/NastoikaEBS.aspx` | `/NastoikaEBS.aspx` | `app/templates/nastoika_ebs.html` | `app/static_pages.py` |
 | `/Calendar.aspx` | `/Calendar.aspx` | `app/templates/calendar.html` | `app/static_pages.py` |
@@ -757,20 +757,23 @@
 | `Инструкция по перезапуску WinCC.htm` | `/Инструкция по перезапуску WinCC.htm` | файл отдаётся как есть | `app/static_pages.py` |
 | `*.files/image00N.*`, `filelist.xml` | `/<имя>.files/<файл>` | файлы отдаются как есть | `app/static_pages.py` |
 
-Исходники: `Webnav.aspx(.cs)`, `Nastroyki.aspx(.cs)`, `NastoikaT5.aspx(.cs)`,
+Исходники: `Webnav.aspx(.cs)`, `NastoikaT5.aspx(.cs)`,
 `NastoikaEBS.aspx(.cs)`, `Calendar.aspx(.cs)`. У всех `Page_Load` пуст — серверной
 логики и обращений к БД нет, данные не используются; CRUD не добавлялся.
+
+`Nastroyki.aspx` переносилась вместе с остальными, но 2026-10-28 удалена по требованию
+пользователя: в оригинале ссылка на неё в меню закомментирована
+(`MainMasterPage.master.cs:62`), инструкции открываются из выпадающего меню «Настройки».
+Файл `Nastroyki.aspx` в корне проекта не тронут (legacy-оригинал).
 
 ### Как перенесено
 
 * Шаблоны сгенерированы скриптом `tools/gen_static_pages.py` из блоков `asp:Content`
   (`head` → `{% block head %}`, тело → `{% block content %}`) без изменения разметки.
 * Единственное преобразование — замена серверных контролов на обычный HTML, без ASP.NET
-  они не работают: `asp:HyperLink NavigateUrl="~/X"` → `<a href="/X">` (5 ссылок
-  на `Nastroyki.aspx`), `asp:Label Text="X"` → `<span>X</span>`.
-* Сверка 1-в-1: `tools/check_static_pages.py` — все 5 шаблонов совпадают с legacy
-  (`Webnav` 3 475, `Nastroyki` 1 753, `NastoikaT5` 419, `NastoikaEBS` 10 808,
-  `Calendar` 113 910 символов).
+  они не работают: `asp:HyperLink NavigateUrl="~/X"` → `<a href="/X">`, `asp:Label Text="X"` → `<span>X</span>`.
+* Сверка 1-в-1: `tools/check_static_pages.py` — все 4 шаблона совпадают с legacy
+  (`Webnav` 3 475, `NastoikaT5` 419, `NastoikaEBS` 10 808, `Calendar` 113 910 символов).
 * Готовые `.htm` не пересобираются: отдаются байт-в-байт из корня проекта по белому списку
   (`HTM_FILES`), кодировка берётся из их `<meta charset>` и ставится в заголовок
   (`windows-1251`; у `tururushka.htm` — `windows-1252`, как в оригинале).
@@ -790,6 +793,7 @@
 | 4 | Кодировка `.htm` явно указывается в `Content-Type` | Файлы в windows-1251/1252, иначе кракозябры |
 | 5 | `iisstart.htm`, `temp.aspx`, `temp1.aspx`, `test.html`, `NastoikaEBS_test.aspx` → `404` | Отладочные файлы, в навигации отсутствуют |
 | 6 | Ссылка «Настройка ODBC» ведёт на `/Настройка ODBC.htm` → `404` | Файла нет и в оригинале — поведение сохранено |
+| 7 | `/Nastroyki.aspx` удалена (2026-10-28) → `404` | По требованию пользователя: страница не используется, меню — hover-список инструкций |
 
 Примечания по оригиналу (не изменения, а факты legacy):
 
@@ -799,13 +803,13 @@
   хотя ссылка в меню называет её «Инструкция по печати этикеток на ОПТ(Zebra)» —
   текст оригинала сохранён.
 
-### Самопроверка (`tools/test_pages_static.py`, 39/39)
+### Самопроверка (`tools/test_pages_static.py`, 37/37)
 
 | Проверка | Результат |
 |---|---|
 | Аноним: `/Webnav.aspx`, `/NastroykaOPT.htm` → редирект на вход | ✅ |
-| `viewer` и `admin`: все 5 страниц → 200, ключевой текст на месте | ✅ |
-| `/Nastroyki.aspx`: ссылки на инструкции (`/NastroykaOPT.htm`, `/birka_akp5.htm`, `/tururushka.htm`) | ✅ |
+| `viewer` и `admin`: 4 страницы → 200, ключевой текст на месте | ✅ |
+| `/Nastroyki.aspx` → `404` (удалена 2026-10-28) | ✅ |
 | `/NastoikaT5.aspx`: ссылки на `images/T51…T54.jpg` | ✅ |
 | Всё 4 `.htm` → 200, кодировка в заголовке, текст читается без кракозябр | ✅ |
 | `/images/T51.jpg`, `/images/Symbolfoto/1-1.jpg` → 200 (JPEG) | ✅ |
