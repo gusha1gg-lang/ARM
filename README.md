@@ -18,7 +18,9 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 
 Статус миграции: **Этапы 0–5 выполнены**, Этап 6 — подготовка к работе на сервере.
 Отчёт по страницам — [`docs/04_PAGES.md`](docs/04_PAGES.md), инструкция по
-переносу — [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md), журнал изменений —
+переносу — [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md), состав технологий,
+библиотек и кода (для согласования, в т. ч. службой ИБ) —
+[`docs/07_STACK.md`](docs/07_STACK.md), журнал изменений —
 [`MIGRATION_LOG.md`](MIGRATION_LOG.md).
 
 ---
@@ -256,7 +258,7 @@ C:\ARM-OMK\
 │   ├── backup_db.py          # резервная копия БД (и файлов)
 │   ├── backup_db.bat         # то же для планировщика заданий
 │   └── gen_static_pages.py   # генератор шаблонов статики
-├── docs\                     # 00_AUDIT, 01_PLAN, 02_DB, 03_AUTH, 04_PAGES, 05_FINAL, 06_DEPLOY
+├── docs\                     # 00_AUDIT … 06_DEPLOY, 07_STACK (стек, библиотеки, код)
 ├── vendor\                   # библиотеки Flask/dotenv/waitress/pyodbc (для сервера без pip)
 ├── logs\                     # журнал приложения app.log (в git не входит)
 ├── instance\asutp.db         # рабочая БД (в git не входит)
