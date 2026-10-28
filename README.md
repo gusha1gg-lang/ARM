@@ -50,7 +50,15 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 ### На рабочем сервере (без интернета и без pip)
 
 Ничего устанавливать не нужно: библиотеки лежат в папке `vendor\`.
-Достаточно скопировать проект целиком (см. [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md)).
+
+Готовый комплект для переноса собирается одной командой:
+
+```powershell
+python tools\build_dist.py
+```
+
+Появляется папка `ARM-OMK-main\` (~50 МБ) — её и копируйте на сервер;
+внутри лежит `КАК-ЗАПУСТИТЬ.txt`. Подробнее — [`docs/06_DEPLOY.md`](docs/06_DEPLOY.md), п. 0.
 
 ### На машине разработчика
 
@@ -257,8 +265,10 @@ C:\ARM-OMK\
 │   ├── test_session_and_account.py  # таймаут сессии и смена пароля (21)
 │   ├── backup_db.py          # резервная копия БД (и файлов)
 │   ├── backup_db.bat         # то же для планировщика заданий
+│   ├── build_dist.py         # сборка комплекта ARM-OMK-main для сервера
 │   └── gen_static_pages.py   # генератор шаблонов статики
 ├── docs\                     # 00_AUDIT … 06_DEPLOY, 07_STACK (стек, библиотеки, код)
+├── ARM-OMK-main\             # готовый комплект для сервера (tools\build_dist.py, в git не входит)
 ├── vendor\                   # библиотеки Flask/dotenv/waitress/pyodbc (для сервера без pip)
 ├── logs\                     # журнал приложения app.log (в git не входит)
 ├── instance\asutp.db         # рабочая БД (в git не входит)

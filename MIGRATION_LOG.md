@@ -1305,3 +1305,43 @@ Access → SQLite выполнить уже там. Ранее предпола�
 
 Файлы: `docs/07_STACK.md` (новый), `README.md` (ссылка и структура папок),
 `MIGRATION_LOG.md`.
+
+### 5. Комплект для переноса `ARM-OMK-main`
+
+Добавлен `tools/build_dist.py` — собирает папку `C:\ARM-OMK\ARM-OMK-main`
+с полным набором файлов для переноса и работы (585 файлов, ~50 МБ):
+
+| Группа | Состав |
+|---|---|
+| код | `app/` |
+| библиотеки | `vendor/` (без `bin/` и `__pycache__`) |
+| база | `instance/asutp.db` — **снимок через SQLite backup API** (учитывает `-wal`) |
+| ресурсы legacy | `uploads/`, `Slegenie/`, `img/`, `css/`, `images/`, `*.files/`, 4 `*.htm` |
+| запуск | `serve.py`, `start_server.bat`, `install_autostart.bat`, `remove_autostart.bat` |
+| миграция и обслуживание | `scripts/`, `tools/verify_db.py`, `tools/backup_db.py`, `tools/backup_db.bat`, `App_Data/AsutpDB.mdb` |
+| документация | `docs/`, `README.md`, `MIGRATION_LOG.md`, `requirements*.txt`, `.env.example`, `КАК-ЗАПУСТИТЬ.txt` |
+
+Не попадает: `tools/test_*.py`, `_backup/`, `logs/`, `.git/`, `venv/`,
+`__pycache__`, `.env`, исходники ASP.NET (`*.aspx`, `*.cs`, `App_Code/`).
+
+Папка `ARM-OMK-main/` добавлена в `.gitignore` (это собираемый артефакт;
+в репозитории хранится сам скрипт сборки, поэтому результат воспроизводим).
+
+**Проверка комплекта:**
+
+| Проверка | Результат |
+|---|---|
+| Запуск `serve.py` из `ARM-OMK-main` (порт 5057) | ✅ `/health` → `{"status":"ok"}`, `/Login.aspx` → 200 |
+| Статика из комплекта | ✅ `style.css` 23 640 Б, `img/KPK.jpg` 119 151 Б, иконка меню 2 458 Б |
+| 18 страниц через `test_client` | ✅ все 200 (`/main.aspx`, ТЭСЦ 5, АБК, все цеха, ярлыки, телефоны, CISCO, видео, Webnav, календарь, справочники, логи, пароль, 3 `.htm`) |
+| Ресурсы инструкций | ✅ файл из `*.files` → 200 |
+| Скачивание ярлыков | ✅ 27 ссылок, `.lnk` → 200 |
+| База в комплекте | ✅ 14 legacy-таблиц = 3 880 строк, `users` = 2, `audit_log` = 119, `integrity_check=ok`, WAL |
+
+Заодно исправлены цифры в документации: размер `vendor/` — 2,9 МБ
+(ранее 5,4 МБ считались вместе с `__pycache__`), комплект — ~50 МБ;
+в `docs/06_DEPLOY.md` добавлен п. 0 «Готовый комплект», в п. 2 уточнено,
+что `backup_db.*` на сервере нужны.
+
+Файлы: `tools/build_dist.py` (новый), `.gitignore`, `README.md`,
+`docs/06_DEPLOY.md`, `docs/07_STACK.md`, `MIGRATION_LOG.md`.

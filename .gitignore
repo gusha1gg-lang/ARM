@@ -23,3 +23,6 @@ logs/
 
 # Конфигурация окружения opencode (не часть проекта)
 opencode.json
+
+# Готовый комплект для переноса на сервер (собирается tools/build_dist.py)
+ARM-OMK-main/
