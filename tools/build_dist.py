@@ -153,16 +153,31 @@ def copy_db(src: Path, dst: Path) -> None:
 
     Копировать файл ``.db`` напрямую нельзя, если рядом есть ``-wal``:
     часть свежих записей ещё лежит в нём.
+
+    Готовый файл переводится в режим ``journal_mode=DELETE`` — тогда база
+    лежит одним файлом без ``-wal``/``-shm`` и её можно копировать целиком.
+    Рабочий WAL включается приложением при первом запуске (``app/__init__.py``).
     """
     dst.parent.mkdir(parents=True, exist_ok=True)
+    for suffix in ("-wal", "-shm"):
+        stale = Path(str(dst) + suffix)
+        if stale.exists():
+            stale.unlink()
+
     source = sqlite3.connect(src)
     target = sqlite3.connect(dst)
     try:
         with target:
             source.backup(target)
+        target.execute("PRAGMA journal_mode = DELETE").fetchone()
     finally:
         target.close()
         source.close()
+
+    for suffix in ("-wal", "-shm"):
+        stale = Path(str(dst) + suffix)
+        if stale.exists():
+            stale.unlink()
 
 
 def tree_size(path: Path) -> int:
@@ -174,6 +189,29 @@ def tree_size(path: Path) -> int:
             except OSError:
                 pass
     return total
+
+
+def _check_clean(target: Path) -> list[str]:
+    """Проверить, что в комплект не попали рабочие артефакты.
+
+    Такие файлы появляются, если в папке сборки запускали сервер:
+    ``.env`` с боевым ключом, ``logs/``, ``__pycache__``.
+    """
+    problems: list[str] = []
+    for name in (".env", "logs"):
+        if (target / name).exists():
+            problems.append(name)
+    for path in target.rglob("*"):
+        rel = path.relative_to(target)
+        if path.is_dir() and path.name == "__pycache__":
+            problems.append(str(rel))
+        elif path.is_file() and path.suffix in (".pyc", ".pyo"):
+            problems.append(str(rel))
+        elif path.is_file() and path.name.startswith("test_") and path.suffix == ".py":
+            problems.append(str(rel))
+        elif path.is_file() and path.name.endswith(("-wal", "-shm")):
+            problems.append(str(rel))
+    return problems
 
 
 def main() -> int:
@@ -220,6 +258,16 @@ def main() -> int:
 
     howto = TARGET / "КАК-ЗАПУСТИТЬ.txt"
     howto.write_text(HOWTO, encoding="utf-8-sig", newline="\r\n")
+
+    leftovers = _check_clean(TARGET)
+    if leftovers:
+        print("\nОШИБКА: в комплекте остались рабочие артефакты:", file=sys.stderr)
+        for item in leftovers[:20]:
+            print("  ", item, file=sys.stderr)
+        print("  Запускали сервер из папки сборки? Пересоберите комплект.",
+              file=sys.stderr)
+        return 1
+    print("  проверка чистоты:                   OK (нет .env, logs, __pycache__)")
 
     total = tree_size(TARGET)
     files = sum(len(f) for _r, _d, f in os.walk(TARGET))

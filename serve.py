@@ -20,6 +20,12 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 
+# --- пути ----------------------------------------------------------------
+# Папку проекта добавляем явно: в «урезанном» Python (embeddable, флаг
+# -P / PYTHONSAFEPATH) каталог скрипта в sys.path не попадает.
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 # --- vendor ---------------------------------------------------------------
 VENDOR_DIR = BASE_DIR / "vendor"
 if VENDOR_DIR.is_dir() and str(VENDOR_DIR) not in sys.path:
