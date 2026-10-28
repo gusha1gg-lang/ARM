@@ -48,6 +48,7 @@ READ_PAGES = [
     "/NastoikaT5.aspx",
     "/NastoikaEBS.aspx",
     "/Calendar.aspx",
+    "/Logs.aspx",
     "/NastroykaOPT.htm",
     "/birka_akp5.htm",
     "/tururushka.htm",
@@ -154,6 +155,10 @@ def db():
 def cleanup() -> None:
     conn = db()
     conn.execute("DELETE FROM users WHERE username IN ('test_editor','test_viewer')")
+    conn.execute(
+        "DELETE FROM audit_log WHERE username IN ('test_editor','test_viewer') "
+        "OR details LIKE '%test_editor%' OR details LIKE '%test_viewer%'"
+    )
     conn.commit()
     conn.close()
 

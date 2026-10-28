@@ -8,6 +8,8 @@ ASP.NET WebForms + C# + MS Access на **Python (Flask) + SQLite** с сохра
 * **Бэкенд:** Flask 3 + Jinja2, без ORM (`sqlite3`).
 * **БД:** SQLite (`instance/asutp.db`), схема и данные перенесены из `App_Data/AsutpDB.mdb`.
 * **Аутентификация:** сессии Flask, пароли — PBKDF2-SHA256, роли `viewer` / `editor` / `admin`.
+* **Журнал действий:** страница **«Логи»** (`/Logs.aspx`) — кто, что и когда сделал;
+  на формах редактирования справа от заголовка видно, кто и когда менял запись.
 * **Запуск:** только локально, `http://127.0.0.1:5000`.
 
 Статус миграции: **Этапы 0–4 выполнены**, Этап 5 — финальная проверка и документация.
@@ -66,6 +68,11 @@ python tools/verify_db.py
 
 Ожидаемый результат: `Access=3880, SQLite=3880`, «Внешние ключи: OK», «Кириллица: OK».
 Отчёт перезаписывается в `docs/02_DB.md`.
+
+> Сверка сравнивает базу с исходным снимком Access. После начала работы на новом
+> сайте правки, сделанные через интерфейс, закономерно отличаются от Access —
+> у таких таблиц контрольная сумма покажет ❌. Это не ошибка миграции;
+> структура, количество строк, ключи и кодировка проверяются отдельно.
 
 ## 3. Запуск
 
@@ -138,6 +145,11 @@ URL сохранены как в оригинале (`.aspx` / `.htm`).
 | Настройки | `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/NastroykaOPT.htm`, `/birka_akp5.htm`, `/tururushka.htm`, `/Инструкция по перезапуску WinCC.htm` | статические страницы |
 | Прочее | `/Webnav.aspx`, `/Calendar.aspx` | статические страницы |
 | Пользователи | `/admin/users/` | `users` |
+| Логи | `/Logs.aspx` | `audit_log` (создаётся автоматически) |
+
+Пункт **«Логи»** в верхнем меню доступен всем вошедшим пользователям: журнал
+показывает дату и время, пользователя, роль, действие, раздел и подробности.
+Фильтры — по пользователю, разделу, действию и периоду дат.
 
 Страницы `/CISCO.aspx`, `/CISCO2.aspx`, `/Webnav.aspx`,
 `/NastoikaT5.aspx`, `/NastoikaEBS.aspx`, `/Calendar.aspx` и `.htm`-файлы
@@ -156,6 +168,7 @@ C:\ARM-OMK\
 │   ├── security.py           # g.user, @login_required, @roles_required, CSRF
 │   ├── auth.py               # /Login.aspx, /logout
 │   ├── users.py              # /admin/users/ (только admin)
+│   ├── audit.py              # журнал действий /Logs.aspx + audit_log
 │   ├── ipaddr4.py            # ТЭСК ТБД
 │   ├── ipaddr5.py            # ТЭСЦ 5
 │   ├── ipaddr_uch.py         # АБК
@@ -181,6 +194,7 @@ C:\ARM-OMK\
 │   ├── test_auth.py          # роли и пользователи (23)
 │   ├── test_pages*.py        # по разделам (38–51)
 │   ├── test_stage5_roles.py  # матрица «страницы × роли» (173)
+│   ├── test_audit.py         # журнал действий и «последнее изменение» (30)
 │   └── gen_static_pages.py   # генератор шаблонов статики
 ├── docs\                     # 00_AUDIT, 01_PLAN, 02_DB, 03_AUTH, 04_PAGES, 05_FINAL
 ├── instance\asutp.db         # рабочая БД (в git не входит)
@@ -204,6 +218,7 @@ C:\ARM-OMK\
 python tools/verify_db.py          # сверка БД с Access
 python tools/smoke_pages.py        # все страницы → 200
 python tools/test_stage5_roles.py  # матрица доступа по ролям
+python tools/test_audit.py         # журнал действий и «последнее изменение»
 python tools/check_static_pages.py # статика 1-в-1 с legacy
 python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 ```
@@ -222,17 +237,21 @@ python tools/check_cisco_static.py # CISCO 1-в-1 с legacy
 | `test_pages_static.py` (статика) | 39 |
 | `test_auth.py` (роли) | 23 |
 | `test_stage5_roles.py` (матрица) | 173 |
+| `test_audit.py` (журнал действий) | 30 |
 | `smoke_pages.py` (все страницы) | 36 |
 
 Тесты создают временных пользователей (`test_viewer`, `test_editor`) и тестовые
 записи, затем удаляют их. Итоговое количество строк в БД не меняется
-(контроль — `tools/verify_db.py`, 3 880 = 3 880).
+(контроль — `tools/verify_db.py`, 3 880 = 3 880; строки журнала тестов
+`test_audit.py` тоже удаляются).
 
 ## 9. База данных и резервные копии
 
 * Рабочая БД: `instance/asutp.db` (в git не входит).
 * Схема: `scripts/schema.sql` — имена таблиц/полей и типы повторяют Access
   (маппинг типов описан в `docs/02_DB.md`).
+* Таблица журнала `audit_log` создаётся приложением при старте
+  (`CREATE TABLE IF NOT EXISTS`), в миграции Access её нет.
 * Перед экспериментами скопируйте файл:
 
 ```powershell

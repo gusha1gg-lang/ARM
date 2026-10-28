@@ -22,6 +22,7 @@ from flask import (
     url_for,
 )
 
+from .audit import last_change, log_action
 from .db import get_db
 from .ip_shared import find_duplicates
 from .security import login_required, roles_required, validate_csrf
@@ -180,7 +181,18 @@ def _form_data() -> dict:
     return {field: (request.form.get(field) or "") for field in FIELDS}
 
 
-def _insert(db, data: dict) -> None:
+def _log_details(data: dict) -> str:
+    """Краткое описание записи для журнала действий."""
+    return (
+        f"пролет {data.get('Prolet') or '—'}, "
+        f"ось {data.get('Oc') or '—'}, "
+        f"участок {data.get('Uchastok') or '—'}, "
+        f"КЕ {data.get('KE') or '—'}, "
+        f"IP {data.get('IPaddress') or '—'}"
+    )
+
+
+def _insert(db, data: dict) -> int:
     columns = ", ".join(f'"{f}"' for f in FIELDS)
     placeholders = ", ".join("?" for _ in FIELDS)
     values = []
@@ -190,10 +202,11 @@ def _insert(db, data: dict) -> None:
             values.append(int(value))
         else:
             values.append(value)
-    db.execute(
+    cursor = db.execute(
         f'INSERT INTO "IPaddress4" ({columns}) VALUES ({placeholders})', values
     )
     db.commit()
+    return cursor.lastrowid
 
 
 def _update(db, row_id: int, data: dict) -> None:
@@ -229,7 +242,8 @@ def add():
         if error is None:
             warnings = _collect_warnings(data, None)
             if not warnings or force:
-                _insert(get_db(), data)
+                new_id = _insert(get_db(), data)
+                log_action("create", "IPaddress4", new_id, _log_details(data))
                 flash("Запись добавлена.", "success")
                 return redirect(url_for("ipaddr4.main"))
 
@@ -275,6 +289,8 @@ def edit():
         if request.form.get("action") == "delete":
             db.execute('DELETE FROM "IPaddress4" WHERE "IDPC" = ?', (row_id,))
             db.commit()
+            log_action("delete", "IPaddress4", row_id,
+                       _log_details(_row_to_data(row)))
             flash(f"Запись №{row_id} удалена.", "success")
             return redirect(url_for("ipaddr4.main"))
 
@@ -286,6 +302,7 @@ def edit():
             warnings = _collect_warnings(data, row_id)
             if not warnings or force:
                 _update(db, row_id, data)
+                log_action("update", "IPaddress4", row_id, _log_details(data))
                 flash("Изменения сохранены.", "success")
                 return redirect(url_for("ipaddr4.main"))
 
@@ -302,6 +319,7 @@ def edit():
         autofocus="Prolet",
         form_action=url_for("ipaddr4.edit", id=row_id),
         back_url=url_for("ipaddr4.main"),
+        last_change_info=last_change("IPaddress4", row_id),
     )
 
 

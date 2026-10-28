@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Логи — Справочник ТЭСК ТБД{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="page__head">
+        <h2 class="page__title">Логи</h2>
+        <span class="last-change">Всего записей: <strong>{{ total }}</strong></span>
+    </div>
+
+    <form method="get" action="{{ url_for('audit.logs') }}" class="logs-filters">
+        <label class="logs-filters__field">
+            <span class="logs-filters__label">Пользователь</span>
+            <select class="select" name="username">
+                <option value="">Все</option>
+                {% for name in usernames %}
+                <option value="{{ name }}" {{ 'selected' if filters['username'] == name else '' }}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label class="logs-filters__field">
+            <span class="logs-filters__label">Раздел</span>
+            <select class="select" name="entity">
+                <option value="">Все</option>
+                {% for key, title in entities.items() %}
+                <option value="{{ key }}" {{ 'selected' if filters['entity'] == key else '' }}>{{ title }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label class="logs-filters__field">
+            <span class="logs-filters__label">Действие</span>
+            <select class="select" name="action">
+                <option value="">Все</option>
+                {% for key, title in actions.items() %}
+                <option value="{{ key }}" {{ 'selected' if filters['action'] == key else '' }}>{{ title }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label class="logs-filters__field">
+            <span class="logs-filters__label">С даты</span>
+            <input class="field__input" type="date" name="date_from" value="{{ filters['date_from'] }}">
+        </label>
+
+        <label class="logs-filters__field">
+            <span class="logs-filters__label">По дату</span>
+            <input class="field__input" type="date" name="date_to" value="{{ filters['date_to'] }}">
+        </label>
+
+        <div class="logs-filters__actions">
+            <button type="submit" class="btn btn--primary">Показать</button>
+            {% if active_filters %}
+            <a class="btn" href="{{ url_for('audit.logs') }}">Сбросить</a>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="table-wrap">
+        <table class="table table--logs">
+            <thead>
+            <tr>
+                <th class="nowrap">Дата и время</th>
+                <th>Пользователь</th>
+                <th>Роль</th>
+                <th>Действие</th>
+                <th>Раздел</th>
+                <th>Запись</th>
+                <th>Подробности</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+            <tr>
+                <td class="nowrap">{{ row['created_at']|audit_dt }}</td>
+                <td class="nowrap">{{ row['username'] }}</td>
+                <td class="nowrap">
+                    {% if row['role'] %}<span class="role-tag role-{{ row['role'] }}">{{ row['role'] }}</span>{% endif %}
+                </td>
+                <td class="nowrap">
+                    <span class="log-action log-action--{{ row['action'] }}">{{ actions.get(row['action'], row['action']) }}</span>
+                </td>
+                <td class="nowrap">{{ entities.get(row['entity'], row['entity']) }}</td>
+                <td class="nowrap">
+                    {% set url = record_url(row['entity'], row['record_id']) %}
+                    {% if url %}<a href="{{ url }}">№{{ row['record_id'] }}</a>
+                    {% elif row['record_id'] %}№{{ row['record_id'] }}
+                    {% else %}—{% endif %}
+                </td>
+                <td class="logs-details">{{ row['details'] or '—' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="muted">Записей нет. Журнал заполняется автоматически при действиях на сайте.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if pages > 1 %}
+    <div class="logs-pager">
+        {% if page > 1 %}
+        <a class="btn btn--small" href="{{ url_for('audit.logs', page=page-1, **active_filters) }}">← Новее</a>
+        {% endif %}
+        <span class="muted">Страница {{ page }} из {{ pages }}</span>
+        {% if page < pages %}
+        <a class="btn btn--small" href="{{ url_for('audit.logs', page=page+1, **active_filters) }}">Старее →</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

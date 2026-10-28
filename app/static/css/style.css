@@ -738,6 +738,82 @@ a { color: var(--blue-dark); }
 .table--jarlik td.table--jarlik__action { text-align: center; width: 28px; }
 .table--jarlik td.table--jarlik__action img { vertical-align: middle; }
 
+/* ---------- Журнал действий (Логи) ---------- */
+
+/* Заголовок страницы и пометка «кто и когда изменял» справа от него. */
+.page__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px 18px;
+    flex-wrap: wrap;
+}
+
+.page__head .page__title { margin-bottom: 14px; }
+
+.last-change {
+    font-size: 12px;
+    color: var(--muted);
+    background: #eef3fc;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    line-height: 1.5;
+}
+
+.last-change strong { color: var(--blue-dark); font-weight: 600; }
+
+.logs-filters {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.logs-filters__field { display: flex; flex-direction: column; gap: 4px; }
+.logs-filters__label { font-size: 12px; color: var(--muted); }
+.logs-filters__actions { display: flex; gap: 8px; }
+.logs-filters .field__input { width: auto; min-width: 150px; }
+.logs-filters .select { min-width: 160px; }
+
+.table--logs { font-size: 13px; }
+.table--logs th,
+.table--logs td { vertical-align: top; padding: 8px 10px; }
+.table--logs .logs-details { max-width: 520px; white-space: normal; }
+
+.log-action {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.log-action--create { background: #dcfce7; color: var(--ok); }
+.log-action--update { background: #dbeafe; color: var(--blue-dark); }
+.log-action--delete { background: #fdeaea; color: var(--danger); }
+.log-action--login,
+.log-action--logout { background: #f1f5f9; color: var(--muted); }
+.log-action--role,
+.log-action--password,
+.log-action--rename,
+.log-action--block,
+.log-action--unblock { background: #fef3c7; color: #92400e; }
+
+.logs-pager {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
 /* ---------- Статические страницы CISCO (Excel-экспорт) ---------- */
 
 .legacy-static { overflow-x: auto; }

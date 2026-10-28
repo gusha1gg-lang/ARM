@@ -4,7 +4,15 @@
 
 {% block content %}
 <div class="page">
-    <h2 class="page__title">{{ 'Редактирование или удаление ярлыка' if is_edit else 'Добавление ярлыка' }}</h2>
+    <div class="page__head">
+        <h2 class="page__title">{{ 'Редактирование или удаление ярлыка' if is_edit else 'Добавление ярлыка' }}</h2>
+        {% if is_edit and last_change_info %}
+        <div class="last-change">
+            Последнее изменение: <strong>{{ last_change_info['username'] }}</strong>
+            ({{ last_change_info['role'] or '—' }}), {{ last_change_info['created_at']|audit_dt }}
+        </div>
+        {% endif %}
+    </div>
 
     <form class="form-card" method="post"
           action="{{ url_for('jarlik.edit', id=row_id) if is_edit else url_for('jarlik.add') }}">

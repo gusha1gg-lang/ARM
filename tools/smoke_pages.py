@@ -45,6 +45,7 @@ PAGES = [
     "/Webnav.aspx",
     "/NastoikaT5.aspx",
     "/NastoikaEBS.aspx",
+    "/Logs.aspx",
     "/Calendar.aspx",
     "/NastroykaOPT.htm",
     "/birka_akp5.htm",

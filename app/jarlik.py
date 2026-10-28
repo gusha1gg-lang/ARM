@@ -25,6 +25,7 @@ from flask import (
 )
 from werkzeug.security import safe_join
 
+from .audit import last_change, log_action
 from .config import BASE_DIR
 from .db import get_db
 from .security import login_required, validate_csrf
@@ -97,14 +98,15 @@ def add():
         validate_csrf()
         # Оригинал: INSERT INTO Jarlik ([NameJarlik],[LnkNameJarlik]) VALUES (?,?)
         db = get_db()
-        db.execute(
+        name = (request.form.get("NameJarlik") or "").strip()
+        link = (request.form.get("LnkNameJarlik") or "").strip()
+        cursor = db.execute(
             'INSERT INTO "Jarlik" ("NameJarlik", "LnkNameJarlik") VALUES (?, ?)',
-            (
-                (request.form.get("NameJarlik") or "").strip(),
-                (request.form.get("LnkNameJarlik") or "").strip(),
-            ),
+            (name, link),
         )
         db.commit()
+        log_action("create", "Jarlik", cursor.lastrowid,
+                   f"Ярлык «{name}» → {link or '—'}")
         flash("Ярлык добавлен.", "success")
         return redirect(url_for("jarlik.main"))
 
@@ -132,23 +134,32 @@ def edit():
         if action == "delete":
             db.execute('DELETE FROM "Jarlik" WHERE "IDJarlik" = ?', (row_id,))
             db.commit()
+            log_action("delete", "Jarlik", row_id,
+                       f"Ярлык «{row['NameJarlik'] or '—'}» → "
+                       f"{row['LnkNameJarlik'] or '—'}")
             flash(f"Ярлык №{row_id} удалён.", "success")
             return redirect(url_for("jarlik.main"))
 
         if action == "update":
+            name = (request.form.get("NameJarlik") or "").strip()
+            link = (request.form.get("LnkNameJarlik") or "").strip()
             db.execute(
                 'UPDATE "Jarlik" SET "NameJarlik" = ?, "LnkNameJarlik" = ? '
                 'WHERE "IDJarlik" = ?',
-                (
-                    (request.form.get("NameJarlik") or "").strip(),
-                    (request.form.get("LnkNameJarlik") or "").strip(),
-                    row_id,
-                ),
+                (name, link, row_id),
             )
             db.commit()
+            log_action("update", "Jarlik", row_id,
+                       f"Ярлык «{name}» → {link or '—'}")
             flash("Изменения сохранены.", "success")
             return redirect(url_for("jarlik.main"))
 
         abort(400)
 
-    return render_template("jarlik_form.html", mode="edit", row=row, row_id=row_id)
+    return render_template(
+        "jarlik_form.html",
+        mode="edit",
+        row=row,
+        row_id=row_id,
+        last_change_info=last_change("Jarlik", row_id),
+    )

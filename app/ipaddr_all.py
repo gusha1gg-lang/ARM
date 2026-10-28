@@ -13,6 +13,7 @@ import sqlite3
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+from .audit import last_change, log_action
 from .db import get_db
 from .ip_shared import find_duplicates
 from .security import login_required, roles_required, validate_csrf
@@ -204,13 +205,25 @@ def _values(data: dict) -> list:
     return values
 
 
-def _insert(db, data: dict) -> None:
+def _log_details(data: dict) -> str:
+    """Краткое описание записи для журнала действий."""
+    return (
+        f"цех №{data.get('ShopID') or '—'}, "
+        f"пролет {data.get('Prolet') or '—'}, "
+        f"ось {data.get('Oc') or '—'}, "
+        f"КЕ {data.get('KE') or '—'}, "
+        f"IP {data.get('IPaddress') or '—'}"
+    )
+
+
+def _insert(db, data: dict) -> int:
     columns = ", ".join(f'"{f}"' for f in FIELDS)
     placeholders = ", ".join("?" for _ in FIELDS)
-    db.execute(
+    cursor = db.execute(
         f'INSERT INTO "IPaddressAll" ({columns}) VALUES ({placeholders})', _values(data)
     )
     db.commit()
+    return cursor.lastrowid
 
 
 def _update(db, row_id: int, data: dict) -> None:
@@ -234,6 +247,7 @@ def _render_form(
     warnings: dict,
     error,
     row_id: int | None = None,
+    last_change_info=None,
 ):
     heading = "Добавление данных" if mode == "add" else "Редактирование данных"
     return render_template(
@@ -254,6 +268,7 @@ def _render_form(
             else url_for("ipaddr_all.edit", id=row_id)
         ),
         back_url=url_for("ipaddr_all.main"),
+        last_change_info=last_change_info,
     )
 
 
@@ -276,7 +291,8 @@ def add():
         if error is None:
             warnings = _collect_warnings(data, None)
             if not warnings or force:
-                _insert(get_db(), data)
+                new_id = _insert(get_db(), data)
+                log_action("create", "IPaddressAll", new_id, _log_details(data))
                 # В оригинале после сохранения страница не перезагружалась:
                 # форма очищалась (ClearTextBox), пользователь оставался на ней.
                 flash("Запись добавлена.", "success")
@@ -315,6 +331,8 @@ def edit():
         if request.form.get("action") == "delete":
             db.execute('DELETE FROM "IPaddressAll" WHERE "IDPC" = ?', (row_id,))
             db.commit()
+            log_action("delete", "IPaddressAll", row_id,
+                       _log_details(_row_to_data(row)))
             flash(f"Запись №{row_id} удалена.", "success")
             return redirect(url_for("ipaddr_all.main"))
 
@@ -326,7 +344,9 @@ def edit():
             warnings = _collect_warnings(data, row_id)
             if not warnings or force:
                 _update(db, row_id, data)
+                log_action("update", "IPaddressAll", row_id, _log_details(data))
                 flash("Изменения сохранены.", "success")
                 return redirect(url_for("ipaddr_all.main"))
 
-    return _render_form("edit", data, warnings, error, row_id)
+    return _render_form("edit", data, warnings, error, row_id,
+                        last_change("IPaddressAll", row_id))

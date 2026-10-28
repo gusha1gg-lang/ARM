@@ -800,3 +800,119 @@ CREATE TABLE settings_links (
 - `python tools/test_pages_static.py` — статические страницы и `.htm` без изменений `OK`;
 - сверка БД `tools/verify_db.py`: 3880 = 3880, внешние ключи и кириллица — OK.
 
+---
+
+## Новая функция по требованию пользователя — журнал действий «Логи» (2026-10-28)
+
+### Требование
+1. В верхнем меню (там же, где навигация) — страница **«Логи»**.
+2. Записывать, **кто что сделал на сайте и когда** (дата).
+3. При открытии формы редактирования сверху, **справа от заголовка
+   «Редактирование данных»**, показывать, **кем и когда** запись изменена
+   в последний раз (дата и время).
+
+### Что добавлено
+
+| Компонент | Файл |
+|---|---|
+| Таблица `audit_log`, функции `log_action()` / `last_change()` / `record_url()`, маршрут `/Logs.aspx` | `app/audit.py` |
+| Страница журнала с фильтрами и постраничным выводом | `app/templates/logs.html` |
+| Пункт меню «Логи» (последний в верхней навигации) | `app/templates/base.html` |
+| Блок «Последнее изменение» на формах | `app/templates/ip_form.html`, `app/templates/jarlik_form.html` |
+| Стили `.page__head`, `.last-change`, `.logs-filters`, `.table--logs`, `.log-action` | `app/static/css/style.css` |
+| Регистрация blueprint и создание таблицы при старте | `app/__init__.py` (`audit.init_app(app)`) |
+| Тест | `tools/test_audit.py` (30 проверок) |
+
+### Что и где записывается
+
+| Действие | Точки записи |
+|---|---|
+| `login` / `logout` | `app/auth.py` |
+| `create` / `update` / `delete` | `ipaddr4.py`, `ipaddr5.py`, `ipaddr_uch.py`, `ipaddr_all.py`, `jarlik.py`, `telefon.py`, `spr.py`, `video.py` |
+| `upload` | `video.py` (`/VideoIP/upload`) |
+| `create` / `role` / `password` / `block` / `unblock` / `rename` | `users.py` |
+
+Подробности (`details`) содержат ключевые поля записи — КЕ, IP, пролёт, ось,
+участок, название ярлыка, ФИО/телефон и т.п., поэтому действие остаётся
+понятным и после удаления строки.
+
+### Изменение БД
+
+Добавлена одна новая таблица. Legacy-таблицы, их поля и строки не изменялись.
+Таблица создаётся автоматически при старте приложения.
+
+```sql
+CREATE TABLE IF NOT EXISTS audit_log (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now','localtime')),
+    user_id    INTEGER,
+    username   TEXT NOT NULL,
+    role       TEXT,
+    action     TEXT NOT NULL,
+    entity     TEXT NOT NULL,
+    record_id  TEXT,
+    details    TEXT,
+    ip         TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_log(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_entity  ON audit_log(entity, record_id);
+CREATE INDEX IF NOT EXISTS idx_audit_user    ON audit_log(username);
+```
+
+Резервная копия БД до начала работ этой сессии:
+`_backup/asutp_2026-10-28_before_drop_settings_links.db`.
+После добавления в БД 16 таблиц: 14 legacy + `users` + `audit_log`.
+
+### Поведение
+
+* Доступ к `/Logs.aspx` — после входа, всем ролям (`viewer` / `editor` / `admin`);
+  аноним перенаправляется на `/Login.aspx`.
+* Журнал: дата и время (локальное), пользователь, роль, действие, раздел,
+  номер записи, подробности, IP-адрес клиента.
+* Фильтры: пользователь, раздел, действие, «с даты» / «по дату»; 100 записей
+  на страницу, новые сверху.
+* Пометка «Последнее изменение» берётся из последней записи `create`/`update`
+  для этой записи и выводится справа от заголовка. Для записей, изменённых
+  до появления журнала, блок не показывается.
+* Ошибка записи в журнал не прерывает основное действие (пишется в лог Flask).
+
+### Самопроверка
+
+`python tools/test_audit.py` — **30/30**:
+
+| Проверка | Результат |
+|---|---|
+| аноним `/Logs.aspx` → редирект на вход | ✅ |
+| вход в систему записан в журнал | ✅ |
+| добавление / изменение / удаление (телефоны, ярлыки, ТЭСК ТБД) | ✅ |
+| на форме «Редактирование данных» видно автора, дату и время | ✅ |
+| пометка находится справа от заголовка (`.page__head` → `.page__title` → `.last-change`) | ✅ |
+| фильтры по пользователю / разделу / действию / датам | ✅ |
+| тестовые записи и их строки журнала удаляются | ✅ |
+
+Регрессия: `test_pages_static.py` 37/37, `test_stage5_roles.py` 173/173,
+`smoke_pages.py` 36/36, `check_static_pages.py` — всё совпадает.
+Сверка БД: 3880 = 3880, внешние ключи и кириллица — OK.
+
+### Примечание о сверке с Access
+
+`tools/verify_db.py` сравнивает базу с исходным снимком Access. После начала
+работы на новом сайте изменения через интерфейс закономерно отличаются от
+Access, поэтому контрольная сумма соответствующей таблицы покажет ❌ — это не
+ошибка миграции. На 2026-10-28 зафиксировано три такие правки, и все они есть
+в журнале: `IPaddress4.IDPC=689` (запись №1, 10:14:52) и `IPaddress5.IDPC=435`
+и `138` (записи №39–40, 10:21–10:22). Структура, количество строк, ключи и
+кодировка совпадают. Все последующие правки фиксируются в `audit_log`.
+
+### Затронутые файлы
+
+`app/audit.py` (новый), `app/templates/logs.html` (новый),
+`app/templates/base.html`, `app/templates/ip_form.html`,
+`app/templates/jarlik_form.html`, `app/static/css/style.css`,
+`app/__init__.py`, `app/auth.py`, `app/users.py`, `app/ipaddr4.py`,
+`app/ipaddr5.py`, `app/ipaddr_uch.py`, `app/ipaddr_all.py`, `app/jarlik.py`,
+`app/telefon.py`, `app/spr.py`, `app/video.py`,
+`tools/test_audit.py` (новый), `tools/smoke_pages.py`,
+`tools/test_stage5_roles.py`, `README.md`, `docs/04_PAGES.md`,
+`docs/05_FINAL.md`, `MIGRATION_LOG.md`.
+

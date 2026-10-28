@@ -12,6 +12,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
+from .audit import log_action
 from .db import get_db
 from .security import validate_csrf
 
@@ -65,6 +66,8 @@ def login():
                 (user["user_id"],),
             )
             db.commit()
+            log_action("login", "auth", user["user_id"],
+                       f"Вход в систему: {user['username']}", user=user)
             target = _safe_next(request.args.get("next"))
             return redirect(target or url_for("index"))
 
@@ -74,5 +77,8 @@ def login():
 @bp.route("/logout", methods=("POST",))
 def logout():
     validate_csrf()
+    if g.user is not None:
+        log_action("logout", "auth", g.user["user_id"],
+                   f"Выход из системы: {g.user['username']}")
     session.clear()
     return redirect(url_for("auth.login"))

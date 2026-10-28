@@ -13,6 +13,7 @@ import sqlite3
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+from .audit import last_change, log_action
 from .db import get_db
 from .ip_shared import find_duplicates
 from .security import login_required, roles_required, validate_csrf
@@ -178,13 +179,25 @@ def _values(data: dict) -> list:
     return values
 
 
-def _insert(db, data: dict) -> None:
+def _log_details(data: dict) -> str:
+    """Краткое описание записи для журнала действий."""
+    return (
+        f"участок №{data.get('IDUchastok') or '—'}, "
+        f"этаж {data.get('Level') or '—'}, "
+        f"каб. {data.get('Kabinet') or '—'}, "
+        f"КЕ {data.get('KE') or '—'}, "
+        f"IP {data.get('IPaddress') or '—'}"
+    )
+
+
+def _insert(db, data: dict) -> int:
     columns = ", ".join(f'"{f}"' for f in FIELDS)
     placeholders = ", ".join("?" for _ in FIELDS)
-    db.execute(
+    cursor = db.execute(
         f'INSERT INTO "IPAddressUch" ({columns}) VALUES ({placeholders})', _values(data)
     )
     db.commit()
+    return cursor.lastrowid
 
 
 def _update(db, row_id: int, data: dict) -> None:
@@ -202,6 +215,7 @@ def _render_form(
     error,
     heading: str,
     row_id: int | None = None,
+    last_change_info=None,
 ):
     return render_template(
         "ip_form.html",
@@ -221,6 +235,7 @@ def _render_form(
             else url_for("ipaddr_uch.edit", id=row_id)
         ),
         back_url=url_for("ipaddr_uch.main"),
+        last_change_info=last_change_info,
     )
 
 
@@ -246,7 +261,8 @@ def add():
         if error is None:
             warnings = _collect_warnings(data, None, DUPLICATE_MESSAGE_ADD)
             if not warnings or force:
-                _insert(get_db(), data)
+                new_id = _insert(get_db(), data)
+                log_action("create", "IPAddressUch", new_id, _log_details(data))
                 flash("Запись добавлена.", "success")
                 return redirect(url_for("ipaddr_uch.main"))
 
@@ -283,6 +299,8 @@ def edit():
         if request.form.get("action") == "delete":
             db.execute('DELETE FROM "IPAddressUch" WHERE "IDPC" = ?', (row_id,))
             db.commit()
+            log_action("delete", "IPAddressUch", row_id,
+                       _log_details(_row_to_data(row)))
             flash(f"Запись №{row_id} удалена.", "success")
             return redirect(url_for("ipaddr_uch.main"))
 
@@ -294,7 +312,9 @@ def edit():
             warnings = _collect_warnings(data, row_id, DUPLICATE_MESSAGE_EDIT)
             if not warnings or force:
                 _update(db, row_id, data)
+                log_action("update", "IPAddressUch", row_id, _log_details(data))
                 flash("Изменения сохранены.", "success")
                 return redirect(url_for("ipaddr_uch.main"))
 
-    return _render_form("edit", data, warnings, error, HEADING_EDIT, row_id)
+    return _render_form("edit", data, warnings, error, HEADING_EDIT, row_id,
+                        last_change("IPAddressUch", row_id))

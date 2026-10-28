@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from flask import Blueprint, abort, flash, g, redirect, render_template, request, url_for
 
+from .audit import log_action
 from .db import get_db
 from .security import login_required, validate_csrf
 
@@ -59,14 +60,15 @@ def main():
         db = get_db()
 
         if action == "add":
-            db.execute(
+            fio = (request.form.get("fio") or "").strip()
+            telnumber = (request.form.get("telnumber") or "").strip()
+            cursor = db.execute(
                 'INSERT INTO "telefon" ("fio", "telnumber") VALUES (?, ?)',
-                (
-                    (request.form.get("fio") or "").strip(),
-                    (request.form.get("telnumber") or "").strip(),
-                ),
+                (fio, telnumber),
             )
             db.commit()
+            log_action("create", "telefon", cursor.lastrowid,
+                       f"{fio or '—'}: {telnumber or '—'}")
             flash("Запись добавлена.", "success")
             return _redirect_back(sort, direction)
 
@@ -77,21 +79,27 @@ def main():
             abort(400)
 
         if action == "delete":
+            old = db.execute(
+                'SELECT "fio", "telnumber" FROM "telefon" WHERE "id" = ?', (row_id,)
+            ).fetchone()
             db.execute('DELETE FROM "telefon" WHERE "id" = ?', (row_id,))
             db.commit()
+            log_action(
+                "delete", "telefon", row_id,
+                f"{old['fio'] or '—'}: {old['telnumber'] or '—'}" if old else None,
+            )
             flash(f"Запись №{row_id} удалена.", "success")
             return _redirect_back(sort, direction)
 
         if action == "update":
+            fio = (request.form.get("fio") or "").strip()
+            telnumber = (request.form.get("telnumber") or "").strip()
             db.execute(
                 'UPDATE "telefon" SET "fio" = ?, "telnumber" = ? WHERE "id" = ?',
-                (
-                    (request.form.get("fio") or "").strip(),
-                    (request.form.get("telnumber") or "").strip(),
-                    row_id,
-                ),
+                (fio, telnumber, row_id),
             )
             db.commit()
+            log_action("update", "telefon", row_id, f"{fio or '—'}: {telnumber or '—'}")
             flash("Изменения сохранены.", "success")
             return _redirect_back(sort, direction)
 

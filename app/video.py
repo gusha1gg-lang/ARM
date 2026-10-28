@@ -32,6 +32,7 @@ from flask import (
     url_for,
 )
 
+from .audit import log_action
 from .config import BASE_DIR
 from .db import get_db
 from .security import login_required, roles_required, validate_csrf
@@ -272,6 +273,18 @@ def _values_for_row(data: dict, fields: list[str]) -> list:
     return values
 
 
+def _log_details(data: dict, camera_type: str | None = None) -> str:
+    """Краткое описание камеры для журнала действий."""
+    return (
+        f"{data.get('Camera_Type') or camera_type or '—'}: "
+        f"камера №{data.get('IDCAM_NAME') or '—'}, "
+        f"цех №{data.get('ShopID') or '—'}, "
+        f"пролет {data.get('Prolet') or '—'}, "
+        f"участок {data.get('Uchastok') or '—'}, "
+        f"IP {data.get('IPaddress') or '—'}"
+    )
+
+
 # -------------------------------------------------------------------- upload
 
 
@@ -310,6 +323,7 @@ def upload():
 
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     file.save(str(UPLOAD_DIR / name))
+    log_action("upload", "Video_Camera_all", None, f"Загружен файл {name}")
     return jsonify(ok=True, message="Файл загружен", path=f"uploads/{name}")
 
 
@@ -352,11 +366,13 @@ def main():
                 columns = ", ".join(f'"{f}"' for f in INSERT_FIELDS)
                 placeholders = ", ".join("?" for _ in INSERT_FIELDS)
                 db = get_db()
-                db.execute(
+                cursor = db.execute(
                     f'INSERT INTO "Video_Camera_all" ({columns}) VALUES ({placeholders})',
                     _values_for_row(data, INSERT_FIELDS),
                 )
                 db.commit()
+                log_action("create", "Video_Camera_all", cursor.lastrowid,
+                           _log_details(data))
                 flash("Запись добавлена.", "success")
             return _redirect_back(video_type, shop_raw, prolet_raw)
 
@@ -366,10 +382,19 @@ def main():
                 abort(400)
             db = get_db()
             if action == "delete":
+                old = db.execute(
+                    'SELECT "IDCAM_NAME", "ShopID", "Prolet", "Uchastok", '
+                    '"IPaddress", "Camera_Type" FROM "Video_Camera_all" '
+                    'WHERE "ID_VID_CAM" = ?', (row_id,)
+                ).fetchone()
                 db.execute(
                     'DELETE FROM "Video_Camera_all" WHERE "ID_VID_CAM" = ?', (row_id,)
                 )
                 db.commit()
+                log_action(
+                    "delete", "Video_Camera_all", row_id,
+                    _log_details(dict(old), video_type) if old else None,
+                )
                 flash(f"Запись №{row_id} удалена.", "success")
                 return _redirect_back(video_type, shop_raw, prolet_raw)
 
@@ -390,6 +415,8 @@ def main():
                 values,
             )
             db.commit()
+            log_action("update", "Video_Camera_all", row_id,
+                       _log_details(data, video_type))
             flash("Изменения сохранены.", "success")
             return _redirect_back(video_type, shop_raw, prolet_raw)
 

@@ -10,6 +10,7 @@ import sqlite3
 from flask import Flask, g, jsonify, redirect, render_template, request, send_from_directory, url_for
 
 from . import (
+    audit,
     auth,
     cisco,
     db,
@@ -37,8 +38,10 @@ def create_app(config_object=Config) -> Flask:
 
     db.init_app(app)
     security.init_app(app)
+    audit.init_app(app)
 
     app.register_blueprint(auth.bp)
+    app.register_blueprint(audit.bp)
     app.register_blueprint(users.bp)
     app.register_blueprint(ipaddr4.bp)
     app.register_blueprint(ipaddr5.bp)

@@ -26,6 +26,7 @@ from flask import (
     url_for,
 )
 
+from .audit import log_action
 from .db import get_db
 from .security import login_required, validate_csrf
 
@@ -153,7 +154,7 @@ def spr_cisco():
                         flash(error, "error")
                 else:
                     prolet, oc = _parse_cisco_token(token)
-                    db.execute(
+                    cursor = db.execute(
                         'INSERT INTO "SPR_CISCO" ("IP_CISCO", "Prolet_CISCO", "Oc_CISCO", '
                         '"Location_CISCO", "Opisanie_CISCO") VALUES (?, ?, ?, ?, ?)',
                         (
@@ -165,6 +166,13 @@ def spr_cisco():
                         ),
                     )
                     db.commit()
+                    log_action(
+                        "create", "SPR_CISCO", cursor.lastrowid,
+                        f"IP {_text('IP_CISCO') or '—'}, "
+                        f"пролет {prolet if prolet is not None else '—'}, "
+                        f"ось {oc if oc is not None else '—'}, "
+                        f"расположение {_text('Location_CISCO') or '—'}",
+                    )
                     flash("Запись добавлена.", "success")
                 return redirect(url_for("spr.spr_cisco", SPRType=spr_type or ""))
 
@@ -173,8 +181,19 @@ def spr_cisco():
                 abort(400)
 
             if action == "delete":
+                old = db.execute(
+                    'SELECT "IP_CISCO", "Prolet_CISCO", "Oc_CISCO" '
+                    'FROM "SPR_CISCO" WHERE "ID_CISCO" = ?', (row_id,)
+                ).fetchone()
                 db.execute('DELETE FROM "SPR_CISCO" WHERE "ID_CISCO" = ?', (row_id,))
                 db.commit()
+                log_action(
+                    "delete", "SPR_CISCO", row_id,
+                    f"IP {old['IP_CISCO'] or '—'}, пролет "
+                    f"{old['Prolet_CISCO'] if old['Prolet_CISCO'] is not None else '—'}, "
+                    f"ось {old['Oc_CISCO'] if old['Oc_CISCO'] is not None else '—'}"
+                    if old else None,
+                )
                 flash(f"Запись №{row_id} удалена.", "success")
                 return redirect(url_for("spr.spr_cisco", SPRType=spr_type or ""))
 
@@ -193,6 +212,13 @@ def spr_cisco():
                     ),
                 )
                 db.commit()
+                log_action(
+                    "update", "SPR_CISCO", row_id,
+                    f"IP {_text('IP_CISCO') or '—'}, "
+                    f"пролет {_text('Prolet_CISCO') or '—'}, "
+                    f"ось {_text('Oc_CISCO') or '—'}, "
+                    f"расположение {_text('Location_CISCO') or '—'}",
+                )
                 flash("Изменения сохранены.", "success")
                 return redirect(url_for("spr.spr_cisco", SPRType=spr_type or ""))
 
@@ -208,11 +234,13 @@ def spr_cisco():
             elif camera_type not in CAMERA_TYPES:
                 flash("Тип камеры должен быть IP или Analog", "error")
             else:
-                db.execute(
+                cursor = db.execute(
                     'INSERT INTO "SPR_CAMERA" ("Camera_Type", "Camera_Name") VALUES (?, ?)',
                     (camera_type, camera_name),
                 )
                 db.commit()
+                log_action("create", "SPR_CAMERA", cursor.lastrowid,
+                           f"{camera_type}: {camera_name}")
                 flash("Запись добавлена.", "success")
             return redirect(url_for("spr.spr_cisco", SPRType=spr_type or ""))
 
@@ -221,8 +249,16 @@ def spr_cisco():
             abort(400)
 
         if action == "delete":
+            old = db.execute(
+                'SELECT "Camera_Type", "Camera_Name" FROM "SPR_CAMERA" '
+                'WHERE "IDCAM_NAME" = ?', (row_id,)
+            ).fetchone()
             db.execute('DELETE FROM "SPR_CAMERA" WHERE "IDCAM_NAME" = ?', (row_id,))
             db.commit()
+            log_action(
+                "delete", "SPR_CAMERA", row_id,
+                f"{old['Camera_Type']}: {old['Camera_Name']}" if old else None,
+            )
             flash(f"Запись №{row_id} удалена.", "success")
             return redirect(url_for("spr.spr_cisco", SPRType=spr_type or ""))
 
@@ -237,6 +273,8 @@ def spr_cisco():
                 (camera_type, _text("Camera_Name"), row_id),
             )
             db.commit()
+            log_action("update", "SPR_CAMERA", row_id,
+                       f"{camera_type}: {_text('Camera_Name') or '—'}")
             flash("Изменения сохранены.", "success")
             return redirect(url_for("spr.spr_cisco", SPRType=spr_type or ""))
 
@@ -301,10 +339,12 @@ def spr_shop():
 
         if action == "insert":
             # Оригинал: INSERT INTO [NameShop] ([ShopName]) VALUES (?)
-            db.execute(
-                'INSERT INTO "NameShop" ("ShopName") VALUES (?)', (_text("ShopName"),)
+            shop_name = _text("ShopName")
+            cursor = db.execute(
+                'INSERT INTO "NameShop" ("ShopName") VALUES (?)', (shop_name,)
             )
             db.commit()
+            log_action("create", "NameShop", cursor.lastrowid, shop_name or None)
             flash("Запись добавлена.", "success")
             return redirect(url_for("spr.spr_shop", sort=sort, dir=direction))
 
@@ -313,17 +353,24 @@ def spr_shop():
             abort(400)
 
         if action == "delete":
+            old = db.execute(
+                'SELECT "ShopName" FROM "NameShop" WHERE "ShopID" = ?', (row_id,)
+            ).fetchone()
             db.execute('DELETE FROM "NameShop" WHERE "ShopID" = ?', (row_id,))
             db.commit()
+            log_action("delete", "NameShop", row_id,
+                       (old["ShopName"] or None) if old else None)
             flash(f"Запись №{row_id} удалена.", "success")
             return redirect(url_for("spr.spr_shop", sort=sort, dir=direction))
 
         if action == "update":
+            shop_name = _text("ShopName")
             db.execute(
                 'UPDATE "NameShop" SET "ShopName" = ? WHERE "ShopID" = ?',
-                (_text("ShopName"), row_id),
+                (shop_name, row_id),
             )
             db.commit()
+            log_action("update", "NameShop", row_id, shop_name or None)
             flash("Изменения сохранены.", "success")
             return redirect(url_for("spr.spr_shop", sort=sort, dir=direction))
 

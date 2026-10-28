@@ -4,6 +4,7 @@ from __future__ import annotations
 from flask import Blueprint, abort, flash, g, redirect, render_template, request, url_for
 from werkzeug.security import generate_password_hash
 
+from .audit import log_action
 from .db import get_db
 from .security import roles_required, validate_csrf
 
@@ -62,11 +63,13 @@ def create():
     if error:
         flash(error, "error")
     else:
-        db.execute(
+        cursor = db.execute(
             "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",
             (username, generate_password_hash(password), role),
         )
         db.commit()
+        log_action("create", "users", cursor.lastrowid,
+                   f"Создан пользователь «{username}» с ролью {role}")
         flash(f"Пользователь «{username}» создан с ролью {role}.", "success")
 
     return redirect(url_for("users.index"))
@@ -96,6 +99,8 @@ def change_role(user_id: int):
 
     db.execute("UPDATE users SET role = ? WHERE user_id = ?", (role, user_id))
     db.commit()
+    log_action("role", "users", user_id,
+               f"Роль пользователя «{user['username']}»: {user['role']} → {role}")
     flash(f"Роль пользователя «{user['username']}» изменена на {role}.", "success")
     return redirect(url_for("users.index"))
 
@@ -119,6 +124,8 @@ def reset_password(user_id: int):
         (generate_password_hash(password), user_id),
     )
     db.commit()
+    log_action("password", "users", user_id,
+               f"Изменён пароль пользователя «{user['username']}»")
     flash(f"Пароль пользователя «{user['username']}» изменён.", "success")
     return redirect(url_for("users.index"))
 
@@ -142,6 +149,8 @@ def toggle_active(user_id: int):
     db.execute("UPDATE users SET is_active = ? WHERE user_id = ?", (new_state, user_id))
     db.commit()
     action = "разблокирован" if new_state else "заблокирован"
+    log_action("unblock" if new_state else "block", "users", user_id,
+               f"Пользователь «{user['username']}» {action}")
     flash(f"Пользователь «{user['username']}» {action}.", "success")
     return redirect(url_for("users.index"))
 
@@ -170,5 +179,7 @@ def rename(user_id: int):
 
     db.execute("UPDATE users SET username = ? WHERE user_id = ?", (new_username, user_id))
     db.commit()
+    log_action("rename", "users", user_id,
+               f"Пользователь «{user['username']}» переименован в «{new_username}»")
     flash(f"Пользователь «{user['username']}» переименован в «{new_username}».", "success")
     return redirect(url_for("users.index"))
